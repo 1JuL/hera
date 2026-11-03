@@ -5,8 +5,9 @@
   <title>Hera - Interfaz de Estadísticas</title>
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/statistics.css">
-  <!-- Chart.js para renderizar los gráficos del prototipo -->
+  <!-- Chart.js y el Plugin de Etiquetas Datalabels -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
 </head>
 <body>
   <header>
@@ -24,10 +25,10 @@
   </header>
 
   <div class="stats-layout">
-    <!-- Menú Lateral Izquierdo de Referencia -->
+    <!-- Menú Lateral Izquierdo (Espacio de Trabajo) -->
     <aside class="sidebar">
       <div>
-        <div class="sidebar-section-title">Espacio de trabajo</div>
+        <div class="sidebar-title">Espacio de trabajo</div>
         <ul class="sidebar-menu">
           <li class="active"><a href="#">📊 Menú</a></li>
           <li><a href="#">💰 Finanzas</a></li>
@@ -48,47 +49,53 @@
       </div>
     </aside>
 
-    <!-- Contenido Principal Dashboard -->
+    <!-- Área de Contenido Principal -->
     <main class="stats-content">
       <h2>Buenos días, María</h2>
       <p style="color: var(--text-gray); font-size: 14px; margin-bottom: 20px;">Así se está desempeñando tu negocio este mes.</p>
 
-      <!-- KPI Grid -->
+      <!-- Tarjetas KPI -->
       <div class="stats-grid-top">
         <div class="stat-card main">
           <span style="font-size: 12px;">Ganancia neta</span>
           <div class="val">$28.450.000</div>
-          <div class="desc">+12.4% vs mes anterior</div>
+          <div class="desc">+12,4% vs. mes anterior</div>
         </div>
         <div class="stat-card">
           <span style="font-size: 12px;">Ganancia por tecnología</span>
           <div class="val">$8.620.000</div>
-          <div class="desc">+18.7% vs mes anterior</div>
+          <div class="desc">+18,7% (30% de la ganancia total)</div>
         </div>
         <div class="stat-card">
           <span style="font-size: 12px;">Ingresos totales</span>
           <div class="val">$54.320.000</div>
-          <div class="desc">+6.2% vs mes anterior</div>
+          <div class="desc">+6,2% vs. mes anterior</div>
         </div>
         <div class="stat-card">
           <span style="font-size: 12px;">Margen operativo</span>
           <div class="val">24,8%</div>
-          <div class="desc">+2.1% vs mes anterior</div>
+          <div class="desc">+2,1% vs. mes anterior</div>
         </div>
       </div>
 
-      <!-- Gráficos -->
+      <!-- Sección de Gráficos -->
       <div class="charts-grid">
         <div class="chart-card">
           <h3>Rendimiento de ganancias</h3>
-          <canvas id="gainChart" height="140"></canvas>
+          <p style="font-size: 11px; color: var(--text-gray); margin-bottom: 10px;">Composición vertical de la ganancia total (Aporte no tecnológico + Aporte tecnológico)</p>
+          <div class="chart-container-box" style="height: 250px;">
+            <canvas id="gainChart"></canvas>
+          </div>
         </div>
         <div class="chart-card">
           <h3>Impacto tecnológico</h3>
-          <canvas id="impactChart" height="140"></canvas>
+          <p style="font-size: 11px; color: var(--text-gray); margin-bottom: 10px;">Retorno de las inversiones digitales</p>
+          <div class="chart-container-box" style="height: 180px;">
+            <canvas id="impactChart"></canvas>
+          </div>
           <div style="text-align: center; margin-top: 10px;">
-            <strong style="font-size: 20px;">3,4x</strong>
-            <p style="font-size: 11px; color: var(--text-gray);">ROI Tecnológico</p>
+            <strong style="font-size: 22px;">3,4x</strong>
+            <p style="font-size: 11px; color: var(--text-gray);">ROI tecnológico</p>
           </div>
         </div>
       </div>
