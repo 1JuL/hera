@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Hera - Interfaz de Estadísticas</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/statistics.css">
+  <!-- Chart.js para renderizar los gráficos del prototipo -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header>
+    <div class="logo-group">
+      <span class="logo-brand">Senzaccento</span>
+      <span class="logo-app">Hera</span>
+    </div>
+    <nav>
+      <a href="inicio.html">Inicio</a>
+      <a href="carga-datos.html">Carga de Datos</a>
+      <a href="mapa.html">Mapa</a>
+      <a href="asistente.html">Asistente</a>
+      <a href="estadisticas.html">Estadísticas</a>
+    </nav>
+  </header>
+
+  <div class="stats-layout">
+    <!-- Menú Lateral Izquierdo de Referencia -->
+    <aside class="sidebar">
+      <div>
+        <div class="sidebar-section-title">Espacio de trabajo</div>
+        <ul class="sidebar-menu">
+          <li class="active"><a href="#">📊 Menú</a></li>
+          <li><a href="#">💰 Finanzas</a></li>
+          <li><a href="#">💻 Tecnología</a></li>
+          <li><a href="#">📦 Inventario</a></li>
+          <li><a href="#">👥 Equipo</a></li>
+          <li><a href="#">⚙️ Configuración</a></li>
+          <li><a href="#">❓ Centro de ayuda</a></li>
+        </ul>
+      </div>
+
+      <div class="user-profile">
+        <div class="avatar">MG</div>
+        <div>
+          <strong>María García</strong><br>
+          <span style="opacity: 0.7;">Senzaccento</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Contenido Principal Dashboard -->
+    <main class="stats-content">
+      <h2>Buenos días, María</h2>
+      <p style="color: var(--text-gray); font-size: 14px; margin-bottom: 20px;">Así se está desempeñando tu negocio este mes.</p>
+
+      <!-- KPI Grid -->
+      <div class="stats-grid-top">
+        <div class="stat-card main">
+          <span style="font-size: 12px;">Ganancia neta</span>
+          <div class="val">$28.450.000</div>
+          <div class="desc">+12.4% vs mes anterior</div>
+        </div>
+        <div class="stat-card">
+          <span style="font-size: 12px;">Ganancia por tecnología</span>
+          <div class="val">$8.620.000</div>
+          <div class="desc">+18.7% vs mes anterior</div>
+        </div>
+        <div class="stat-card">
+          <span style="font-size: 12px;">Ingresos totales</span>
+          <div class="val">$54.320.000</div>
+          <div class="desc">+6.2% vs mes anterior</div>
+        </div>
+        <div class="stat-card">
+          <span style="font-size: 12px;">Margen operativo</span>
+          <div class="val">24,8%</div>
+          <div class="desc">+2.1% vs mes anterior</div>
+        </div>
+      </div>
+
+      <!-- Gráficos -->
+      <div class="charts-grid">
+        <div class="chart-card">
+          <h3>Rendimiento de ganancias</h3>
+          <canvas id="gainChart" height="140"></canvas>
+        </div>
+        <div class="chart-card">
+          <h3>Impacto tecnológico</h3>
+          <canvas id="impactChart" height="140"></canvas>
+          <div style="text-align: center; margin-top: 10px;">
+            <strong style="font-size: 20px;">3,4x</strong>
+            <p style="font-size: 11px; color: var(--text-gray);">ROI Tecnológico</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/navigation.js"></script>
+  <script src="js/charts.js"></script>
+</body>
+</html>
