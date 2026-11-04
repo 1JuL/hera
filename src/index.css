@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+@source "../index.html";
+@source "../src";
+
+@theme {
+  --color-primary: #163a2b;
+  --color-primary-dark: #0e261c;
+  --color-accent-mint: #86ceab;
+  --color-accent-mint-light: #e8f5ee;
+  --color-bg-light: #f4f6f4;
+  --color-text-dark: #1e1e1e;
+  --color-text-gray: #666666;
+  --color-border-color: #e0e0e0;
+}
+
+:root {
+  --primary: #163a2b;
+  --primary-dark: #0e261c;
+  --accent-mint: #86ceab;
+  --accent-mint-light: #e8f5ee;
+  --bg-light: #f4f6f4;
+  --white: #ffffff;
+  --text-dark: #1e1e1e;
+  --text-gray: #666666;
+  --border-color: #e0e0e0;
+}
+
+@layer base {
+  body {
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  }
+}
+
+/* Clases utilitarias de marca Senzaccento */
+.font-brand {
+  font-family: Georgia, Cambria, 'Times New Roman', Times, serif;
+}
