@@ -9,23 +9,22 @@ import {
 } from 'lucide-react';
 import { StatsSidebar } from './components/Sidebar';
 import { KpiCard } from './components/KpiCard';
-import { LocalStatsProvider, BenchmarkData } from './lib/StatsProvider';
+import { LocalStatsProvider } from './lib/StatsProvider';
 import { DiagnosticScores } from '@/features/diagnostic/schema/types';
 import { MaturityRadarChart } from './components/MaturityRadarChart';
 import { PriorityGapsChart } from './components/PriorityGapsChart';
 import { ChannelsPaymentChart } from './components/ChannelsPaymentChart';
 import { FinancialDisciplineCard } from './components/FinancialDisciplineCard';
+import { NationalBenchmarkCard } from './components/NationalBenchmarkCard';
 import { useDraftResponse } from '@/features/diagnostic/hooks/useDraftResponse';
 
 export const StatsPage: React.FC = () => {
   const [stats, setStats] = useState<DiagnosticScores | null>(null);
-  const [benchmark, setBenchmark] = useState<BenchmarkData | null>(null);
-  const { loadSampleData } = useDraftResponse();
+  const { draft, loadSampleData } = useDraftResponse();
 
   const loadData = () => {
     const currentStats = LocalStatsProvider.getBusinessStats();
     setStats(currentStats);
-    setBenchmark(LocalStatsProvider.getBenchmark());
   };
 
   useEffect(() => {
@@ -220,58 +219,8 @@ export const StatsPage: React.FC = () => {
               <FinancialDisciplineCard financial={stats.financialDiscipline} />
             </div>
 
-            {/* Fila 3: Comparativa Sectorial Sabana Centro */}
-            {benchmark && (
-              <div className="bg-white p-6 rounded-2xl shadow-xs border border-[#E0E0E0]">
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
-                  <div>
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-[#163A2B] bg-[#E8F5EE] px-2 py-0.5 rounded-sm">
-                      Punto de Referencia (Sabana Centro)
-                    </span>
-                    <h3 className="text-base font-bold text-[#1E1E1E] font-brand mt-1">
-                      Comparativa con Microempresas Similares
-                    </h3>
-                  </div>
-                  <span className="text-[11px] text-[#666666] italic">
-                    Muestra agregada anónima de {benchmark.sampleSize} negocios
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <div className="p-4 rounded-xl bg-[#F8FAF9] border border-[#E0E0E0]">
-                    <span className="text-xs text-[#666666] block">Promedio Sector en Sabana Centro</span>
-                    <span className="text-2xl font-bold text-[#163A2B] my-1 block">
-                      {benchmark.averageOverallIndex}%
-                    </span>
-                    <span className="text-[11px] text-[#666666]">
-                      {stats.overallIndex >= benchmark.averageOverallIndex
-                        ? `Tu negocio está ${stats.overallIndex - benchmark.averageOverallIndex}% por encima del promedio regional.`
-                        : `Tu negocio está ${benchmark.averageOverallIndex - stats.overallIndex}% por debajo del promedio regional.`}
-                    </span>
-                  </div>
-
-                  <div className="p-4 rounded-xl bg-[#F8FAF9] border border-[#E0E0E0]">
-                    <span className="text-xs text-[#666666] block">Área más digitalizada en la región</span>
-                    <span className="text-sm font-bold text-[#163A2B] my-1 block">
-                      {benchmark.topArea}
-                    </span>
-                    <span className="text-[11px] text-[#666666]">
-                      La mayoría utiliza WhatsApp Business para cerrar pedidos y catálogos.
-                    </span>
-                  </div>
-
-                  <div className="p-4 rounded-xl bg-[#F8FAF9] border border-[#E0E0E0]">
-                    <span className="text-xs text-[#666666] block">Mayor brecha común regional</span>
-                    <span className="text-sm font-bold text-[#8A4810] my-1 block">
-                      {benchmark.weakestArea}
-                    </span>
-                    <span className="text-[11px] text-[#666666]">
-                      La mayoría de microempresas aún manejan caja e inventario de forma manual o en papel.
-                    </span>
-                  </div>
-                </div>
-              </div>
-            )}
+            {/* Fila 3: Punto de referencia (Nacional) */}
+            <NationalBenchmarkCard answers={draft.answers || {}} />
 
             {/* Aviso sobre cifras ilustrativas */}
             <div className="bg-[#FFFDF7] p-4 rounded-xl border border-[#F3E8C9] text-xs text-[#8A4810] flex items-center justify-between gap-3">

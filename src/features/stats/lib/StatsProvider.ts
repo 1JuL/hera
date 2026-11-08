@@ -2,19 +2,8 @@ import { DiagnosticScores } from '@/features/diagnostic/schema/types';
 import questionnaireSchema from '@/features/diagnostic/schema/questionnaire.v1.json';
 import { computeScores } from './computeScores';
 
-export interface BenchmarkData {
-  sector: string;
-  municipio: string;
-  sampleSize: number;
-  averageOverallIndex: number;
-  topArea: string;
-  weakestArea: string;
-  digitalPaymentsAdoption: number;
-}
-
 export interface StatsProvider {
   getBusinessStats(): DiagnosticScores | null;
-  getBenchmark(sector?: string, municipio?: string): BenchmarkData | null;
 }
 
 export const LocalStatsProvider: StatsProvider = {
@@ -38,18 +27,5 @@ export const LocalStatsProvider: StatsProvider = {
       console.warn('Error reading stats from storage', e);
     }
     return null;
-  },
-
-  getBenchmark(sector = 'Comercio al detal', municipio = 'Chía'): BenchmarkData | null {
-    // Datos agregados del estudio de referencia Sabana Centro (simulado representativo para >= 10 negocios)
-    return {
-      sector,
-      municipio,
-      sampleSize: 42,
-      averageOverallIndex: 38,
-      topArea: 'Atención al Cliente (WhatsApp)',
-      weakestArea: 'Contabilidad y Finanzas',
-      digitalPaymentsAdoption: 64,
-    };
   },
 };

@@ -107,11 +107,25 @@ export const ChannelsPaymentChart: React.FC<ChannelsPaymentChartProps> = ({
                 ))}
               </Pie>
               <Tooltip
+                formatter={(value: any, name: any) => [
+                  `${value} método(s)`,
+                  name,
+                ]}
                 contentStyle={{
                   backgroundColor: '#163A2B',
-                  borderRadius: '6px',
-                  color: '#FFF',
+                  borderRadius: '8px',
+                  border: '1px solid #86CEAB',
+                  color: '#FFFFFF',
                   fontSize: '11px',
+                  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.2)',
+                }}
+                itemStyle={{
+                  color: '#FFFFFF',
+                  fontWeight: 500,
+                }}
+                labelStyle={{
+                  color: '#86CEAB',
+                  fontWeight: 600,
                 }}
               />
             </PieChart>
