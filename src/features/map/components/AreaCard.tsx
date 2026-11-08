@@ -1,4 +1,12 @@
 import React from 'react';
+import {
+  Zap,
+  Users,
+  ShoppingBag,
+  Factory,
+  FolderKanban,
+  Truck,
+} from 'lucide-react';
 import { Area } from '../types';
 
 interface AreaCardProps {
@@ -6,7 +14,18 @@ interface AreaCardProps {
   onSelect: (area: Area) => void;
 }
 
+const ICON_MAP = {
+  Zap,
+  Users,
+  ShoppingBag,
+  Factory,
+  FolderKanban,
+  Truck,
+};
+
 export const AreaCard: React.FC<AreaCardProps> = ({ area, onSelect }) => {
+  const IconComponent = ICON_MAP[area.iconName] || Zap;
+
   return (
     <div
       onClick={() => onSelect(area)}
@@ -17,9 +36,9 @@ export const AreaCard: React.FC<AreaCardProps> = ({ area, onSelect }) => {
         <div className="flex items-center gap-3 mb-2.5">
           <div
             style={{ backgroundColor: area.bgIcon, color: area.colorIcon }}
-            className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-medium"
+            className="w-8 h-8 rounded-lg flex items-center justify-center font-medium"
           >
-            {area.icon}
+            <IconComponent className="w-4 h-4" />
           </div>
           <h3 className="text-[17px] font-bold text-[#1E1E1E]">
             {area.title}
@@ -39,4 +58,3 @@ export const AreaCard: React.FC<AreaCardProps> = ({ area, onSelect }) => {
     </div>
   );
 };
-

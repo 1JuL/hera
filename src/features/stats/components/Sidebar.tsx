@@ -1,16 +1,25 @@
 import React, { useState } from 'react';
+import {
+  LayoutDashboard,
+  DollarSign,
+  Laptop,
+  Package,
+  Users,
+  Settings,
+  HelpCircle,
+} from 'lucide-react';
 
 export const StatsSidebar: React.FC = () => {
   const [activeItem, setActiveItem] = useState('menu');
 
   const menuItems = [
-    { id: 'menu', label: '📊 Menú' },
-    { id: 'finanzas', label: '💰 Finanzas' },
-    { id: 'tecnologia', label: '💻 Tecnología' },
-    { id: 'inventario', label: '📦 Inventario' },
-    { id: 'equipo', label: '👥 Equipo' },
-    { id: 'configuracion', label: '⚙️ Configuración' },
-    { id: 'ayuda', label: '❓ Centro de ayuda' },
+    { id: 'menu', label: 'Menú', icon: LayoutDashboard },
+    { id: 'finanzas', label: 'Finanzas', icon: DollarSign },
+    { id: 'tecnologia', label: 'Tecnología', icon: Laptop },
+    { id: 'inventario', label: 'Inventario', icon: Package },
+    { id: 'equipo', label: 'Equipo', icon: Users },
+    { id: 'configuracion', label: 'Configuración', icon: Settings },
+    { id: 'ayuda', label: 'Centro de ayuda', icon: HelpCircle },
   ];
 
   return (
@@ -19,22 +28,27 @@ export const StatsSidebar: React.FC = () => {
         <div className="text-[11px] uppercase font-bold text-[#5C8374] tracking-wider mb-4">
           Espacio de trabajo
         </div>
-        <ul className="list-none space-y-1">
-          {menuItems.map((item) => (
-            <li key={item.id}>
-              <button
-                type="button"
-                onClick={() => setActiveItem(item.id)}
-                className={`w-full text-left flex items-center gap-2.5 px-3 py-2.5 text-[13px] rounded-md transition-colors cursor-pointer border-none ${
-                  activeItem === item.id
-                    ? 'bg-[#163A2B] text-white font-semibold'
-                    : 'text-[#A3C2B5] hover:bg-[#163A2B]/60 hover:text-white bg-transparent'
-                }`}
-              >
-                {item.label}
-              </button>
-            </li>
-          ))}
+        <ul className="list-none space-y-1 p-0 m-0">
+          {menuItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = activeItem === item.id;
+            return (
+              <li key={item.id}>
+                <button
+                  type="button"
+                  onClick={() => setActiveItem(item.id)}
+                  className={`w-full text-left flex items-center gap-2.5 px-3 py-2.5 text-[13px] rounded-md transition-colors cursor-pointer border-none ${
+                    isActive
+                      ? 'bg-[#163A2B] text-white font-semibold'
+                      : 'text-[#A3C2B5] hover:bg-[#163A2B]/60 hover:text-white bg-transparent'
+                  }`}
+                >
+                  <Icon className="w-4 h-4 shrink-0" />
+                  <span>{item.label}</span>
+                </button>
+              </li>
+            );
+          })}
         </ul>
       </div>
 
@@ -50,4 +64,3 @@ export const StatsSidebar: React.FC = () => {
     </aside>
   );
 };
-

@@ -1,130 +1,274 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
+import {
+  FileEdit,
+  FileSpreadsheet,
+  Download,
+  FileCode,
+  Sparkles,
+  ArrowLeft,
+  ArrowRight,
+  Upload,
+  X,
+  Check,
+} from 'lucide-react';
+import Swal from 'sweetalert2';
+import { useDraftResponse } from '../diagnostic/hooks/useDraftResponse';
+import questionnaireSchema from '../diagnostic/schema/questionnaire.v1.json';
+import { QuestionnaireSchema } from '../diagnostic/schema/types';
+import { QuestionnaireWizard } from '../diagnostic/components/QuestionnaireWizard';
+import { ImportDialog } from '../diagnostic/components/ImportDialog';
+import {
+  downloadExcelTemplateOrAnswers,
+  downloadJsonAudit,
+} from '../diagnostic/lib/excel/excelService';
 
 export const DataUploadPage: React.FC = () => {
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [selectedFileName, setSelectedFileName] = useState<string | null>(null);
-  const [questionnaireActive, setQuestionnaireActive] = useState(false);
+  const schema = questionnaireSchema as unknown as QuestionnaireSchema;
+  const { draft, setAnswers, loadSampleData, resetDiagnostic } = useDraftResponse();
 
-  const handleSelectFiles = () => {
-    fileInputRef.current?.click();
+  const [wizardOpen, setWizardOpen] = useState(false);
+  const [importDialogOpen, setImportDialogOpen] = useState(false);
+  const [notification, setNotification] = useState<string | null>(null);
+
+  const showNotification = (msg: string) => {
+    setNotification(msg);
+    setTimeout(() => setNotification(null), 4000);
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setSelectedFileName(e.target.files[0].name);
-    }
-  };
+  // Cálculo de preguntas respondidas
+  const answeredCount = Object.keys(draft.answers).filter(
+    (k) => draft.answers[k] !== undefined && draft.answers[k] !== null && draft.answers[k] !== ''
+  ).length;
+
+  const hasDraft = answeredCount > 1;
 
   return (
-    <main className="max-w-[1200px] w-full mx-auto px-5 py-10 flex justify-center items-start flex-1">
-      <div className="bg-white rounded-xl p-8 md:p-10 max-w-[550px] w-full shadow-sm border border-[#E0E0E0]/60">
-        <div className="mb-8">
-          <span className="text-xs text-[#666666] block mb-1.5 font-medium">
-            Carga de datos
-          </span>
-          <h1 className="text-2xl md:text-[28px] font-bold text-[#1E1E1E] mb-2">
-            Carga de Datos
-          </h1>
-          <p className="text-[13px] text-[#666666] leading-relaxed">
-            Sube los archivos de tu empresa para analizar tu modelo de negocio y tecnologías
-          </p>
+    <main className="max-w-[1200px] w-full mx-auto px-4 sm:px-6 py-8 flex-1">
+      {/* Notificación flotante */}
+      {notification && (
+        <div className="mb-6 p-4 bg-[#E8F5EE] border border-[#86CEAB] text-[#163A2B] text-xs font-semibold rounded-xl flex items-center justify-between shadow-xs animate-in fade-in">
+          <span>{notification}</span>
+          <button
+            type="button"
+            onClick={() => setNotification(null)}
+            className="text-[#163A2B] font-bold p-1 bg-transparent border-none cursor-pointer hover:opacity-80"
+          >
+            <X className="w-4 h-4" />
+          </button>
         </div>
+      )}
 
-        {/* Input oculto para selección de archivos */}
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept=".pdf,.xlsx,.xls,.docx,.csv"
-          className="hidden"
-          onChange={handleFileChange}
-        />
-
-        <div className="flex flex-col sm:flex-row gap-5">
-          {/* Opción 1: Subir Archivos */}
-          <div className="flex-1 bg-[#F8FAF9] border border-[#E0E0E0] rounded-xl p-6 flex flex-col justify-between min-h-[280px]">
-            <div>
-              <div className="w-11 h-11 rounded-[10px] bg-[#163A2B] flex items-center justify-center text-white mb-4 shadow-xs">
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                  <polyline points="17 8 12 3 7 8"></polyline>
-                  <line x1="12" y1="3" x2="12" y2="15"></line>
-                </svg>
-              </div>
-              <h3 className="text-base font-bold text-[#1E1E1E] mb-2 leading-tight">
-                Subir Archivos
-              </h3>
-              <p className="text-[11px] text-[#666666] leading-relaxed mb-4">
-                Sube documentos, reportes financieros o archivos de tu empresa para un análisis completo
+      {/* Si el wizard está abierto, renderizarlo a pantalla completa */}
+      {wizardOpen ? (
+        <div className="space-y-4">
+          <button
+            type="button"
+            onClick={() => setWizardOpen(false)}
+            className="text-xs font-semibold text-[#163A2B] hover:underline flex items-center gap-1.5 cursor-pointer bg-white px-3 py-1.5 rounded-lg border border-[#E0E0E0] shadow-2xs"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" />
+            <span>Volver a Carga de Datos y Herramientas</span>
+          </button>
+          <QuestionnaireWizard onClose={() => setWizardOpen(false)} />
+        </div>
+      ) : (
+        <div className="space-y-8">
+          {/* Encabezado */}
+          <div className="bg-white rounded-2xl p-6 sm:p-8 border border-[#E0E0E0]/80 shadow-xs">
+            <div className="max-w-2xl">
+              <span className="text-xs text-[#163A2B] font-bold uppercase tracking-wider block mb-1">
+                Diagnóstico Empresarial
+              </span>
+              <h1 className="text-2xl sm:text-3xl font-bold text-[#1E1E1E] mb-2 font-brand">
+                Carga de Datos y Diagnóstico Tecnológico
+              </h1>
+              <p className="text-xs sm:text-sm text-[#666666] leading-relaxed">
+                El diagnóstico TIC de Senzaccento es la base para identificar brechas y generar su mapa de oportunidades. Puede completarlo directamente en el formulario web o importar la plantilla diligenciada en Excel.
               </p>
-              {selectedFileName && (
-                <div className="text-[11px] bg-[#E8F5EE] text-[#163A2B] font-medium p-2 rounded-md mb-3 truncate">
-                  📄 {selectedFileName}
+            </div>
+
+            {/* Estado actual del cuestionario */}
+            <div className="mt-6 pt-5 border-t border-[#E0E0E0] flex flex-wrap items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <span
+                  className={`w-3 h-3 rounded-full ${
+                    draft.status === 'completed'
+                      ? 'bg-emerald-500'
+                      : hasDraft
+                      ? 'bg-amber-500 animate-pulse'
+                      : 'bg-gray-400'
+                  }`}
+                />
+                <span className="text-xs font-semibold text-[#1E1E1E] flex items-center gap-1.5">
+                  <span>Estado:</span>
+                  {draft.status === 'completed' ? (
+                    <span className="text-emerald-700 flex items-center gap-1">
+                      <span>Diagnóstico Completado</span>
+                      <Check className="w-3.5 h-3.5" />
+                    </span>
+                  ) : hasDraft ? (
+                    `Borrador en curso (${answeredCount} respuestas)`
+                  ) : (
+                    'Sin iniciar'
+                  )}
+                </span>
+              </div>
+
+              {hasDraft && (
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      const result = await Swal.fire({
+                        icon: 'warning',
+                        title: '¿Reiniciar el diagnóstico?',
+                        text: 'Se borrarán todas las respuestas guardadas en este borrador. Esta acción no se puede deshacer.',
+                        showCancelButton: true,
+                        confirmButtonText: 'Sí, reiniciar',
+                        cancelButtonText: 'Cancelar',
+                        confirmButtonColor: '#DC2626',
+                        cancelButtonColor: '#666',
+                        customClass: { popup: 'rounded-2xl' },
+                      });
+                      if (result.isConfirmed) {
+                        resetDiagnostic();
+                        showNotification('Se ha reiniciado el borrador.');
+                      }
+                    }}
+                    className="text-xs text-red-600 hover:text-red-800 font-semibold cursor-pointer underline bg-transparent border-none"
+                  >
+                    Reiniciar borrador
+                  </button>
                 </div>
               )}
             </div>
-            <button
-              type="button"
-              onClick={handleSelectFiles}
-              className="w-full bg-[#163A2B] hover:bg-[#112D21] text-white py-2.5 px-3 rounded-2xl text-[11px] font-semibold transition-colors cursor-pointer"
-            >
-              {selectedFileName ? 'Cambiar archivo' : 'Seleccionar archivos'}
-            </button>
           </div>
 
-          {/* Opción 2: Cuestionario de Diagnóstico */}
-          <div className="flex-1 bg-[#F8FAF9] border border-[#E0E0E0] rounded-xl p-6 flex flex-col justify-between min-h-[280px]">
-            <div>
-              <div className="w-11 h-11 rounded-[10px] bg-[#163A2B] flex items-center justify-center text-white mb-4 shadow-xs">
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <line x1="8" y1="6" x2="21" y2="6"></line>
-                  <line x1="8" y1="12" x2="21" y2="12"></line>
-                  <line x1="8" y1="18" x2="21" y2="18"></line>
-                  <line x1="3" y1="6" x2="3.01" y2="6"></line>
-                  <line x1="3" y1="12" x2="3.01" y2="12"></line>
-                  <line x1="3" y1="18" x2="3.01" y2="18"></line>
-                </svg>
-              </div>
-              <h3 className="text-base font-bold text-[#1E1E1E] mb-2 leading-tight">
-                Cuestionario de Diagnóstico
-              </h3>
-              <p className="text-[11px] text-[#666666] leading-relaxed mb-4">
-                Responde un cuestionario rápido para diagnosticar el estado actual de tu negocio y tecnología
-              </p>
-              {questionnaireActive && (
-                <div className="text-[11px] bg-[#E8F5EE] text-[#163A2B] font-medium p-2 rounded-md mb-3">
-                  ✓ Formulario preparado (HU1)
+          {/* Dos tarjetas de acción principales */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Opción 1: Completar en línea */}
+            <div className="bg-white rounded-2xl p-6 sm:p-8 border border-[#E0E0E0] shadow-xs flex flex-col justify-between hover:shadow-sm transition-all">
+              <div>
+                <div className="w-12 h-12 rounded-xl bg-[#163A2B] text-white flex items-center justify-center mb-4 shadow-2xs">
+                  <FileEdit className="w-6 h-6 text-white" />
                 </div>
-              )}
+                <h3 className="text-lg font-bold text-[#1E1E1E] mb-2 font-brand">
+                  Cuestionario de Diagnóstico en Línea
+                </h3>
+                <p className="text-xs text-[#666666] leading-relaxed mb-6">
+                  Responda de forma guiada en su celular o computador. Cuenta con modo rápido (~10 minutos) o modo completo. Guarda automáticamente su progreso.
+                </p>
+              </div>
+
+              <div>
+                <button
+                  type="button"
+                  onClick={() => setWizardOpen(true)}
+                  className="w-full bg-[#163A2B] hover:bg-[#112D21] text-white py-3 px-4 rounded-xl text-xs font-bold transition-all cursor-pointer shadow-xs flex items-center justify-center gap-2"
+                >
+                  <span>{hasDraft ? 'Continuar Cuestionario' : 'Iniciar Cuestionario en Línea'}</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
             </div>
-            <button
-              type="button"
-              onClick={() => setQuestionnaireActive(true)}
-              className="w-full bg-[#163A2B] hover:bg-[#112D21] text-white py-2.5 px-3 rounded-2xl text-[11px] font-semibold transition-colors cursor-pointer"
-            >
-              Iniciar cuestionario
-            </button>
+
+            {/* Opción 2: Importar plantilla Excel */}
+            <div className="bg-white rounded-2xl p-6 sm:p-8 border border-[#E0E0E0] shadow-xs flex flex-col justify-between hover:shadow-sm transition-all">
+              <div>
+                <div className="w-12 h-12 rounded-xl bg-[#86CEAB] text-[#163A2B] flex items-center justify-center mb-4 shadow-2xs">
+                  <FileSpreadsheet className="w-6 h-6 text-[#163A2B]" />
+                </div>
+                <h3 className="text-lg font-bold text-[#1E1E1E] mb-2 font-brand">
+                  Importar Cuestionario en Excel (.xlsx)
+                </h3>
+                <p className="text-xs text-[#666666] leading-relaxed mb-6">
+                  Descargue la plantilla oficial, complétela fuera de línea con su equipo o contador, y súbala. El sistema valida las respuestas y las integra con el diagnóstico.
+                </p>
+              </div>
+
+              <div className="space-y-2.5">
+                <button
+                  type="button"
+                  onClick={() => setImportDialogOpen(true)}
+                  className="w-full bg-[#E8F5EE] hover:bg-[#D0E6DC] text-[#163A2B] border border-[#86CEAB]/60 py-3 px-4 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-2"
+                >
+                  <Upload className="w-3.5 h-3.5" />
+                  <span>Subir archivo diligenciado (.xlsx / .csv / .json)</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    downloadExcelTemplateOrAnswers(schema);
+                    showNotification('Descargando plantilla oficial en blanco...');
+                  }}
+                  className="w-full text-center text-xs text-[#163A2B] font-semibold hover:underline py-1 cursor-pointer bg-transparent border-none flex items-center justify-center gap-1.5"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span>Descargar plantilla en blanco (.csv / Excel)</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Barra de herramientas adicionales de exportación y demostración */}
+          <div className="bg-white rounded-2xl p-6 border border-[#E0E0E0]/80 shadow-xs">
+            <h4 className="text-xs font-bold text-[#1E1E1E] uppercase tracking-wider mb-4">
+              Herramientas de Exportación y Auditoría
+            </h4>
+
+            <div className="flex flex-wrap gap-3">
+              <button
+                type="button"
+                onClick={() => {
+                  downloadExcelTemplateOrAnswers(schema, draft.answers);
+                  showNotification('Exportando respuestas en formato compatible...');
+                }}
+                className="px-4 py-2.5 rounded-xl border border-[#E0E0E0] bg-[#F8FAF9] hover:bg-[#E8F5EE] text-[#163A2B] text-xs font-semibold cursor-pointer transition-colors flex items-center gap-2"
+              >
+                <FileSpreadsheet className="w-4 h-4" />
+                <span>Exportar mis respuestas (Excel/CSV)</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  downloadJsonAudit(draft.answers, schema);
+                  showNotification('Descargando copia de auditoría en JSON...');
+                }}
+                className="px-4 py-2.5 rounded-xl border border-[#E0E0E0] bg-[#F8FAF9] hover:bg-[#E8F5EE] text-[#163A2B] text-xs font-semibold cursor-pointer transition-colors flex items-center gap-2"
+              >
+                <FileCode className="w-4 h-4" />
+                <span>Exportar copia JSON (Auditoría)</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  loadSampleData();
+                  showNotification('Datos de prueba cargados. Ya puedes ver el análisis completo en Estadísticas.');
+                }}
+                className="px-4 py-2.5 rounded-xl border border-[#86CEAB] bg-[#E8F5EE] hover:bg-[#D0E6DC] text-[#163A2B] text-xs font-bold cursor-pointer transition-colors ml-auto flex items-center gap-2"
+              >
+                <Sparkles className="w-4 h-4" />
+                <span>Cargar respuestas de prueba (Demo)</span>
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      )}
+
+      {/* Modal de importación */}
+      <ImportDialog
+        isOpen={importDialogOpen}
+        schema={schema}
+        onClose={() => setImportDialogOpen(false)}
+        onApplyAnswers={(importedAnswers) => {
+          setAnswers(importedAnswers);
+          showNotification('Respuestas importadas con éxito. Puedes revisarlas en el cuestionario.');
+          setWizardOpen(true);
+        }}
+      />
     </main>
   );
 };
-

@@ -6,7 +6,7 @@ export interface Solution {
 export interface Area {
   id: string;
   title: string;
-  icon: string;
+  iconName: 'Zap' | 'Users' | 'ShoppingBag' | 'Factory' | 'FolderKanban' | 'Truck';
   bgIcon: string;
   colorIcon: string;
   bgCard: string;
@@ -16,4 +16,3 @@ export interface Area {
   itemBg: string;
   solutions: Solution[];
 }
-
