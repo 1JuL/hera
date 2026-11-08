@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { X, Mic, MicOff, Send, HelpCircle } from 'lucide-react';
 
 export const AssistantPage: React.FC = () => {
   const [messages, setMessages] = useState([
@@ -75,30 +76,43 @@ export const AssistantPage: React.FC = () => {
               />
               <button
                 type="submit"
-                className="bg-[#163A2B] hover:bg-[#112D21] text-white px-4 py-2 rounded-lg text-xs font-semibold cursor-pointer transition-colors"
+                className="bg-[#163A2B] hover:bg-[#112D21] text-white px-4 py-2 rounded-lg text-xs font-semibold cursor-pointer transition-colors flex items-center gap-1.5"
               >
-                Enviar
+                <span>Enviar</span>
+                <Send className="w-3.5 h-3.5" />
               </button>
             </form>
 
             <button
               type="button"
               onClick={() => setShowStepModal(true)}
-              className="bg-[#163A2B] hover:bg-[#112D21] text-white py-2.5 px-5 rounded-lg text-xs font-semibold cursor-pointer transition-colors w-full sm:w-auto"
+              className="bg-[#163A2B] hover:bg-[#112D21] text-white py-2.5 px-5 rounded-lg text-xs font-semibold cursor-pointer transition-colors w-full sm:w-auto flex items-center justify-center gap-1.5"
             >
-              Ver paso a paso
+              <HelpCircle className="w-3.5 h-3.5" />
+              <span>Ver paso a paso</span>
             </button>
           </div>
         </div>
 
         {/* Panel Derecho: Orbe reactivo a la voz */}
         <div className="bg-[#163A2B] text-white rounded-xl p-6 flex flex-col items-center justify-center text-center shadow-md relative overflow-hidden min-h-[380px]">
-          <span
+          <button
+            type="button"
             onClick={() => setIsListening(!isListening)}
-            className="text-xs bg-white/20 hover:bg-white/30 cursor-pointer py-1 px-3 rounded-full mb-4 transition-colors select-none"
+            className="text-xs bg-white/20 hover:bg-white/30 cursor-pointer py-1.5 px-3 rounded-full mb-4 transition-colors select-none flex items-center gap-2 border-none text-white"
           >
-            {isListening ? '● Escuchando' : '○ En pausa'}
-          </span>
+            {isListening ? (
+              <>
+                <Mic className="w-3.5 h-3.5 text-emerald-300" />
+                <span>Escuchando</span>
+              </>
+            ) : (
+              <>
+                <MicOff className="w-3.5 h-3.5 text-gray-300" />
+                <span>En pausa</span>
+              </>
+            )}
+          </button>
 
           {/* Orbe animado */}
           <div
@@ -142,11 +156,11 @@ export const AssistantPage: React.FC = () => {
             <button
               type="button"
               onClick={() => setShowStepModal(false)}
-              className="absolute top-4 right-4 w-7 h-7 rounded-full bg-[#F0F0F0] text-[#666] font-bold flex items-center justify-center border-none cursor-pointer"
+              className="absolute top-4 right-4 w-8 h-8 rounded-full bg-[#F0F0F0] text-[#666] flex items-center justify-center border-none cursor-pointer hover:bg-[#E4E4E4] transition-colors"
             >
-              ✕
+              <X className="w-4 h-4" />
             </button>
-            <h3 className="text-lg font-bold text-[#163A2B] mb-2">
+            <h3 className="text-lg font-bold text-[#163A2B] mb-2 font-brand">
               Guía paso a paso: WhatsApp Business
             </h3>
             <p className="text-xs text-[#666666] mb-4">
@@ -169,7 +183,7 @@ export const AssistantPage: React.FC = () => {
             <button
               type="button"
               onClick={() => setShowStepModal(false)}
-              className="w-full mt-6 bg-[#163A2B] hover:bg-[#112D21] text-white py-2 rounded-lg text-xs font-semibold cursor-pointer"
+              className="w-full mt-6 bg-[#163A2B] hover:bg-[#112D21] text-white py-2.5 rounded-lg text-xs font-semibold cursor-pointer"
             >
               Entendido
             </button>
@@ -179,4 +193,3 @@ export const AssistantPage: React.FC = () => {
     </main>
   );
 };
-

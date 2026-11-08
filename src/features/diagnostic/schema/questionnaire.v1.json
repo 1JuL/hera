@@ -1,0 +1,1367 @@
+{
+  "version": "1.0.0",
+  "title": "Cuestionario de Diagnóstico y Oportunidades TIC Senzaccento",
+  "description": "Herramienta de autodiagnóstico empresarial para microempresas de Sabana Centro",
+  "sections": [
+    {
+      "id": "K",
+      "title": "Consentimiento",
+      "subtitle": "Tratamiento de datos y privacidad",
+      "icon": "ShieldCheck"
+    },
+    {
+      "id": "A",
+      "title": "Perfil del negocio",
+      "subtitle": "Datos generales y ubicación",
+      "icon": "Building2"
+    },
+    {
+      "id": "B",
+      "title": "Ventas e ingresos",
+      "subtitle": "Canales, cobros y registro",
+      "icon": "TrendingUp"
+    },
+    {
+      "id": "C",
+      "title": "Costos y márgenes",
+      "subtitle": "Estructura de costos y finanzas",
+      "icon": "DollarSign"
+    },
+    {
+      "id": "D",
+      "title": "Áreas del negocio",
+      "subtitle": "Organización y responsables",
+      "icon": "Users"
+    },
+    {
+      "id": "E",
+      "title": "Actividades por área",
+      "subtitle": "Madurez digital y procesos",
+      "icon": "CheckSquare"
+    },
+    {
+      "id": "F",
+      "title": "Herramientas actuales",
+      "subtitle": "Tecnología en uso hoy",
+      "icon": "Laptop"
+    },
+    {
+      "id": "G",
+      "title": "Infraestructura",
+      "subtitle": "Conectividad y dispositivos",
+      "icon": "Wifi"
+    },
+    {
+      "id": "H",
+      "title": "Percepción y metas",
+      "subtitle": "Barreras y expectativas",
+      "icon": "Target"
+    }
+  ],
+  "questions": [
+    {
+      "id": "K01",
+      "section": "K",
+      "tier": "core",
+      "type": "boolean",
+      "label": "Acepto el tratamiento de datos del negocio según el aviso de privacidad de Hera (Ley 1581 de 2012)",
+      "help": "Sus datos se usan exclusivamente para generar recomendaciones personalizadas y diagnósticos agregados. No solicitamos datos bancarios ni contraseñas.",
+      "required": true
+    },
+    {
+      "id": "A01",
+      "section": "A",
+      "tier": "core",
+      "type": "text",
+      "label": "Nombre del negocio o empresa",
+      "help": "El nombre comercial con el que sus clientes lo conocen.",
+      "required": true
+    },
+    {
+      "id": "A02",
+      "section": "A",
+      "tier": "core",
+      "type": "single",
+      "label": "Actividad principal del negocio",
+      "required": true,
+      "options": [
+        { "value": "comercio_detal", "label": "Comercio al detal (tiendas, vestuario, etc.)" },
+        { "value": "alimentos_bebidas", "label": "Alimentos y bebidas (restaurantes, cafés, panaderías)" },
+        { "value": "servicios_personales", "label": "Servicios personales (belleza, bienestar, etc.)" },
+        { "value": "servicios_profesionales", "label": "Servicios profesionales (contables, legales, consultoría)" },
+        { "value": "manufactura_artesania", "label": "Manufactura y artesanía" },
+        { "value": "agropecuario", "label": "Agropecuario y producción rural" },
+        { "value": "turismo_hospitalidad", "label": "Turismo y hospitalidad" },
+        { "value": "educacion", "label": "Educación y capacitación" },
+        { "value": "construccion_oficios", "label": "Construcción y oficios técnicos" },
+        { "value": "otro", "label": "Otro sector" }
+      ]
+    },
+    {
+      "id": "A03",
+      "section": "A",
+      "tier": "core",
+      "type": "single",
+      "label": "Municipio donde opera principalmente",
+      "required": true,
+      "options": [
+        { "value": "chia", "label": "Chía" },
+        { "value": "cajica", "label": "Cajicá" },
+        { "value": "zipaquira", "label": "Zipaquirá" },
+        { "value": "otro_sabana_centro", "label": "Otro municipio de Sabana Centro (Cota, Tabio, Tenjo, Sopó, Tocancipá, Gachancipá, Nemocón, Cogua)" }
+      ]
+    },
+    {
+      "id": "A04",
+      "section": "A",
+      "tier": "core",
+      "type": "range",
+      "label": "Años de operación del negocio",
+      "required": true,
+      "options": [
+        { "value": "menos_1", "label": "Menos de 1 año" },
+        { "value": "1_3", "label": "De 1 a 3 años" },
+        { "value": "3_5", "label": "De 3 a 5 años" },
+        { "value": "5_10", "label": "De 5 a 10 años" },
+        { "value": "mas_10", "label": "Más de 10 años" }
+      ]
+    },
+    {
+      "id": "A05",
+      "section": "A",
+      "tier": "core",
+      "type": "single",
+      "label": "Estado de formalización legal",
+      "required": true,
+      "options": [
+        { "value": "sin_registro", "label": "Sin registro formal todavía" },
+        { "value": "rut", "label": "RUT únicamente" },
+        { "value": "rut_camara", "label": "RUT y matrícula mercantil en Cámara de Comercio al día" }
+      ]
+    },
+    {
+      "id": "A06",
+      "section": "A",
+      "tier": "core",
+      "type": "range",
+      "label": "Personas que trabajan en el negocio (incluyendo al dueño)",
+      "required": true,
+      "options": [
+        { "value": "1", "label": "Solo yo (1 persona)" },
+        { "value": "2_3", "label": "2 a 3 personas" },
+        { "value": "4_6", "label": "4 a 6 personas" },
+        { "value": "7_10", "label": "7 a 10 personas" },
+        { "value": "mas_10", "label": "Más de 10 personas" }
+      ]
+    },
+    {
+      "id": "A07",
+      "section": "A",
+      "tier": "core",
+      "type": "multi",
+      "label": "Lugar de operación o atención a clientes",
+      "required": true,
+      "options": [
+        { "value": "local_fisico", "label": "Local físico / oficina abierta al público" },
+        { "value": "hogar", "label": "Desde el hogar" },
+        { "value": "ambulante_movil", "label": "Ambulante / a domicilio / visitas a clientes" },
+        { "value": "solo_linea", "label": "Solo en línea (redes, página web, WhatsApp)" }
+      ]
+    },
+    {
+      "id": "A08",
+      "section": "A",
+      "tier": "extended",
+      "type": "single",
+      "label": "Rol de la persona que responde este cuestionario",
+      "options": [
+        { "value": "propietario", "label": "Propietario / Fundador" },
+        { "value": "gerente_administrador", "label": "Gerente o administrador contratado" },
+        { "value": "familiar", "label": "Familiar del dueño" },
+        { "value": "otro", "label": "Otro colaborador" }
+      ]
+    },
+    {
+      "id": "B01",
+      "section": "B",
+      "tier": "core",
+      "type": "range",
+      "label": "Ventas mensuales promedio aproximadas (en pesos colombianos)",
+      "required": true,
+      "options": [
+        { "value": "menos_2m", "label": "Menos de $2 millones COP" },
+        { "value": "2m_5m", "label": "Entre $2 y $5 millones COP" },
+        { "value": "5m_10m", "label": "Entre $5 y $10 millones COP" },
+        { "value": "10m_20m", "label": "Entre $10 y $20 millones COP" },
+        { "value": "20m_50m", "label": "Entre $20 y $50 millones COP" },
+        { "value": "mas_50m", "label": "Más de $50 millones COP" },
+        { "value": "no_sabe", "label": "No sabe / Prefiere no indicar" }
+      ]
+    },
+    {
+      "id": "B02",
+      "section": "B",
+      "tier": "extended",
+      "type": "single",
+      "label": "Variación de ventas entre meses buenos y meses malos",
+      "options": [
+        { "value": "estable", "label": "Muy estable a lo largo del año" },
+        { "value": "moderada", "label": "Variación moderada (±20%)" },
+        { "value": "alta", "label": "Alta variación según la temporada" },
+        { "value": "muy_estacional", "label": "Muy estacional (depende de fechas específicas)" }
+      ]
+    },
+    {
+      "id": "B03",
+      "section": "B",
+      "tier": "extended",
+      "type": "range",
+      "label": "Ticket promedio o valor promedio por venta",
+      "options": [
+        { "value": "menos_20k", "label": "Menos de $20.000 COP" },
+        { "value": "20k_50k", "label": "$20.000 a $50.000 COP" },
+        { "value": "50k_150k", "label": "$50.000 a $150.000 COP" },
+        { "value": "150k_500k", "label": "$150.000 a $500.000 COP" },
+        { "value": "mas_500k", "label": "Más de $500.000 COP" }
+      ]
+    },
+    {
+      "id": "B04",
+      "section": "B",
+      "tier": "extended",
+      "type": "range",
+      "label": "Número aproximado de ventas o clientes atendidos al mes",
+      "options": [
+        { "value": "menos_30", "label": "Menos de 30 clientes / mes" },
+        { "value": "30_100", "label": "30 a 100 clientes / mes" },
+        { "value": "100_300", "label": "100 a 300 clientes / mes" },
+        { "value": "300_1000", "label": "300 a 1.000 clientes / mes" },
+        { "value": "mas_1000", "label": "Más de 1.000 clientes / mes" }
+      ]
+    },
+    {
+      "id": "B05",
+      "section": "B",
+      "tier": "core",
+      "type": "multi",
+      "label": "Canales por los que realiza ventas hoy",
+      "required": true,
+      "options": [
+        { "value": "local_fisico", "label": "Punto de venta físico / Mostrador" },
+        { "value": "whatsapp", "label": "WhatsApp / Mensajería" },
+        { "value": "redes_sociales", "label": "Redes sociales (Instagram, Facebook, TikTok)" },
+        { "value": "marketplace", "label": "Marketplace (Mercado Libre, OLX, Facebook Marketplace)" },
+        { "value": "web_propia", "label": "Página web propia o tienda en línea" },
+        { "value": "domicilios_apps", "label": "Apps de domicilios (Rappi, etc.)" },
+        { "value": "venta_directa_ferias", "label": "Venta directa puerta a puerta / Ferias y eventos" }
+      ]
+    },
+    {
+      "id": "B06",
+      "section": "B",
+      "tier": "core",
+      "type": "single",
+      "label": "Canal que genera el mayor porcentaje de sus ventas",
+      "required": true,
+      "options": [
+        { "value": "local_fisico", "label": "Punto de venta físico / Mostrador" },
+        { "value": "whatsapp", "label": "WhatsApp / Mensajería" },
+        { "value": "redes_sociales", "label": "Redes sociales" },
+        { "value": "marketplace", "label": "Marketplace" },
+        { "value": "web_propia", "label": "Página web propia" },
+        { "value": "domicilios_apps", "label": "Apps de domicilios" },
+        { "value": "venta_directa_ferias", "label": "Venta directa / Ferias" }
+      ]
+    },
+    {
+      "id": "B07",
+      "section": "B",
+      "tier": "core",
+      "type": "multi",
+      "label": "Medios de pago que acepta en su negocio",
+      "required": true,
+      "options": [
+        { "value": "efectivo", "label": "Efectivo" },
+        { "value": "transferencia", "label": "Transferencia bancaria directa" },
+        { "value": "nequi_daviplata", "label": "Billeteras móviles (Nequi / Daviplata)" },
+        { "value": "datafono", "label": "Datáfono (tarjetas débito y crédito físicas)" },
+        { "value": "link_pago", "label": "Links de pago digitales (Bold, Wompi, etc.)" },
+        { "value": "pasarela_web", "label": "Pasarela de pago web integrada" },
+        { "value": "fiado", "label": "Fiado o crédito de confianza" }
+      ]
+    },
+    {
+      "id": "B08",
+      "section": "B",
+      "tier": "extended",
+      "type": "range",
+      "label": "Porcentaje aproximado de ventas que realiza a crédito o fiado",
+      "options": [
+        { "value": "cero", "label": "0% (todo es de contado)" },
+        { "value": "menos_20", "label": "Menos del 20%" },
+        { "value": "20_50", "label": "Entre 20% y 50%" },
+        { "value": "mas_50", "label": "Más del 50%" }
+      ]
+    },
+    {
+      "id": "B09",
+      "section": "B",
+      "tier": "core",
+      "type": "single",
+      "label": "¿Cómo lleva el registro diario de sus ventas?",
+      "required": true,
+      "options": [
+        { "value": "no_registra", "label": "No llevo registro" },
+        { "value": "de_memoria", "label": "De memoria / mentalmente" },
+        { "value": "cuaderno", "label": "En cuaderno o libreta física" },
+        { "value": "excel_sheets", "label": "En hojas de cálculo (Excel o Google Sheets)" },
+        { "value": "app_software", "label": "En una aplicación móvil o software POS contable" }
+      ]
+    },
+    {
+      "id": "B10",
+      "section": "B",
+      "tier": "extended",
+      "type": "range",
+      "label": "Porcentaje estimado de clientes que vuelven a comprarle (recurrentes)",
+      "options": [
+        { "value": "menos_20", "label": "Menos del 20%" },
+        { "value": "20_50", "label": "Entre 20% y 50%" },
+        { "value": "50_80", "label": "Entre 50% y 80%" },
+        { "value": "mas_80", "label": "Más del 80%" },
+        { "value": "no_sabe", "label": "No sabe" }
+      ]
+    },
+    {
+      "id": "C01",
+      "section": "C",
+      "tier": "core",
+      "type": "single",
+      "label": "¿Tiene calculado con exactitud el costo de lo que vende o produce?",
+      "required": true,
+      "options": [
+        { "value": "no", "label": "No conozco el costo exacto" },
+        { "value": "aproximadamente", "label": "Tengo un cálculo aproximado mental" },
+        { "value": "si_con_registro", "label": "Sí, lo tengo registrado y costeado por producto/servicio" }
+      ]
+    },
+    {
+      "id": "C02",
+      "section": "C",
+      "tier": "core",
+      "type": "range",
+      "label": "Margen bruto estimado aproximado",
+      "help": "Ganancia aproximada por cada venta antes de pagar arriendo, sueldos fijos y servicios.",
+      "required": true,
+      "options": [
+        { "value": "menos_10", "label": "Menos del 10%" },
+        { "value": "10_25", "label": "10% a 25%" },
+        { "value": "25_40", "label": "25% a 40%" },
+        { "value": "40_60", "label": "40% a 60%" },
+        { "value": "mas_60", "label": "Más del 60%" },
+        { "value": "no_sabe", "label": "No sabe" }
+      ]
+    },
+    {
+      "id": "C03",
+      "section": "C",
+      "tier": "extended",
+      "type": "range",
+      "label": "Gastos fijos mensuales aproximados (arriendo, servicios, etc.)",
+      "options": [
+        { "value": "menos_1m", "label": "Menos de $1 millón COP" },
+        { "value": "1m_3m", "label": "$1 a $3 millones COP" },
+        { "value": "3m_8m", "label": "$3 a $8 millones COP" },
+        { "value": "8m_20m", "label": "$8 a $20 millones COP" },
+        { "value": "mas_20m", "label": "Más de $20 millones COP" }
+      ]
+    },
+    {
+      "id": "C04",
+      "section": "C",
+      "tier": "extended",
+      "type": "range",
+      "label": "Gasto mensual aproximado en nómina o pagos a colaboradores",
+      "options": [
+        { "value": "cero", "label": "No tengo pagos a colaboradores" },
+        { "value": "menos_2m", "label": "Menos de $2 millones COP" },
+        { "value": "2m_6m", "label": "$2 a $6 millones COP" },
+        { "value": "6m_15m", "label": "$6 a $15 millones COP" },
+        { "value": "mas_15m", "label": "Más de $15 millones COP" }
+      ]
+    },
+    {
+      "id": "C05",
+      "section": "C",
+      "tier": "core",
+      "type": "single",
+      "label": "¿Cómo define los precios de venta de sus productos o servicios?",
+      "required": true,
+      "options": [
+        { "value": "copia_competencia", "label": "Según los precios que cobra la competencia" },
+        { "value": "costo_mas_margen", "label": "Sumando costos exactos más un margen de ganancia" },
+        { "value": "lo_que_cliente_paga", "label": "Según lo que el cliente esté dispuesto a pagar" },
+        { "value": "sin_criterio", "label": "Por intuición, sin un criterio fijo" }
+      ]
+    },
+    {
+      "id": "C06",
+      "section": "C",
+      "tier": "extended",
+      "type": "range",
+      "label": "Ganancia o utilidad neta mensual aproximada del negocio",
+      "options": [
+        { "value": "perdida", "label": "Actualmente con pérdidas" },
+        { "value": "punto_equilibrio", "label": "En punto de equilibrio (~$0)" },
+        { "value": "menos_1m", "label": "Menos de $1 millón COP" },
+        { "value": "1m_3m", "label": "$1 a $3 millones COP" },
+        { "value": "3m_8m", "label": "$3 a $8 millones COP" },
+        { "value": "mas_8m", "label": "Más de $8 millones COP" },
+        { "value": "no_sabe", "label": "No sabe" }
+      ]
+    },
+    {
+      "id": "C07",
+      "section": "C",
+      "tier": "core",
+      "type": "single",
+      "label": "¿Tiene separadas las cuentas personales de las cuentas del negocio?",
+      "required": true,
+      "options": [
+        { "value": "si", "label": "Sí, cuentas bancarias y dinero totalmente separados" },
+        { "value": "parcialmente", "label": "Parcialmente (a veces uso dinero del negocio para gastos personales)" },
+        { "value": "no", "label": "No, todo se maneja en un mismo bolsillo o cuenta" }
+      ]
+    },
+    {
+      "id": "C08",
+      "section": "C",
+      "tier": "extended",
+      "type": "single",
+      "label": "¿Cuál representa el mayor gasto o costo para su negocio?",
+      "options": [
+        { "value": "inventario", "label": "Inventario y materias primas" },
+        { "value": "arriendo", "label": "Arriendo del local o instalaciones" },
+        { "value": "personal", "label": "Sueldos y mano de obra" },
+        { "value": "servicios", "label": "Servicios públicos y conectividad" },
+        { "value": "transporte", "label": "Transporte y fletes" },
+        { "value": "publicidad", "label": "Publicidad y mercadeo" },
+        { "value": "otro", "label": "Otro" }
+      ]
+    },
+    {
+      "id": "D01",
+      "section": "D",
+      "tier": "core",
+      "type": "single",
+      "label": "Ventas / Área comercial: ¿Quién se encarga hoy?",
+      "required": true,
+      "options": [
+        { "value": "no_existe", "label": "No existe esta área" },
+        { "value": "propietario", "label": "El propietario directamente" },
+        { "value": "empleado_dedicado", "label": "Un empleado dedicado" },
+        { "value": "externo", "label": "Un tercero o asesor externo" }
+      ]
+    },
+    {
+      "id": "D02",
+      "section": "D",
+      "tier": "core",
+      "type": "single",
+      "label": "Marketing y comunicación: ¿Quién se encarga hoy?",
+      "required": true,
+      "options": [
+        { "value": "no_existe", "label": "No existe esta área" },
+        { "value": "propietario", "label": "El propietario directamente" },
+        { "value": "empleado_dedicado", "label": "Un empleado dedicado" },
+        { "value": "externo", "label": "Un tercero o agencia externa" }
+      ]
+    },
+    {
+      "id": "D03",
+      "section": "D",
+      "tier": "core",
+      "type": "single",
+      "label": "Contabilidad y finanzas: ¿Quién se encarga hoy?",
+      "required": true,
+      "options": [
+        { "value": "no_existe", "label": "No existe esta área" },
+        { "value": "propietario", "label": "El propietario directamente" },
+        { "value": "empleado_dedicado", "label": "Un empleado dedicado" },
+        { "value": "externo", "label": "Contador o asesor externo" }
+      ]
+    },
+    {
+      "id": "D04",
+      "section": "D",
+      "tier": "core",
+      "type": "single",
+      "label": "Gestión de personal / RRHH: ¿Quién se encarga hoy?",
+      "required": true,
+      "options": [
+        { "value": "no_existe", "label": "No existe esta área" },
+        { "value": "propietario", "label": "El propietario directamente" },
+        { "value": "empleado_dedicado", "label": "Un empleado dedicado" },
+        { "value": "externo", "label": "Un externo" }
+      ]
+    },
+    {
+      "id": "D05",
+      "section": "D",
+      "tier": "core",
+      "type": "single",
+      "label": "Operaciones / Producción: ¿Quién se encarga hoy?",
+      "required": true,
+      "options": [
+        { "value": "no_existe", "label": "No existe esta área" },
+        { "value": "propietario", "label": "El propietario directamente" },
+        { "value": "empleado_dedicado", "label": "Un empleado dedicado" },
+        { "value": "externo", "label": "Un externo" }
+      ]
+    },
+    {
+      "id": "D06",
+      "section": "D",
+      "tier": "core",
+      "type": "single",
+      "label": "Inventario y compras: ¿Quién se encarga hoy?",
+      "required": true,
+      "options": [
+        { "value": "no_existe", "label": "No existe esta área" },
+        { "value": "propietario", "label": "El propietario directamente" },
+        { "value": "empleado_dedicado", "label": "Un empleado dedicado" },
+        { "value": "externo", "label": "Un externo" }
+      ]
+    },
+    {
+      "id": "D07",
+      "section": "D",
+      "tier": "core",
+      "type": "single",
+      "label": "Logística y entregas / Despachos: ¿Quién se encarga hoy?",
+      "required": true,
+      "options": [
+        { "value": "no_existe", "label": "No existe esta área" },
+        { "value": "propietario", "label": "El propietario directamente" },
+        { "value": "empleado_dedicado", "label": "Un empleado dedicado" },
+        { "value": "externo", "label": "Empresa o transportador externo" }
+      ]
+    },
+    {
+      "id": "D08",
+      "section": "D",
+      "tier": "core",
+      "type": "single",
+      "label": "Atención y servicio al cliente: ¿Quién se encarga hoy?",
+      "required": true,
+      "options": [
+        { "value": "no_existe", "label": "No existe esta área" },
+        { "value": "propietario", "label": "El propietario directamente" },
+        { "value": "empleado_dedicado", "label": "Un empleado dedicado" },
+        { "value": "externo", "label": "Un externo" }
+      ]
+    },
+    {
+      "id": "D09",
+      "section": "D",
+      "tier": "core",
+      "type": "single",
+      "label": "Administración general y legal: ¿Quién se encarga hoy?",
+      "required": true,
+      "options": [
+        { "value": "no_existe", "label": "No existe esta área" },
+        { "value": "propietario", "label": "El propietario directamente" },
+        { "value": "empleado_dedicado", "label": "Un empleado dedicado" },
+        { "value": "externo", "label": "Asesor externo" }
+      ]
+    },
+    {
+      "id": "D10",
+      "section": "D",
+      "tier": "core",
+      "type": "single",
+      "label": "Tecnología y sistemas: ¿Quién se encarga hoy?",
+      "required": true,
+      "options": [
+        { "value": "no_existe", "label": "No existe esta área" },
+        { "value": "propietario", "label": "El propietario directamente" },
+        { "value": "empleado_dedicado", "label": "Un empleado dedicado" },
+        { "value": "externo", "label": "Técnico o empresa externa" }
+      ]
+    },
+    {
+      "id": "E-VEN-01",
+      "section": "E",
+      "area": "VEN",
+      "tier": "core",
+      "type": "single",
+      "label": "Registro de cada venta individual realizada",
+      "options": [
+        { "value": "0", "label": "0 - No lo hago", "score": 0 },
+        { "value": "1", "label": "1 - Manual (papel, memoria, recibo físico)", "score": 1 },
+        { "value": "2", "label": "2 - Herramienta básica (Excel, WhatsApp, notas)", "score": 2 },
+        { "value": "3", "label": "3 - Herramienta especializada (Software POS / Facturación)", "score": 3 }
+      ]
+    },
+    {
+      "id": "E-VEN-02",
+      "section": "E",
+      "area": "VEN",
+      "tier": "core",
+      "type": "single",
+      "label": "Elaboración y envío de cotizaciones / propuestas comerciales",
+      "options": [
+        { "value": "0", "label": "0 - No lo hago", "score": 0 },
+        { "value": "1", "label": "1 - Manual (en papel o verbal)", "score": 1 },
+        { "value": "2", "label": "2 - Básico (plantilla Word/Excel o PDF por chat)", "score": 2 },
+        { "value": "3", "label": "3 - Especializado (software de cotizaciones/CRM)", "score": 3 }
+      ]
+    },
+    {
+      "id": "E-VEN-03",
+      "section": "E",
+      "area": "VEN",
+      "tier": "core",
+      "type": "single",
+      "label": "Seguimiento a prospectos y lista de clientes (CRM)",
+      "options": [
+        { "value": "0", "label": "0 - No lo hago", "score": 0 },
+        { "value": "1", "label": "1 - Manual (cuaderno o memoria)", "score": 1 },
+        { "value": "2", "label": "2 - Básico (contactos del celular o Excel)", "score": 2 },
+        { "value": "3", "label": "3 - Especializado (CRM o WhatsApp Business estructurado)", "score": 3 }
+      ]
+    },
+    {
+      "id": "E-VEN-04",
+      "section": "E",
+      "area": "VEN",
+      "tier": "core",
+      "type": "single",
+      "label": "Ventas y pedidos directos por internet",
+      "options": [
+        { "value": "0", "label": "0 - No lo hago", "score": 0 },
+        { "value": "1", "label": "1 - Manual (recibir pedidos por llamada)", "score": 1 },
+        { "value": "2", "label": "2 - Básico (por chat de WhatsApp o DM de Instagram)", "score": 2 },
+        { "value": "3", "label": "3 - Especializado (tienda virtual, catálogo web automatizado)", "score": 3 }
+      ]
+    },
+    {
+      "id": "E-VEN-05",
+      "section": "E",
+      "area": "VEN",
+      "tier": "core",
+      "type": "single",
+      "label": "Gestión de pedidos anticipados o reservas",
+      "options": [
+        { "value": "0", "label": "0 - No aplica / No lo hago", "score": 0 },
+        { "value": "1", "label": "1 - Manual (cuaderno o agenda)", "score": 1 },
+        { "value": "2", "label": "2 - Básico (Google Calendar, chat)", "score": 2 },
+        { "value": "3", "label": "3 - Especializado (sistema de agendamiento online)", "score": 3 }
+      ]
+    },
+    {
+      "id": "E-VEN-IMP",
+      "section": "E",
+      "area": "VEN",
+      "tier": "core",
+      "type": "scale",
+      "label": "Importancia de mejorar y digitalizar el área de VENTAS en su negocio",
+      "help": "1: Nada importante · 5: Máxima prioridad para el negocio",
+      "required": true
+    },
+    {
+      "id": "E-MKT-01",
+      "section": "E",
+      "area": "MKT",
+      "tier": "core",
+      "type": "single",
+      "label": "Presencia y publicaciones activas en redes sociales",
+      "options": [
+        { "value": "0", "label": "0 - No lo hago", "score": 0 },
+        { "value": "1", "label": "1 - Esporádico o sin fotos cuidadas", "score": 1 },
+        { "value": "2", "label": "2 - Básico (publicaciones periódicas hechas por el dueño)", "score": 2 },
+        { "value": "3", "label": "3 - Especializado (calendario, pauta o soporte profesional)", "score": 3 }
+      ]
+    },
+    {
+      "id": "E-MKT-02",
+      "section": "E",
+      "area": "MKT",
+      "tier": "core",
+      "type": "single",
+      "label": "Publicidad digital pagada (Meta Ads, Google Ads)",
+      "options": [
+        { "value": "0", "label": "0 - No lo hago", "score": 0 },
+        { "value": "1", "label": "1 - He probado alguna vez sin medir", "score": 1 },
+        { "value": "2", "label": "2 - Básico (botón promocionar publicación de vez en cuando)", "score": 2 },
+        { "value": "3", "label": "3 - Especializado (campañas con presupuesto fijo y medición de retorno)", "score": 3 }
+      ]
+    },
+    {
+      "id": "E-MKT-03",
+      "section": "E",
+      "area": "MKT",
+      "tier": "core",
+      "type": "single",
+      "label": "Catálogo digital de productos o portafolio de servicios",
+      "options": [
+        { "value": "0", "label": "0 - No tengo catálogo", "score": 0 },
+        { "value": "1", "label": "1 - Manual (muestrario físico o fotos sueltas)", "score": 1 },
+        { "value": "2", "label": "2 - Básico (PDF por WhatsApp o álbum en redes)", "score": 2 },
+        { "value": "3", "label": "3 - Especializado (catálogo interactivo con precios actualizados)", "score": 3 }
+      ]
+    },
+    {
+      "id": "E-MKT-04",
+      "section": "E",
+      "area": "MKT",
+      "tier": "core",
+      "type": "single",
+      "label": "Perfil verificado en Google Business / Google Maps",
+      "options": [
+        { "value": "0", "label": "0 - No tengo perfil en Google", "score": 0 },
+        { "value": "1", "label": "1 - Aparece creado automáticamente sin administrar", "score": 1 },
+        { "value": "2", "label": "2 - Básico (tengo acceso pero con datos desactualizados)", "score": 2 },
+        { "value": "3", "label": "3 - Especializado (perfil activo con horarios, fotos y reseñas)", "score": 3 }
+      ]
+    },
+    {
+      "id": "E-MKT-05",
+      "section": "E",
+      "area": "MKT",
+      "tier": "core",
+      "type": "single",
+      "label": "Envío de mensajes o promociones masivas a clientes",
+      "options": [
+        { "value": "0", "label": "0 - No lo hago", "score": 0 },
+        { "value": "1", "label": "1 - Manual (uno a uno desde el celular)", "score": 1 },
+        { "value": "2", "label": "2 - Básico (listas de difusión de WhatsApp o estados)", "score": 2 },
+        { "value": "3", "label": "3 - Especializado (herramienta de mensajería masiva o e-mail marketing)", "score": 3 }
+      ]
+    },
+    {
+      "id": "E-MKT-06",
+      "section": "E",
+      "area": "MKT",
+      "tier": "core",
+      "type": "single",
+      "label": "Diseño y producción de contenido visual (fotos/videos)",
+      "options": [
+        { "value": "0", "label": "0 - No lo hago", "score": 0 },
+        { "value": "1", "label": "1 - Fotos tomadas al paso sin edición", "score": 1 },
+        { "value": "2", "label": "2 - Básico (uso de Canva, CapCut o plantillas)", "score": 2 },
+        { "value": "3", "label": "3 - Especializado (producción profesional o con identidad de marca sólida)", "score": 3 }
+      ]
+    },
+    {
+      "id": "E-MKT-07",
+      "section": "E",
+      "area": "MKT",
+      "tier": "core",
+      "type": "single",
+      "label": "Medición de resultados y visitas de mercadeo",
+      "options": [
+        { "value": "0", "label": "0 - No lo hago", "score": 0 },
+        { "value": "1", "label": "1 - Por intuición o likes visibles", "score": 1 },
+        { "value": "2", "label": "2 - Básico (estadísticas de Instagram/Facebook)", "score": 2 },
+        { "value": "3", "label": "3 - Especializado (panel analítico de conversiones y ventas por canal)", "score": 3 }
+      ]
+    },
+    {
+      "id": "E-MKT-IMP",
+      "section": "E",
+      "area": "MKT",
+      "tier": "core",
+      "type": "scale",
+      "label": "Importancia de mejorar y digitalizar el área de MARKETING en su negocio",
+      "help": "1: Nada importante · 5: Máxima prioridad para el negocio",
+      "required": true
+    },
+    {
+      "id": "E-FIN-01",
+      "section": "E",
+      "area": "FIN",
+      "tier": "core",
+      "type": "single",
+      "label": "Facturación electrónica DIAN",
+      "options": [
+        { "value": "0", "label": "0 - No aplico / No facturo", "score": 0 },
+        { "value": "1", "label": "1 - Cuenta de cobro o recibo en papel", "score": 1 },
+        { "value": "2", "label": "2 - Facturación gratuita básica de la DIAN", "score": 2 },
+        { "value": "3", "label": "3 - Software comercial integrado (Siigo, Alegra, Treinta, etc.)", "score": 3 }
+      ]
+    },
+    {
+      "id": "E-FIN-02",
+      "section": "E",
+      "area": "FIN",
+      "tier": "core",
+      "type": "single",
+      "label": "Contabilidad general del negocio",
+      "options": [
+        { "value": "0", "label": "0 - No llevo contabilidad", "score": 0 },
+        { "value": "1", "label": "1 - Entrega de facturas físicas al contador cada mes", "score": 1 },
+        { "value": "2", "label": "2 - Registro en Excel con cierres mensuales", "score": 2 },
+        { "value": "3", "label": "3 - Sistema contable en la nube con reportes al día", "score": 3 }
+      ]
+    },
+    {
+      "id": "E-FIN-03",
+      "section": "E",
+      "area": "FIN",
+      "tier": "core",
+      "type": "single",
+      "label": "Control diario de ingresos y gastos (caja)",
+      "options": [
+        { "value": "0", "label": "0 - No lo hago", "score": 0 },
+        { "value": "1", "label": "1 - Cuaderno de caja manual", "score": 1 },
+        { "value": "2", "label": "2 - Hoja de Excel o aplicación de finanzas", "score": 2 },
+        { "value": "3", "label": "3 - Sistema sincronizado con facturación y bancos", "score": 3 }
+      ]
+    },
+    {
+      "id": "E-FIN-04",
+      "section": "E",
+      "area": "FIN",
+      "tier": "core",
+      "type": "single",
+      "label": "Liquidación y pago oportuno de impuestos",
+      "options": [
+        { "value": "0", "label": "0 - No declaro", "score": 0 },
+        { "value": "1", "label": "1 - A última hora cuando avisa el contador", "score": 1 },
+        { "value": "2", "label": "2 - Calendario tributario básico en Excel", "score": 2 },
+        { "value": "3", "label": "3 - Planeación y liquidación sistematizada con alertas", "score": 3 }
+      ]
+    },
+    {
+      "id": "E-FIN-05",
+      "section": "E",
+      "area": "FIN",
+      "tier": "core",
+      "type": "single",
+      "label": "Liquidación de nómina y seguridad social",
+      "options": [
+        { "value": "0", "label": "0 - No tengo empleados", "score": 0 },
+        { "value": "1", "label": "1 - Cálculo manual en papel", "score": 1 },
+        { "value": "2", "label": "2 - Plantilla en Excel o planilla PILA manual", "score": 2 },
+        { "value": "3", "label": "3 - Software de nómina electrónica integrado", "score": 3 }
+      ]
+    },
+    {
+      "id": "E-FIN-06",
+      "section": "E",
+      "area": "FIN",
+      "tier": "core",
+      "type": "single",
+      "label": "Flujo de caja y conciliación bancaria",
+      "options": [
+        { "value": "0", "label": "0 - No lo hago", "score": 0 },
+        { "value": "1", "label": "1 - Revisando saldo en la app del banco de memoria", "score": 1 },
+        { "value": "2", "label": "2 - Registro en Excel comparando extractos", "score": 2 },
+        { "value": "3", "label": "3 - Conciliación bancaria automatizada con software", "score": 3 }
+      ]
+    },
+    {
+      "id": "E-FIN-07",
+      "section": "E",
+      "area": "FIN",
+      "tier": "core",
+      "type": "single",
+      "label": "Cobro de cartera y cuentas por cobrar",
+      "options": [
+        { "value": "0", "label": "0 - No vendo a crédito", "score": 0 },
+        { "value": "1", "label": "1 - Anotado en libreta o recordatorio mental", "score": 1 },
+        { "value": "2", "label": "2 - Excel con fechas de cobro y recordatorios por WhatsApp", "score": 2 },
+        { "value": "3", "label": "3 - Módulo de cartera con alertas automáticas de vencimiento", "score": 3 }
+      ]
+    },
+    {
+      "id": "E-FIN-IMP",
+      "section": "E",
+      "area": "FIN",
+      "tier": "core",
+      "type": "scale",
+      "label": "Importancia de mejorar y digitalizar el área de FINANZAS en su negocio",
+      "help": "1: Nada importante · 5: Máxima prioridad para el negocio",
+      "required": true
+    },
+    {
+      "id": "E-RRH-01",
+      "section": "E",
+      "area": "RRH",
+      "tier": "core",
+      "type": "single",
+      "label": "Proceso de contratación y hojas de vida",
+      "options": [
+        { "value": "0", "label": "0 - No contrato / No aplica", "score": 0 },
+        { "value": "1", "label": "1 - Por recomendación verbal sin archivo", "score": 1 },
+        { "value": "2", "label": "2 - Carpetas con hojas de vida en físico o Drive", "score": 2 },
+        { "value": "3", "label": "3 - Proceso estructurado con formatos y contratos digitales", "score": 3 }
+      ]
+    },
+    {
+      "id": "E-RRH-02",
+      "section": "E",
+      "area": "RRH",
+      "tier": "core",
+      "type": "single",
+      "label": "Control de novedades, afiliaciones y vacaciones",
+      "options": [
+        { "value": "0", "label": "0 - No aplica", "score": 0 },
+        { "value": "1", "label": "1 - En papel o de palabra", "score": 1 },
+        { "value": "2", "label": "2 - Control en Excel", "score": 2 },
+        { "value": "3", "label": "3 - Sistema o portal de gestión de talento", "score": 3 }
+      ]
+    },
+    {
+      "id": "E-RRH-03",
+      "section": "E",
+      "area": "RRH",
+      "tier": "core",
+      "type": "single",
+      "label": "Control de asistencia, turnos y horarios",
+      "options": [
+        { "value": "0", "label": "0 - No aplica", "score": 0 },
+        { "value": "1", "label": "1 - Libro de firmas o confianza", "score": 1 },
+        { "value": "2", "label": "2 - Cuadrante en Excel o grupo de WhatsApp", "score": 2 },
+        { "value": "3", "label": "3 - Reloj biométrico o app móvil de turnos", "score": 3 }
+      ]
+    },
+    {
+      "id": "E-RRH-04",
+      "section": "E",
+      "area": "RRH",
+      "tier": "core",
+      "type": "single",
+      "label": "Capacitación y entrenamiento del equipo",
+      "options": [
+        { "value": "0", "label": "0 - No se capacita", "score": 0 },
+        { "value": "1", "label": "1 - Explicación rápida el primer día de trabajo", "score": 1 },
+        { "value": "2", "label": "2 - Manuales o videos compartidos ocasionalmente", "score": 2 },
+        { "value": "3", "label": "3 - Plan estructurado con cursos en línea y seguimiento", "score": 3 }
+      ]
+    },
+    {
+      "id": "E-RRH-IMP",
+      "section": "E",
+      "area": "RRH",
+      "tier": "core",
+      "type": "scale",
+      "label": "Importancia de mejorar y digitalizar RECURSOS HUMANOS en su negocio",
+      "help": "1: Nada importante · 5: Máxima prioridad para el negocio",
+      "required": true
+    },
+    {
+      "id": "E-OPE-01",
+      "section": "E",
+      "area": "OPE",
+      "tier": "core",
+      "type": "single",
+      "label": "Control de inventarios y existencias",
+      "options": [
+        { "value": "0", "label": "0 - No manejo inventario", "score": 0 },
+        { "value": "1", "label": "1 - A simple vista o conteo en cuaderno", "score": 1 },
+        { "value": "2", "label": "2 - Tabla en Excel con entradas y salidas", "score": 2 },
+        { "value": "3", "label": "3 - Software con código de barras y alerta de stock mínimo", "score": 3 }
+      ]
+    },
+    {
+      "id": "E-OPE-02",
+      "section": "E",
+      "area": "OPE",
+      "tier": "core",
+      "type": "single",
+      "label": "Gestión de pedidos a proveedores",
+      "options": [
+        { "value": "0", "label": "0 - Compro cuando ya se agotó", "score": 0 },
+        { "value": "1", "label": "1 - Lista en papel o llamada al proveedor", "score": 1 },
+        { "value": "2", "label": "2 - Pedidos organizados por WhatsApp o correo", "score": 2 },
+        { "value": "3", "label": "3 - Órdenes de compra generadas por sistema según demanda", "score": 3 }
+      ]
+    },
+    {
+      "id": "E-OPE-03",
+      "section": "E",
+      "area": "OPE",
+      "tier": "core",
+      "type": "single",
+      "label": "Control de la producción o prestación del servicio",
+      "options": [
+        { "value": "0", "label": "0 - Sin procedimiento estándar", "score": 0 },
+        { "value": "1", "label": "1 - De memoria o paso a paso informal", "score": 1 },
+        { "value": "2", "label": "2 - Fichas técnicas impresas o recetas estándar", "score": 2 },
+        { "value": "3", "label": "3 - Software de trazabilidad u órdenes de trabajo digitalizadas", "score": 3 }
+      ]
+    },
+    {
+      "id": "E-OPE-04",
+      "section": "E",
+      "area": "OPE",
+      "tier": "core",
+      "type": "single",
+      "label": "Agenda de turnos, citas o servicios programados",
+      "options": [
+        { "value": "0", "label": "0 - No aplica", "score": 0 },
+        { "value": "1", "label": "1 - Agenda en papel", "score": 1 },
+        { "value": "2", "label": "2 - Google Calendar o notas en el teléfono", "score": 2 },
+        { "value": "3", "label": "3 - Sistema de agendamiento digital con recordatorios al cliente", "score": 3 }
+      ]
+    },
+    {
+      "id": "E-OPE-IMP",
+      "section": "E",
+      "area": "OPE",
+      "tier": "core",
+      "type": "scale",
+      "label": "Importancia de mejorar y digitalizar OPERACIONES E INVENTARIOS en su negocio",
+      "help": "1: Nada importante · 5: Máxima prioridad para el negocio",
+      "required": true
+    },
+    {
+      "id": "E-CLI-01",
+      "section": "E",
+      "area": "CLI",
+      "tier": "core",
+      "type": "single",
+      "label": "Atención rápida a clientes por canales digitales (WhatsApp/Redes)",
+      "options": [
+        { "value": "0", "label": "0 - No atiendo por canales digitales", "score": 0 },
+        { "value": "1", "label": "1 - Respuestas manuales tardías desde chat personal", "score": 1 },
+        { "value": "2", "label": "2 - WhatsApp Business con mensaje de bienvenida y respuestas rápidas", "score": 2 },
+        { "value": "3", "label": "3 - Chat multiagente o chatbot automatizado integrado", "score": 3 }
+      ]
+    },
+    {
+      "id": "E-CLI-02",
+      "section": "E",
+      "area": "CLI",
+      "tier": "core",
+      "type": "single",
+      "label": "Gestión de quejas, reclamos y devoluciones (PQRS)",
+      "options": [
+        { "value": "0", "label": "0 - No tengo mecanismo", "score": 0 },
+        { "value": "1", "label": "1 - De palabra en el momento", "score": 1 },
+        { "value": "2", "label": "2 - Libro de quejas físico o mensajes marcados", "score": 2 },
+        { "value": "3", "label": "3 - Formulario o sistema de tickets con seguimiento formal", "score": 3 }
+      ]
+    },
+    {
+      "id": "E-CLI-03",
+      "section": "E",
+      "area": "CLI",
+      "tier": "core",
+      "type": "single",
+      "label": "Encuestas de satisfacción y opinión del cliente",
+      "options": [
+        { "value": "0", "label": "0 - No pregunto", "score": 0 },
+        { "value": "1", "label": "1 - Pregunta verbal informal", "score": 1 },
+        { "value": "2", "label": "2 - Reseñas en Google o preguntas por WhatsApp", "score": 2 },
+        { "value": "3", "label": "3 - Formulario digital automatizado post-venta", "score": 3 }
+      ]
+    },
+    {
+      "id": "E-CLI-04",
+      "section": "E",
+      "area": "CLI",
+      "tier": "core",
+      "type": "single",
+      "label": "Estrategias de posventa y fidelización de clientes",
+      "options": [
+        { "value": "0", "label": "0 - No hago posventa", "score": 0 },
+        { "value": "1", "label": "1 - Saludo cordial cuando vuelven", "score": 1 },
+        { "value": "2", "label": "2 - Mensaje de cumpleaños o promociones por chat", "score": 2 },
+        { "value": "3", "label": "3 - Programa de puntos o fidelización sistematizado", "score": 3 }
+      ]
+    },
+    {
+      "id": "E-CLI-IMP",
+      "section": "E",
+      "area": "CLI",
+      "tier": "core",
+      "type": "scale",
+      "label": "Importancia de mejorar y digitalizar SERVICIO AL CLIENTE en su negocio",
+      "help": "1: Nada importante · 5: Máxima prioridad para el negocio",
+      "required": true
+    },
+    {
+      "id": "E-ADM-01",
+      "section": "E",
+      "area": "ADM",
+      "tier": "core",
+      "type": "single",
+      "label": "Copia de seguridad y respaldo de información importante",
+      "options": [
+        { "value": "0", "label": "0 - No hago copias de seguridad", "score": 0 },
+        { "value": "1", "label": "1 - Guardado solo en un computador o memoria USB física", "score": 1 },
+        { "value": "2", "label": "2 - Copias periódicas manuales en la nube (Drive/Dropbox)", "score": 2 },
+        { "value": "3", "label": "3 - Copias de seguridad automáticas y cifradas en la nube", "score": 3 }
+      ]
+    },
+    {
+      "id": "E-ADM-02",
+      "section": "E",
+      "area": "ADM",
+      "tier": "core",
+      "type": "single",
+      "label": "Seguridad de cuentas, claves y permisos",
+      "options": [
+        { "value": "0", "label": "0 - Todos usan la misma clave sin protección", "score": 0 },
+        { "value": "1", "label": "1 - Claves compartidas anotadas en papel", "score": 1 },
+        { "value": "2", "label": "2 - Claves distintas con verificación en 2 pasos en celular", "score": 2 },
+        { "value": "3", "label": "3 - Gestor de contraseñas y permisos diferenciados por rol", "score": 3 }
+      ]
+    },
+    {
+      "id": "E-ADM-03",
+      "section": "E",
+      "area": "ADM",
+      "tier": "core",
+      "type": "single",
+      "label": "Digitalización y archivo de documentos legales y facturas",
+      "options": [
+        { "value": "0", "label": "0 - Todo en papel o desordenado", "score": 0 },
+        { "value": "1", "label": "1 - AZ físico en estantería", "score": 1 },
+        { "value": "2", "label": "2 - Fotos o escaneos en carpetas de Google Drive", "score": 2 },
+        { "value": "3", "label": "3 - Repositorio digital centralizado y clasificado", "score": 3 }
+      ]
+    },
+    {
+      "id": "E-ADM-IMP",
+      "section": "E",
+      "area": "ADM",
+      "tier": "core",
+      "type": "scale",
+      "label": "Importancia de mejorar y digitalizar ADMINISTRACIÓN Y SEGURIDAD en su negocio",
+      "help": "1: Nada importante · 5: Máxima prioridad para el negocio",
+      "required": true
+    },
+    {
+      "id": "F01",
+      "section": "F",
+      "tier": "core",
+      "type": "multi",
+      "label": "¿Cuáles de estas herramientas digitales utiliza activamente en su negocio hoy?",
+      "required": true,
+      "options": [
+        { "value": "excel_sheets", "label": "Excel o Google Sheets" },
+        { "value": "whatsapp_business", "label": "WhatsApp Business" },
+        { "value": "instagram", "label": "Instagram" },
+        { "value": "facebook", "label": "Facebook" },
+        { "value": "tiktok", "label": "TikTok" },
+        { "value": "google_business", "label": "Google Business / Perfil de empresa en Google" },
+        { "value": "canva", "label": "Canva" },
+        { "value": "siigo", "label": "Siigo (contable o facturación)" },
+        { "value": "alegra", "label": "Alegra" },
+        { "value": "treinta", "label": "Treinta" },
+        { "value": "bold", "label": "Bold (datáfono o link)" },
+        { "value": "wompi", "label": "Wompi" },
+        { "value": "nequi_daviplata_negocios", "label": "Nequi Negocios / Daviplata Negocios" },
+        { "value": "datafono_otro", "label": "Datáfono de red (Redebán / Credibanco)" },
+        { "value": "tienda_online_propia", "label": "Sitio web o tienda en línea propia (Shopify, WordPress, etc.)" },
+        { "value": "marketplace_ml", "label": "Marketplace (Mercado Libre, Amazon, etc.)" },
+        { "value": "apps_domicilios", "label": "Apps de domicilios (Rappi, etc.)" },
+        { "value": "workspace_m365", "label": "Google Workspace o Microsoft 365" },
+        { "value": "ninguna", "label": "Ninguna de las anteriores" },
+        { "value": "otra", "label": "Otra herramienta especializada" }
+      ]
+    },
+    {
+      "id": "F02",
+      "section": "F",
+      "tier": "extended",
+      "type": "range",
+      "label": "Gasto mensual aproximado en software y herramientas digitales pagadas",
+      "options": [
+        { "value": "cero", "label": "$0 (solo utilizo versiones gratuitas)" },
+        { "value": "menos_50k", "label": "Menos de $50.000 COP al mes" },
+        { "value": "50k_150k", "label": "$50.000 a $150.000 COP al mes" },
+        { "value": "150k_500k", "label": "$150.000 a $500.000 COP al mes" },
+        { "value": "mas_500k", "label": "Más de $500.000 COP al mes" }
+      ]
+    },
+    {
+      "id": "F03",
+      "section": "F",
+      "tier": "extended",
+      "type": "text",
+      "label": "¿Cuál es la herramienta digital que más valora hoy en su negocio y por qué?",
+      "help": "Ejemplo: WhatsApp Business porque me permite cerrar ventas rápido."
+    },
+    {
+      "id": "F04",
+      "section": "F",
+      "tier": "extended",
+      "type": "text",
+      "label": "¿Alguna vez probó una herramienta digital y la abandonó? ¿Cuál y por qué?",
+      "help": "Ejemplo: Probé un software de inventario pero era muy difícil de usar."
+    },
+    {
+      "id": "F05",
+      "section": "F",
+      "tier": "extended",
+      "type": "single",
+      "label": "¿Quién maneja principalmente las herramientas digitales en su negocio?",
+      "options": [
+        { "value": "propietario", "label": "El propietario directamente" },
+        { "value": "empleado", "label": "Un empleado capacitado" },
+        { "value": "externo", "label": "Un asesor o técnico externo" },
+        { "value": "nadie", "label": "Nadie en particular" }
+      ]
+    },
+    {
+      "id": "G01",
+      "section": "G",
+      "tier": "core",
+      "type": "single",
+      "label": "Tipo de conexión a internet con la que cuenta en el negocio",
+      "required": true,
+      "options": [
+        { "value": "ninguno", "label": "No tengo conexión a internet" },
+        { "value": "datos_moviles", "label": "Solo datos móviles en el celular" },
+        { "value": "fijo_fibra", "label": "Internet fijo (WiFi / Fibra óptica en el local)" }
+      ]
+    },
+    {
+      "id": "G02",
+      "section": "G",
+      "tier": "core",
+      "type": "multi",
+      "label": "Dispositivos tecnológicos disponibles para el negocio",
+      "required": true,
+      "options": [
+        { "value": "smartphone", "label": "Teléfono inteligente (Smartphone)" },
+        { "value": "computador", "label": "Computador de escritorio o portátil" },
+        { "value": "tablet", "label": "Tablet" },
+        { "value": "datafono", "label": "Datáfono inalámbrico" },
+        { "value": "impresora_pos", "label": "Impresora de recibos / POS" }
+      ]
+    },
+    {
+      "id": "G03",
+      "section": "G",
+      "tier": "core",
+      "type": "scale",
+      "label": "Nivel de comodidad del propietario con el uso de herramientas tecnológicas",
+      "help": "1: Muy difícil y frustrante · 5: Muy cómodo y con facilidad de aprendizaje",
+      "required": true
+    },
+    {
+      "id": "G04",
+      "section": "G",
+      "tier": "extended",
+      "type": "single",
+      "label": "¿Ha utilizado herramientas o asistentes de Inteligencia Artificial (ChatGPT, Copilot, etc.)?",
+      "options": [
+        { "value": "no_conoce", "label": "No los conozco" },
+        { "value": "conoce_no_usa", "label": "Los conozco pero no los uso en el trabajo" },
+        { "value": "ocasional", "label": "Uso ocasional para ideas o redacción" },
+        { "value": "frecuente", "label": "Uso frecuente en tareas del negocio" }
+      ]
+    },
+    {
+      "id": "G05",
+      "section": "G",
+      "tier": "extended",
+      "type": "single",
+      "label": "¿Ha recibido capacitación o cursos en habilidades digitales para su negocio?",
+      "options": [
+        { "value": "no", "label": "No, he aprendido de forma empírica" },
+        { "value": "si_basica", "label": "Sí, capacitación básica (talleres de Cámara de Comercio, SENA, etc.)" },
+        { "value": "si_avanzada", "label": "Sí, formación avanzada o certificaciones" }
+      ]
+    },
+    {
+      "id": "H01",
+      "section": "H",
+      "tier": "core",
+      "type": "single",
+      "label": "¿Considera que su negocio necesita incorporar más tecnología para crecer?",
+      "required": true,
+      "options": [
+        { "value": "si", "label": "Sí, definitivamente" },
+        { "value": "no", "label": "No, como estoy funciona bien" },
+        { "value": "no_se", "label": "No estoy seguro" }
+      ]
+    },
+    {
+      "id": "H02",
+      "section": "H",
+      "tier": "core",
+      "type": "multi",
+      "label": "¿Cuáles son las mayores barreras que enfrenta para adoptar tecnología?",
+      "required": true,
+      "options": [
+        { "value": "no_se_empezar", "label": "No sé por dónde empezar ni qué herramienta elegir" },
+        { "value": "costo", "label": "El costo económico de las suscripciones o equipos" },
+        { "value": "falta_tiempo", "label": "Falta de tiempo para aprender a usarla" },
+        { "value": "desconfianza", "label": "Desconfianza o temor a fraudes / seguridad" },
+        { "value": "mala_conectividad", "label": "Mala señal o conectividad a internet" },
+        { "value": "falta_personal", "label": "Falta de personal con habilidades para manejarla" },
+        { "value": "no_necesito", "label": "Siento que no la necesito para mi tamaño actual" }
+      ]
+    },
+    {
+      "id": "H03",
+      "section": "H",
+      "tier": "core",
+      "type": "single",
+      "label": "¿Cuál es el mayor problema o dolor de cabeza de su negocio hoy?",
+      "required": true,
+      "options": [
+        { "value": "pocas_ventas", "label": "Ventas bajas o dificultad para conseguir nuevos clientes" },
+        { "value": "costos_altos", "label": "Costos altos y márgenes de ganancia muy apretados" },
+        { "value": "desorden_administrativo", "label": "Desorden administrativo y falta de control del dinero" },
+        { "value": "falta_tiempo", "label": "El día a día me consume todo el tiempo" },
+        { "value": "competencia", "label": "Fuerte competencia de precios en el sector" },
+        { "value": "otro", "label": "Otro" }
+      ]
+    },
+    {
+      "id": "H04",
+      "section": "H",
+      "tier": "core",
+      "type": "multi",
+      "label": "¿Cuáles son sus metas principales para los próximos 12 meses?",
+      "required": true,
+      "options": [
+        { "value": "vender_mas", "label": "Aumentar ventas e ingresos" },
+        { "value": "reducir_costos", "label": "Reducir costos y desperdicios" },
+        { "value": "organizar_finanzas", "label": "Organizar las cuentas y formalizar el negocio" },
+        { "value": "llegar_mas_clientes", "label": "Atraer clientes en nuevos municipios o canales" },
+        { "value": "contratar", "label": "Contratar o ampliar el equipo de trabajo" },
+        { "value": "automatizar", "label": "Automatizar tareas repetitivas para ahorrar tiempo" }
+      ]
+    },
+    {
+      "id": "H05",
+      "section": "H",
+      "tier": "core",
+      "type": "range",
+      "label": "Presupuesto mensual que estaría dispuesto a invertir en tecnología si demuestra beneficios",
+      "required": true,
+      "options": [
+        { "value": "cero", "label": "$0 COP (solo herramientas 100% gratuitas)" },
+        { "value": "menos_50k", "label": "Hasta $50.000 COP al mes" },
+        { "value": "50k_150k", "label": "Entre $50.000 y $150.000 COP al mes" },
+        { "value": "150k_500k", "label": "Entre $150.000 y $500.000 COP al mes" },
+        { "value": "mas_500k", "label": "Más de $500.000 COP al mes" }
+      ]
+    },
+    {
+      "id": "H06",
+      "section": "H",
+      "tier": "extended",
+      "type": "scale",
+      "label": "¿Qué tan dispuesto estaría a implementar una nueva herramienta en los próximos 3 meses?",
+      "help": "1: Nada dispuesto · 5: Listo para comenzar de inmediato"
+    },
+    {
+      "id": "H07",
+      "section": "H",
+      "tier": "extended",
+      "type": "text",
+      "label": "¿Qué es lo más importante que espera que Hera le aporte a su negocio?",
+      "help": "Ejemplo: Que me diga con claridad qué herramienta me conviene sin complicarme la vida."
+    }
+  ]
+}

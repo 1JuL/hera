@@ -4,7 +4,7 @@ export const AREAS_DATA: Record<string, Area> = {
   fin: {
     id: 'fin',
     title: 'Financiera',
-    icon: '⚡',
+    iconName: 'Zap',
     bgIcon: '#B8E6D3',
     colorIcon: '#163A2B',
     bgCard: '#E2F4EC',
@@ -21,7 +21,7 @@ export const AREAS_DATA: Record<string, Area> = {
   rrhh: {
     id: 'rrhh',
     title: 'Recursos Humanos',
-    icon: '👥',
+    iconName: 'Users',
     bgIcon: '#F9CCA4',
     colorIcon: '#8A4810',
     bgCard: '#FDE8D7',
@@ -38,7 +38,7 @@ export const AREAS_DATA: Record<string, Area> = {
   mkt: {
     id: 'mkt',
     title: 'Marketing',
-    icon: '🛍️',
+    iconName: 'ShoppingBag',
     bgIcon: '#F7B7DD',
     colorIcon: '#821F5D',
     bgCard: '#FCE1F0',
@@ -55,7 +55,7 @@ export const AREAS_DATA: Record<string, Area> = {
   prod: {
     id: 'prod',
     title: 'Producción',
-    icon: '🏬',
+    iconName: 'Factory',
     bgIcon: '#CBBBE9',
     colorIcon: '#432282',
     bgCard: '#EAE3F7',
@@ -72,7 +72,7 @@ export const AREAS_DATA: Record<string, Area> = {
   admin: {
     id: 'admin',
     title: 'Administración',
-    icon: '📁',
+    iconName: 'FolderKanban',
     bgIcon: '#B2CCF8',
     colorIcon: '#17428B',
     bgCard: '#DDE8FC',
@@ -89,7 +89,7 @@ export const AREAS_DATA: Record<string, Area> = {
   log: {
     id: 'log',
     title: 'Logística',
-    icon: '🚚',
+    iconName: 'Truck',
     bgIcon: '#9EE3E3',
     colorIcon: '#0B5E5E',
     bgCard: '#D3F4F4',
@@ -104,4 +104,3 @@ export const AREAS_DATA: Record<string, Area> = {
     ],
   },
 };
-

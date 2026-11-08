@@ -1,10 +1,29 @@
 import React, { useEffect } from 'react';
+import {
+  X,
+  ArrowRight,
+  Zap,
+  Users,
+  ShoppingBag,
+  Factory,
+  FolderKanban,
+  Truck,
+} from 'lucide-react';
 import { Area } from '../types';
 
 interface AreaDetailModalProps {
   area: Area | null;
   onClose: () => void;
 }
+
+const ICON_MAP = {
+  Zap,
+  Users,
+  ShoppingBag,
+  Factory,
+  FolderKanban,
+  Truck,
+};
 
 export const AreaDetailModal: React.FC<AreaDetailModalProps> = ({ area, onClose }) => {
   useEffect(() => {
@@ -23,6 +42,8 @@ export const AreaDetailModal: React.FC<AreaDetailModalProps> = ({ area, onClose 
 
   if (!area) return null;
 
+  const IconComponent = ICON_MAP[area.iconName] || Zap;
+
   return (
     <div
       onClick={onClose}
@@ -36,18 +57,18 @@ export const AreaDetailModal: React.FC<AreaDetailModalProps> = ({ area, onClose 
         <button
           type="button"
           onClick={onClose}
-          className="absolute top-5 right-5 w-7 h-7 rounded-full bg-[#F0F0F0] hover:bg-[#E4E4E4] text-[#666666] font-bold flex items-center justify-center border-none cursor-pointer transition-colors text-sm"
+          className="absolute top-5 right-5 w-8 h-8 rounded-full bg-[#F0F0F0] hover:bg-[#E4E4E4] text-[#666666] flex items-center justify-center border-none cursor-pointer transition-colors"
         >
-          ✕
+          <X className="w-4 h-4" />
         </button>
 
         {/* Encabezado del Área */}
         <div className="flex items-center gap-3 mb-3">
           <div
             style={{ backgroundColor: area.bgIcon, color: area.colorIcon }}
-            className="w-10 h-10 rounded-full flex items-center justify-center text-lg font-medium"
+            className="w-10 h-10 rounded-full flex items-center justify-center"
           >
-            {area.icon}
+            <IconComponent className="w-5 h-5" />
           </div>
           <div>
             <span className="text-[10px] uppercase font-bold text-[#666666] tracking-wider block">
@@ -78,7 +99,8 @@ export const AreaDetailModal: React.FC<AreaDetailModalProps> = ({ area, onClose 
               className="p-3.5 rounded-xl border border-black/5"
             >
               <h4 className="text-[13px] font-bold text-[#1E1E1E] mb-1 flex items-center gap-1.5">
-                <span className="text-[10px]">▶</span> {sol.name}
+                <ArrowRight className="w-3 h-3 text-[#163A2B] shrink-0" />
+                <span>{sol.name}</span>
               </h4>
               <p className="text-[11px] text-[#4A5568] opacity-90 leading-snug">
                 {sol.desc}
@@ -90,4 +112,3 @@ export const AreaDetailModal: React.FC<AreaDetailModalProps> = ({ area, onClose 
     </div>
   );
 };
-
