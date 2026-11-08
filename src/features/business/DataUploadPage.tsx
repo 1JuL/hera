@@ -11,6 +11,7 @@ import {
   X,
   Check,
 } from 'lucide-react';
+import Swal from 'sweetalert2';
 import { useDraftResponse } from '../diagnostic/hooks/useDraftResponse';
 import questionnaireSchema from '../diagnostic/schema/questionnaire.v1.json';
 import { QuestionnaireSchema } from '../diagnostic/schema/types';
@@ -117,8 +118,19 @@ export const DataUploadPage: React.FC = () => {
                 <div className="flex gap-2">
                   <button
                     type="button"
-                    onClick={() => {
-                      if (confirm('¿Desea reiniciar el diagnóstico y borrar las respuestas guardadas?')) {
+                    onClick={async () => {
+                      const result = await Swal.fire({
+                        icon: 'warning',
+                        title: '¿Reiniciar el diagnóstico?',
+                        text: 'Se borrarán todas las respuestas guardadas en este borrador. Esta acción no se puede deshacer.',
+                        showCancelButton: true,
+                        confirmButtonText: 'Sí, reiniciar',
+                        cancelButtonText: 'Cancelar',
+                        confirmButtonColor: '#DC2626',
+                        cancelButtonColor: '#666',
+                        customClass: { popup: 'rounded-2xl' },
+                      });
+                      if (result.isConfirmed) {
                         resetDiagnostic();
                         showNotification('Se ha reiniciado el borrador.');
                       }
