@@ -35,6 +35,46 @@ export function useDraftResponse() {
 
   const debounceTimerRef = useRef<number | null>(null);
 
+  // Sincronizar borrador desde Supabase al iniciar sesión si existe
+  useEffect(() => {
+    async function fetchRemoteDraft() {
+      try {
+        const { data: sessionData } = await supabase.auth.getSession();
+        if (sessionData?.session?.user) {
+          const { data, error } = await supabase
+            .from('questionnaire_responses')
+            .select('*')
+            .eq('owner_id', sessionData.session.user.id)
+            .eq('version_id', questionnaireSchema.version)
+            .maybeSingle();
+
+          if (!error && data && data.answers && Object.keys(data.answers).length > 1) {
+            setDraft((prev) => {
+              const remoteDate = new Date(data.updated_at).getTime();
+              const localDate = new Date(prev.updated_at).getTime();
+              if (remoteDate > localDate || Object.keys(prev.answers).length <= 1) {
+                return {
+                  version_id: data.version_id,
+                  answers: data.answers,
+                  tierMode: prev.tierMode,
+                  currentSectionIndex: prev.currentSectionIndex,
+                  status: data.status,
+                  updated_at: data.updated_at,
+                  completed_at: data.completed_at,
+                };
+              }
+              return prev;
+            });
+          }
+        }
+      } catch (err) {
+        // En modo local continuar sin interrupciones
+      }
+    }
+
+    fetchRemoteDraft();
+  }, []);
+
   // Guardar en localStorage inmediatamente
   useEffect(() => {
     try {
@@ -53,12 +93,16 @@ export function useDraftResponse() {
         const { data: sessionData } = await supabase.auth.getSession();
         if (sessionData?.session?.user) {
           // Si hay usuario logueado en Supabase, guardar/actualizar borrador en la nube
-          await supabase.from('questionnaire_responses').upsert({
-            version_id: draft.version_id,
-            answers: draft.answers,
-            status: draft.status,
-            updated_at: draft.updated_at,
-          });
+          await supabase.from('questionnaire_responses').upsert(
+            {
+              owner_id: sessionData.session.user.id,
+              version_id: draft.version_id,
+              answers: draft.answers,
+              status: draft.status,
+              updated_at: draft.updated_at,
+            },
+            { onConflict: 'owner_id,version_id' }
+          );
         }
       } catch (err) {
         // En modo local/offline no bloquear al usuario
@@ -130,6 +174,7 @@ export function useDraftResponse() {
       const { data: sessionData } = await supabase.auth.getSession();
       if (sessionData?.session?.user) {
         await supabase.from('diagnostics').insert({
+          owner_id: sessionData.session.user.id,
           scores,
           engine_version: questionnaireSchema.version,
           created_at: completedAt,

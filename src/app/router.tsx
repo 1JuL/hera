@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { AppLayout } from './AppLayout';
 import { LoginPage } from '@/features/auth/LoginPage';
+import { ProtectedRoute } from '@/features/auth/ProtectedRoute';
 import { HomePage } from '@/features/dashboard/HomePage';
 import { DataUploadPage } from '@/features/business/DataUploadPage';
 import { MapPage } from '@/features/map/MapPage';
@@ -17,27 +18,32 @@ export const router = createBrowserRouter([
     element: <LoginPage />,
   },
   {
-    element: <AppLayout />,
+    element: <ProtectedRoute />,
     children: [
       {
-        path: '/inicio',
-        element: <HomePage />,
-      },
-      {
-        path: '/carga-datos',
-        element: <DataUploadPage />,
-      },
-      {
-        path: '/mapa',
-        element: <MapPage />,
-      },
-      {
-        path: '/asistente',
-        element: <AssistantPage />,
-      },
-      {
-        path: '/estadisticas',
-        element: <StatsPage />,
+        element: <AppLayout />,
+        children: [
+          {
+            path: '/inicio',
+            element: <HomePage />,
+          },
+          {
+            path: '/carga-datos',
+            element: <DataUploadPage />,
+          },
+          {
+            path: '/mapa',
+            element: <MapPage />,
+          },
+          {
+            path: '/asistente',
+            element: <AssistantPage />,
+          },
+          {
+            path: '/estadisticas',
+            element: <StatsPage />,
+          },
+        ],
       },
     ],
   },
@@ -46,4 +52,3 @@ export const router = createBrowserRouter([
     element: <Navigate to="/inicio" replace />,
   },
 ]);
-
