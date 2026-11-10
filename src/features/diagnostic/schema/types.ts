@@ -9,7 +9,7 @@ export type QuestionType =
 
 export type SectionId = 'K' | 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H';
 
-export type AreaId = 'VEN' | 'MKT' | 'FIN' | 'RRH' | 'OPE' | 'CLI' | 'ADM';
+export type AreaId = 'VEN' | 'MKT' | 'FIN' | 'RRH' | 'OPE' | 'CLI' | 'ADM' | 'LOG' | 'TEC';
 
 export type Tier = 'core' | 'extended';
 

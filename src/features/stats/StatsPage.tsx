@@ -160,14 +160,14 @@ export const StatsPage: React.FC = () => {
                     </p>
                   </div>
                   <span className="text-xs font-bold text-[#163A2B] bg-[#E8F5EE] px-2.5 py-1 rounded-md">
-                    7 Áreas Evaluadas
+                    {Object.keys(stats.areas).length} Áreas Evaluadas
                   </span>
                 </div>
 
                 <MaturityRadarChart areas={stats.areas} />
 
                 {/* Resumen en pastillas por área */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-4 border-t border-[#E0E0E0]">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-4 border-t border-[#E0E0E0]">
                   {Object.values(stats.areas).map((a) => (
                     <div key={a.areaId} className="p-2 rounded-lg bg-[#F8FAF9] border border-[#E0E0E0]">
                       <span className="text-[11px] text-[#666666] block truncate">{a.name}</span>

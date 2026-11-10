@@ -7,6 +7,8 @@ import {
   Boxes,
   MessageSquare,
   Shield,
+  Truck,
+  Cpu,
   Check,
 } from 'lucide-react';
 import { Answers, AreaId, Question } from '../schema/types';
@@ -25,6 +27,8 @@ const AREA_LABELS: Record<AreaId, { title: string; subtitle: string; icon: React
   OPE: { title: 'Operaciones e Inventario', subtitle: 'Stock, compras y producción', icon: Boxes },
   CLI: { title: 'Servicio al Cliente', subtitle: 'Atención por WhatsApp y PQRS', icon: MessageSquare },
   ADM: { title: 'Administración y Seguridad', subtitle: 'Respaldos, claves y documentos', icon: Shield },
+  LOG: { title: 'Logística y Despachos', subtitle: 'Rutas, envíos y domicilios', icon: Truck },
+  TEC: { title: 'Tecnología e Infraestructura', subtitle: 'Conectividad, soporte y equipos', icon: Cpu },
 };
 
 const SCALE_OPTIONS = [
@@ -39,7 +43,7 @@ export const ActivityMatrix: React.FC<ActivityMatrixProps> = ({
   answers,
   onAnswerChange,
 }) => {
-  const areaIds: AreaId[] = ['VEN', 'MKT', 'FIN', 'RRH', 'OPE', 'CLI', 'ADM'];
+  const areaIds: AreaId[] = ['VEN', 'MKT', 'FIN', 'RRH', 'OPE', 'CLI', 'ADM', 'LOG', 'TEC'];
   const [activeTab, setActiveTab] = useState<AreaId>('VEN');
 
   const currentAreaInfo = AREA_LABELS[activeTab];
