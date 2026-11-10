@@ -1136,6 +1136,110 @@
       "required": true
     },
     {
+      "id": "E-LOG-01",
+      "section": "E",
+      "area": "LOG",
+      "tier": "core",
+      "type": "single",
+      "label": "Planificación y asignación de rutas de entrega y domicilios",
+      "options": [
+        { "value": "0", "label": "0 - No realizamos entregas o no aplica", "score": 0 },
+        { "value": "1", "label": "1 - De memoria o según el repartidor decida en el momento", "score": 1 },
+        { "value": "2", "label": "2 - Coordinación manual por WhatsApp o notas en el teléfono", "score": 2 },
+        { "value": "3", "label": "3 - Sistema o app de optimización de rutas y despacho digital", "score": 3 }
+      ]
+    },
+    {
+      "id": "E-LOG-02",
+      "section": "E",
+      "area": "LOG",
+      "tier": "core",
+      "type": "single",
+      "label": "Notificaciones y comprobantes de entrega al cliente",
+      "options": [
+        { "value": "0", "label": "0 - No se realiza seguimiento al cliente", "score": 0 },
+        { "value": "1", "label": "1 - Llamadas o mensajes manuales para confirmar si llegó", "score": 1 },
+        { "value": "2", "label": "2 - Foto del recibo o guía enviada por WhatsApp al cliente", "score": 2 },
+        { "value": "3", "label": "3 - Notificación digital automática con enlace de rastreo en vivo", "score": 3 }
+      ]
+    },
+    {
+      "id": "E-LOG-03",
+      "section": "E",
+      "area": "LOG",
+      "tier": "core",
+      "type": "single",
+      "label": "Gestión y cotización de envíos con transportadoras",
+      "options": [
+        { "value": "0", "label": "0 - No enviamos fuera de la zona local", "score": 0 },
+        { "value": "1", "label": "1 - Filas presenciales en oficinas de envíos con pago tarifa completa", "score": 1 },
+        { "value": "2", "label": "2 - Cuenta básica con una transportadora tradicional", "score": 2 },
+        { "value": "3", "label": "3 - Plataforma digital de comparación de tarifas y recolección en el local", "score": 3 }
+      ]
+    },
+    {
+      "id": "E-LOG-IMP",
+      "section": "E",
+      "area": "LOG",
+      "tier": "core",
+      "type": "scale",
+      "label": "Importancia de mejorar y digitalizar LOGÍSTICA Y DESPACHOS en su negocio",
+      "help": "1: Nada importante · 5: Máxima prioridad para el negocio",
+      "required": true
+    },
+    {
+      "id": "E-TEC-01",
+      "section": "E",
+      "area": "TEC",
+      "tier": "core",
+      "type": "single",
+      "label": "Conectividad y estabilidad de internet para terminales de cobro y venta",
+      "options": [
+        { "value": "0", "label": "0 - No contamos con conexión a internet en el local", "score": 0 },
+        { "value": "1", "label": "1 - Conexión inestable con caídas frecuentes que frenan cobros", "score": 1 },
+        { "value": "2", "label": "2 - Wifi básico compartido sin control de señal ni cable de red", "score": 2 },
+        { "value": "3", "label": "3 - Red optimizada y monitoreada para terminales POS y datáfonos", "score": 3 }
+      ]
+    },
+    {
+      "id": "E-TEC-02",
+      "section": "E",
+      "area": "TEC",
+      "tier": "core",
+      "type": "single",
+      "label": "Mantenimiento preventivo y salud de computadores y equipos",
+      "options": [
+        { "value": "0", "label": "0 - Solo se revisan cuando se dañan por completo", "score": 0 },
+        { "value": "1", "label": "1 - Mantenimiento ocasional cuando el equipo se pone muy lento", "score": 1 },
+        { "value": "2", "label": "2 - Antivirus básico y limpieza ocasional por parte del dueño", "score": 2 },
+        { "value": "3", "label": "3 - Monitoreo preventivo de disco, memoria y mantenimiento programado", "score": 3 }
+      ]
+    },
+    {
+      "id": "E-TEC-03",
+      "section": "E",
+      "area": "TEC",
+      "tier": "core",
+      "type": "single",
+      "label": "Soporte técnico y acceso remoto seguro a los sistemas del negocio",
+      "options": [
+        { "value": "0", "label": "0 - No contamos con soporte técnico ante fallas", "score": 0 },
+        { "value": "1", "label": "1 - Esperar visita presencial de un técnico particular con costo por hora", "score": 1 },
+        { "value": "2", "label": "2 - Asistencia informal por videollamada o chat", "score": 2 },
+        { "value": "3", "label": "3 - Herramienta de soporte remoto seguro y red privada configurada", "score": 3 }
+      ]
+    },
+    {
+      "id": "E-TEC-IMP",
+      "section": "E",
+      "area": "TEC",
+      "tier": "core",
+      "type": "scale",
+      "label": "Importancia de mejorar y digitalizar TECNOLOGÍA E INFRAESTRUCTURA en su negocio",
+      "help": "1: Nada importante · 5: Máxima prioridad para el negocio",
+      "required": true
+    },
+    {
       "id": "F01",
       "section": "F",
       "tier": "core",

@@ -29,14 +29,16 @@ export interface TicTool {
   implementationSteps: ToolImplementationStep[];
 }
 
+export type MapAreaId = AreaId;
+
 export interface Solution {
   name: string;
   desc: string;
 }
 
 export interface Area {
-  id: AreaId;
-  code: AreaId;
+  id: MapAreaId;
+  code: string;
   title: string;
   subtitle: string;
   iconName: string;

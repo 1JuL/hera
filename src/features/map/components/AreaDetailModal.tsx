@@ -8,6 +8,8 @@ import {
   Boxes,
   MessageSquare,
   Shield,
+  Truck,
+  Cpu,
   Zap,
   Sparkles,
   ExternalLink,
@@ -33,6 +35,8 @@ const ICON_MAP: Record<string, React.FC<{ className?: string }>> = {
   Boxes,
   MessageSquare,
   Shield,
+  Truck,
+  Cpu,
   Zap,
 };
 
@@ -126,6 +130,19 @@ export const AreaDetailModal: React.FC<AreaDetailModalProps> = ({
           <p className="text-xs sm:text-sm text-gray-600 leading-relaxed mb-3">
             {area.desc}
           </p>
+
+          {area.commonProblems && area.commonProblems.length > 0 && (
+            <div className="bg-amber-50/70 border border-amber-200/60 rounded-xl p-3 mb-3 text-xs">
+              <span className="font-bold text-amber-900 block mb-1">
+                Problemas frecuentes que resuelve esta área:
+              </span>
+              <ul className="list-disc list-inside text-amber-950 space-y-0.5">
+                {area.commonProblems.map((prob, idx) => (
+                  <li key={idx}>{prob}</li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           <div className="text-[11px] text-[#163A2B] bg-[#E8F5EE] px-3 py-1.5 rounded-lg inline-block border border-[#86CEAB]/50 font-medium">
             {area.diagnosticRelation}

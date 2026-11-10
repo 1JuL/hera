@@ -23,6 +23,8 @@ export const MaturityRadarChart: React.FC<MaturityRadarChartProps> = ({ areas })
     { area: 'Operaciones', score: areas.OPE?.maturityScore || 0, fullMark: 100 },
     { area: 'Clientes', score: areas.CLI?.maturityScore || 0, fullMark: 100 },
     { area: 'Administración', score: areas.ADM?.maturityScore || 0, fullMark: 100 },
+    { area: 'Logística', score: areas.LOG?.maturityScore || 0, fullMark: 100 },
+    { area: 'Tecnología', score: areas.TEC?.maturityScore || 0, fullMark: 100 },
   ];
 
   return (

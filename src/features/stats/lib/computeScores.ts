@@ -13,6 +13,8 @@ const AREA_NAMES: Record<AreaId, string> = {
   OPE: 'Operaciones e Inventario',
   CLI: 'Servicio al Cliente',
   ADM: 'Administración y Seguridad',
+  LOG: 'Logística y Despachos',
+  TEC: 'Tecnología e Infraestructura',
 };
 
 const STATE_LABELS: Record<number, string> = {
@@ -26,7 +28,7 @@ export function computeScores(
   answers: Answers,
   schema: QuestionnaireSchema
 ): DiagnosticScores {
-  const areaIds: AreaId[] = ['VEN', 'MKT', 'FIN', 'RRH', 'OPE', 'CLI', 'ADM'];
+  const areaIds: AreaId[] = ['VEN', 'MKT', 'FIN', 'RRH', 'OPE', 'CLI', 'ADM', 'LOG', 'TEC'];
 
   const areaScoresResult: DiagnosticScores['areas'] = {} as any;
   const priorityGaps: DiagnosticScores['priorityGaps'] = [];

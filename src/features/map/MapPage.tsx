@@ -158,7 +158,7 @@ export const MapPage: React.FC = () => {
             Mapa de Oportunidades TIC
           </h1>
           <p className="text-xs sm:text-sm text-gray-600 mt-1 max-w-2xl leading-relaxed">
-            Recomendaciones curadas de herramientas tecnológicas divididas en las <strong>7 áreas empresariales</strong> de tu diagnóstico. Explora opciones de código abierto, gratuitas, freemium y con IA para digitalizar tu negocio sin sesgos comerciales.
+            Recomendaciones curadas de herramientas tecnológicas organizadas en <strong>9 áreas clave</strong> para tu negocio. Explora opciones de código abierto, gratuitas, freemium y con IA para digitalizar cada proceso sin sesgos comerciales.
           </p>
         </div>
 
@@ -167,7 +167,7 @@ export const MapPage: React.FC = () => {
             <span className="block text-[10px] text-gray-500 uppercase tracking-wider">
               Catálogo Abierto
             </span>
-            <span>7 ÁREAS · {allToolsWithArea.length} SOLUCIONES TIC</span>
+            <span>{areasList.length} ÁREAS · {allToolsWithArea.length} SOLUCIONES TIC</span>
           </div>
         </div>
       </div>
@@ -450,7 +450,7 @@ export const MapPage: React.FC = () => {
           <h2 className="text-xl font-bold text-gray-900 font-brand">
             {showOnlyPriority
               ? `Mis Áreas Prioritarias (${visibleAreas.length})`
-              : 'Las 7 Áreas Empresariales de Sabana Centro'}
+              : 'Las 9 Áreas Empresariales de Sabana Centro'}
           </h2>
           <span className="text-xs text-gray-500 font-medium">
             Haz clic en un área para desplegar todas sus herramientas y guías

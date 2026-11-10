@@ -120,14 +120,14 @@ export const HomePage: React.FC = () => {
             </h2>
 
             <p className="text-xs sm:text-sm text-[#D0E6DC] leading-relaxed">
-              Explora soluciones TIC divididas en las 7 áreas de tu negocio: opciones de código abierto, gratuitas, freemium, bajo costo y herramientas con IA con guías de 3 pasos.
+              Explora soluciones TIC organizadas en 9 áreas de tu negocio: opciones de código abierto, gratuitas, freemium, bajo costo y herramientas con IA con guías de 3 pasos.
             </p>
           </div>
 
           <div className="pt-5 mt-4 border-t border-white/10 flex items-center justify-between">
             <span className="text-xs text-[#86CEAB] font-semibold flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-[#86CEAB] inline-block animate-pulse"></span>
-              7 Áreas · +35 Soluciones
+              9 Áreas · +40 Soluciones
             </span>
             <span className="text-xs font-bold text-white flex items-center gap-1.5 group-hover:translate-x-1.5 transition-transform">
               <span>Explorar soluciones TIC</span>
