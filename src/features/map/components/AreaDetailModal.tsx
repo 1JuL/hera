@@ -132,7 +132,7 @@ export const AreaDetailModal: React.FC<AreaDetailModalProps> = ({
           </p>
 
           {area.commonProblems && area.commonProblems.length > 0 && (
-            <div className="bg-amber-50/70 border border-amber-200/60 rounded-xl p-3 mb-3 text-xs">
+            <div className="bg-amber-50/70 border border-amber-200/60 rounded-xl p-3 text-xs">
               <span className="font-bold text-amber-900 block mb-1">
                 Problemas frecuentes que resuelve esta área:
               </span>
@@ -143,10 +143,6 @@ export const AreaDetailModal: React.FC<AreaDetailModalProps> = ({
               </ul>
             </div>
           )}
-
-          <div className="text-[11px] text-[#163A2B] bg-[#E8F5EE] px-3 py-1.5 rounded-lg inline-block border border-[#86CEAB]/50 font-medium">
-            {area.diagnosticRelation}
-          </div>
         </div>
 
         {/* Barra de Filtros de herramientas */}
