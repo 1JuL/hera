@@ -1,10 +1,11 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
-import { Answers, DiagnosticDraft } from '../schema/types';
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
+import { Answers, DiagnosticDraft, DiagnosticScores, QuestionnaireSchema } from '../schema/types';
 import questionnaireSchema from '../schema/questionnaire.v1.json';
 import { supabase } from '@/lib/supabase';
 import { computeScores } from '@/features/stats/lib/computeScores';
 
-const STORAGE_KEY = `hera_diagnostic_draft_${questionnaireSchema.version}`;
+const typedSchema = questionnaireSchema as unknown as QuestionnaireSchema;
+const STORAGE_KEY = `hera_diagnostic_draft_${typedSchema.version}`;
 
 const INITIAL_DRAFT: DiagnosticDraft = {
   version_id: questionnaireSchema.version,
@@ -155,7 +156,7 @@ export function useDraftResponse() {
   }, []);
 
   const completeDiagnostic = useCallback(async () => {
-    const scores = computeScores(draft.answers, questionnaireSchema as any);
+    const scores = computeScores(draft.answers, typedSchema);
     const completedAt = new Date().toISOString();
 
     const completedDraft: DiagnosticDraft = {
@@ -167,7 +168,6 @@ export function useDraftResponse() {
 
     setDraft(completedDraft);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(completedDraft));
-    localStorage.setItem('hera_latest_diagnostic_scores', JSON.stringify(scores));
 
     // Si Supabase está disponible, persistir en diagnostics
     try {
@@ -176,11 +176,11 @@ export function useDraftResponse() {
         await supabase.from('diagnostics').insert({
           owner_id: sessionData.session.user.id,
           scores,
-          engine_version: questionnaireSchema.version,
+          engine_version: typedSchema.version,
           created_at: completedAt,
         });
       }
-    } catch (e) {
+    } catch {
       // Sigue adelante en modo cliente
     }
 
@@ -189,7 +189,6 @@ export function useDraftResponse() {
 
   const resetDiagnostic = useCallback(() => {
     localStorage.removeItem(STORAGE_KEY);
-    localStorage.removeItem('hera_latest_diagnostic_scores');
     setDraft(INITIAL_DRAFT);
   }, []);
 
@@ -313,13 +312,30 @@ export function useDraftResponse() {
 
     setDraft(completedDraft);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(completedDraft));
-    const scores = computeScores(sampleAnswers, questionnaireSchema as any);
-    localStorage.setItem('hera_latest_diagnostic_scores', JSON.stringify(scores));
     return completedDraft;
   }, []);
 
+  const answeredCount = useMemo(
+    () =>
+      Object.keys(draft.answers).filter(
+        (k) => draft.answers[k] !== undefined && draft.answers[k] !== null && draft.answers[k] !== ''
+      ).length,
+    [draft.answers]
+  );
+
+  const scores = useMemo<DiagnosticScores | null>(() => {
+    if (answeredCount <= 1) return null;
+    try {
+      return computeScores(draft.answers, typedSchema);
+    } catch {
+      return null;
+    }
+  }, [draft.answers, answeredCount]);
+
   return {
     draft,
+    answeredCount,
+    scores,
     setAnswer,
     setAnswers,
     setTierMode,

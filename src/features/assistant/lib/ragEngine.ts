@@ -180,7 +180,7 @@ function tokenize(text: string): string[] {
   return Array.from(expanded);
 }
 
-export interface RetrievalResult {
+interface RetrievalResult {
   topTools: RecommendedToolRef[];
   topAreas: Area[];
   intent:
@@ -190,10 +190,6 @@ export interface RetrievalResult {
     | 'support_channel'
     | 'recommendation'
     | 'out_of_scope';
-  wantsFreeOnly: boolean;
-  wantsOpenSource: boolean;
-  wantsAi: boolean;
-  contextPrompt: string;
 }
 
 const OUT_OF_SCOPE_PATTERNS = [
@@ -209,7 +205,12 @@ const GREETING_PATTERNS = [
   /^(hola|buenos dias|buenas tardes|buenas noches|hey|saludos|que tal|como estas)[!.,\s]*$/i,
 ];
 
-export function retrieveRelevantContext(
+/** Resultado sin herramientas ni áreas (saludo o consulta fuera de alcance). */
+function emptyResult(intent: 'greeting' | 'out_of_scope'): RetrievalResult {
+  return { topTools: [], topAreas: [], intent };
+}
+
+function retrieveRelevantContext(
   query: string,
   diagnosticScores: DiagnosticScores | null,
   history: ChatMessage[] = []
@@ -218,15 +219,7 @@ export function retrieveRelevantContext(
   const areasList = Object.values(AREAS_DATA);
 
   if (GREETING_PATTERNS.some((p) => p.test(normQuery))) {
-    return {
-      topTools: [],
-      topAreas: [],
-      intent: 'greeting',
-      wantsFreeOnly: false,
-      wantsOpenSource: false,
-      wantsAi: false,
-      contextPrompt: buildSystemContext([], [], diagnosticScores),
-    };
+    return emptyResult('greeting');
   }
 
   const tokens = tokenize(query);
@@ -266,15 +259,7 @@ export function retrieveRelevantContext(
     !(isSupportOrDetailsAsk && recentAssistantTools.length > 0) &&
     OUT_OF_SCOPE_PATTERNS.some((p) => p.test(normQuery))
   ) {
-    return {
-      topTools: [],
-      topAreas: [],
-      intent: 'out_of_scope',
-      wantsFreeOnly,
-      wantsOpenSource,
-      wantsAi,
-      contextPrompt: buildSystemContext([], [], diagnosticScores),
-    };
+    return emptyResult('out_of_scope');
   }
 
   // Puntaje de Áreas
@@ -408,10 +393,6 @@ export function retrieveRelevantContext(
       topTools: targetTools,
       topAreas,
       intent: isGuideFollowUp ? 'implementation_guide' : 'support_channel',
-      wantsFreeOnly,
-      wantsOpenSource,
-      wantsAi,
-      contextPrompt: buildSystemContext(targetTools, topAreas, diagnosticScores),
     };
   }
 
@@ -421,15 +402,7 @@ export function retrieveRelevantContext(
     ((OUT_OF_SCOPE_PATTERNS.some((p) => p.test(normQuery)) && !anyMatchedByName) ||
       (maxToolScore < 2.5 && topAreaScore < 4 && !hasExplicitBusinessContext))
   ) {
-    return {
-      topTools: [],
-      topAreas: [],
-      intent: 'out_of_scope',
-      wantsFreeOnly,
-      wantsOpenSource,
-      wantsAi,
-      contextPrompt: buildSystemContext([], [], diagnosticScores),
-    };
+    return emptyResult('out_of_scope');
   }
 
   // Detectar intención real: soporte/detalles, guía paso a paso o recomendación
@@ -475,76 +448,7 @@ export function retrieveRelevantContext(
     topTools = finalPool.slice(0, 3).map((s) => s.ref);
   }
 
-  // Contexto enriquecido para OpenRouter: incluye todas las herramientas y guías del área principal o las recuperadas
-  const contextTools: RecommendedToolRef[] = primaryArea
-    ? primaryArea.tools.map((tool) => ({ tool, areaTitle: primaryArea.title }))
-    : topTools;
-
-  return {
-    topTools,
-    topAreas,
-    intent,
-    wantsFreeOnly,
-    wantsOpenSource,
-    wantsAi,
-    contextPrompt: buildSystemContext(contextTools, topAreas, diagnosticScores),
-  };
-}
-
-function buildSystemContext(
-  tools: RecommendedToolRef[],
-  areas: Area[],
-  diagnosticScores: DiagnosticScores | null
-): string {
-  const parts: string[] = [];
-
-  if (diagnosticScores) {
-    const priorityNames = Array.from(
-      new Set(
-        diagnosticScores.priorityGaps.map(
-          (g) => diagnosticScores.areas[g.areaId]?.name || g.areaId
-        )
-      )
-    );
-    parts.push(
-      `PERFIL DEL NEGOCIO (sin datos personales): Índice global de madurez digital ${diagnosticScores.overallIndex}%. ` +
-        (priorityNames.length > 0
-          ? `Áreas prioritarias con procesos manuales: ${priorityNames.join(', ')}.`
-          : 'Sin brechas críticas urgentes.')
-    );
-  } else {
-    parts.push('PERFIL DEL NEGOCIO: El emprendedor aún no ha completado su autodiagnóstico.');
-  }
-
-  if (areas.length > 0) {
-    parts.push(
-      'ÁREAS RELEVANTES:\n' +
-        areas
-          .map((a) => `- ${a.title}: ${a.desc} Problemas comunes: ${a.commonProblems.join(' | ')}`)
-          .join('\n')
-    );
-  }
-
-  if (tools.length > 0) {
-    parts.push(
-      'HERRAMIENTAS DEL CATÁLOGO RECUPERADAS (usa SOLO estas herramientas y precios):\n' +
-        tools
-          .map(({ tool, areaTitle }) => {
-            const stepsStr = tool.implementationSteps
-              .map((s) => `Paso ${s.step} (${s.title}): ${s.description}`)
-              .join(' ');
-            return (
-              `* ${tool.name} [Área: ${areaTitle} | Categoría: ${tool.category} | Precio: ${tool.pricingLabel} - ${tool.pricingDetail} | Dificultad: ${tool.difficulty}${tool.hasAi ? ' | Incluye IA' : ''} | Sitio oficial y soporte: ${tool.websiteUrl}]\n` +
-              `  Problema que resuelve: ${tool.problemSolved}\n` +
-              `  Beneficio: ${tool.concreteBenefit}\n` +
-              `  Pasos iniciales: ${stepsStr}`
-            );
-          })
-          .join('\n\n')
-    );
-  }
-
-  return parts.join('\n\n');
+  return { topTools, topAreas, intent };
 }
 
 function normalizeToolNameForSpeech(name: string): string {
@@ -574,18 +478,6 @@ function buildToolsSpeechSummary(
   return `${leadIn} ${items.join(' ')}`;
 }
 
-function sanitizeLlmTextForSpeech(text: string): string {
-  return text
-    .replace(/\([^)]*·[^)]*\)/g, '') // Quita paréntesis tipo (Plan Gratuito · Marketing)
-    .replace(
-      /\((?:100%\s*Gratis|Gratis|Freemium|Código Abierto|Open Source|Bajo Costo|Plan Gratuito[^)]*)\)/gi,
-      ''
-    )
-    .replace(/\s*\/\s*/g, ' o ')
-    .replace(/\s{2,}/g, ' ')
-    .trim();
-}
-
 function formatOfficialChannelNote(tools: RecommendedToolRef[]): string {
   if (tools.length === 0) return '';
   if (tools.length === 1) {
@@ -599,7 +491,7 @@ function formatOfficialChannelNote(tools: RecommendedToolRef[]): string {
   return `Si necesitas más detalles o ayuda directa, puedes comunicarte con los canales oficiales:\n${links}`;
 }
 
-export function generateLocalRagResponse(
+function generateLocalRagResponse(
   query: string,
   retrieval: RetrievalResult,
   diagnosticScores: DiagnosticScores | null
@@ -721,160 +613,16 @@ export function generateLocalRagResponse(
   return { text, speechText: text };
 }
 
-const SYSTEM_PROMPT = `Eres Hera, asistente cercano de transformación digital para microempresas y MiPymes de Sabana Centro (Chía, Cajicá, Zipaquirá, Colombia).
-Reglas estrictas (guardrails):
-1. ALCANCE OBLIGATORIO: Solo puedes ayudar con herramientas TIC, software, digitalización y organización de procesos de un negocio/empresa. Si el usuario pregunta cualquier tema ajeno (como recetas de cocina, chistes, tareas escolares, salud, deportes, clima, programación general, horóscopos o entretenimiento), RECHAZA la petición amablemente diciendo que solo puedes ayudarle con herramientas TIC para su negocio y NO menciones ni recomiendes ninguna herramienta.
-2. Analiza exactamente lo que pide el emprendedor dentro del ámbito empresarial y responde directamente a esa necesidad.
-3. Usa ÚNICAMENTE las herramientas, precios, beneficios, pasos y enlaces oficiales presentes en el CONTEXTO DEL CATÁLOGO LOCAL provisto. No inventes precios, enlaces ni herramientas externas.
-4. Responde en español de Colombia, con lenguaje claro, cálido y sin tecnicismos innecesarios. Máximo 130 palabras.
-5. Usa **negritas** para los nombres de las herramientas y evita colocar paréntesis largos con etiquetas como (Plan Gratuito · Área).
-6. Cuando expliques cómo implementar una herramienta específica o el usuario pida más detalles/ayuda, finaliza invitándolo a comunicarse con el canal oficial usando su enlace Markdown exacto del contexto.
-7. Mantén neutralidad entre proveedores: si hay opción gratis/open source o freemium disponible en el área solicitada, priorízala si el usuario pidió algo gratuito.`;
-
-let devProxyUnavailable = false;
-let edgeProxyUnavailable = false;
-
-async function callOpenRouterProxy(
-  systemWithContext: string,
-  history: ChatMessage[],
-  userQuery: string
-): Promise<string | null> {
-  const recentHistory = history.slice(-4).map((m) => ({
-    role: m.sender === 'user' ? 'user' : 'assistant',
-    content: m.text,
-  }));
-
-  const messages = [
-    { role: 'system', content: systemWithContext },
-    ...recentHistory,
-    { role: 'user', content: userQuery },
-  ];
-
-  // 1. En desarrollo / preview local: usa el middleware seguro de Vite (OPENROUTER_API_KEY nunca sale del servidor Node)
-  if (import.meta.env.DEV && !devProxyUnavailable) {
-    try {
-      const response = await fetch('/api/assistant-chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages }),
-      });
-
-      if (response.status === 404 || response.status === 501) {
-        devProxyUnavailable = true;
-      } else if (response.ok) {
-        const data = (await response.json()) as { reply?: string };
-        if (data.reply?.trim()) return data.reply.trim();
-      }
-    } catch {
-      // Continuar al proxy Edge o respaldo local
-    }
-  }
-
-  // 2. En producción: usa la Supabase Edge Function assistant-chat (secreto OPENROUTER_API_KEY en Supabase)
-  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL?.trim();
-  const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY?.trim();
-  if (supabaseUrl && supabaseAnonKey && !edgeProxyUnavailable) {
-    try {
-      const endpoint = `${supabaseUrl.replace(/\/$/, '')}/functions/v1/assistant-chat`;
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          apikey: supabaseAnonKey,
-          Authorization: `Bearer ${supabaseAnonKey}`,
-        },
-        body: JSON.stringify({ messages }),
-      });
-
-      if (response.status === 404 || response.status === 501) {
-        edgeProxyUnavailable = true;
-      } else if (response.ok) {
-        const data = (await response.json()) as { reply?: string };
-        if (data.reply?.trim()) return data.reply.trim();
-      }
-    } catch {
-      // Continuar al respaldo local
-    }
-  }
-
-  return null;
-}
-
-export async function askAssistant(
+export function askAssistant(
   query: string,
   history: ChatMessage[],
   diagnosticScores: DiagnosticScores | null
-): Promise<{
+): {
   text: string;
   speechText: string;
   recommendedTools: RecommendedToolRef[];
-}> {
+} {
   const retrieval = retrieveRelevantContext(query, diagnosticScores, history);
-
-  // Saludo o fuera de alcance no necesitan consumir cuota externa
-  if (retrieval.intent === 'greeting' || retrieval.intent === 'out_of_scope') {
-    const local = generateLocalRagResponse(query, retrieval, diagnosticScores);
-    return {
-      text: local.text,
-      speechText: local.speechText,
-      recommendedTools: retrieval.topTools,
-    };
-  }
-
-  const systemWithContext = `${SYSTEM_PROMPT}\n\n--- CONTEXTO RECUPERADO DEL CATÁLOGO LOCAL (RAG) ---\n${retrieval.contextPrompt}`;
-
-  try {
-    const llmText = await callOpenRouterProxy(systemWithContext, history, query);
-    if (llmText) {
-      const llmRefused =
-        /\b(solo puedo ayudarte|solo te puedo ayudar|fuera de mi alcance|no puedo ayudarte con|no corresponde a herramientas tic)\b/i.test(
-          llmText
-        );
-      if (llmRefused) {
-        return {
-          text: llmText,
-          speechText: sanitizeLlmTextForSpeech(llmText),
-          recommendedTools: [],
-        };
-      }
-
-      let finalText = llmText;
-      if (
-        (retrieval.intent === 'implementation_guide' || retrieval.intent === 'support_channel') &&
-        retrieval.topTools.length > 0
-      ) {
-        const primaryUrl = retrieval.topTools[0].tool.websiteUrl;
-        if (primaryUrl && !finalText.includes(primaryUrl)) {
-          const targetTools =
-            retrieval.intent === 'implementation_guide' ? [retrieval.topTools[0]] : retrieval.topTools;
-          finalText = `${finalText}\n\n${formatOfficialChannelNote(targetTools)}`;
-        }
-      }
-
-      const speechText =
-        retrieval.topTools.length > 0 && retrieval.intent === 'recommendation'
-          ? buildToolsSpeechSummary(
-              retrieval.topTools,
-              `Para lo que necesitas, te recomiendo ${
-                retrieval.topTools.length === 1
-                  ? 'esta herramienta'
-                  : retrieval.topTools.length === 2
-                  ? 'dos herramientas'
-                  : 'tres herramientas'
-              }.`
-            )
-          : sanitizeLlmTextForSpeech(finalText);
-      return {
-        text: finalText,
-        speechText,
-        recommendedTools: retrieval.topTools,
-      };
-    }
-  } catch (err) {
-    console.warn('OpenRouter proxy no disponible, usando respaldo RAG integrado:', err);
-  }
-
-  // Respaldo garantizado: Motor RAG integrado sobre el catálogo y diagnóstico ($0, sin límites)
   const local = generateLocalRagResponse(query, retrieval, diagnosticScores);
   return {
     text: local.text,

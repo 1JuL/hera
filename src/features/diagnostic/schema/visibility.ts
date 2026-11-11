@@ -34,17 +34,3 @@ export function isQuestionVisible(
 
   return true;
 }
-
-/**
- * Obtiene las preguntas visibles para una sección dada
- */
-export function getVisibleQuestionsForSection(
-  questions: Question[],
-  sectionId: string,
-  answers: Answers,
-  tierMode: 'core' | 'all'
-): Question[] {
-  return questions.filter(
-    (q) => q.section === sectionId && isQuestionVisible(q, answers, tierMode)
-  );
-}

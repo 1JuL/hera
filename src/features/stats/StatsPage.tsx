@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import {
   ClipboardList,
@@ -9,8 +9,6 @@ import {
 } from 'lucide-react';
 import { StatsSidebar } from './components/Sidebar';
 import { KpiCard } from './components/KpiCard';
-import { LocalStatsProvider } from './lib/StatsProvider';
-import { DiagnosticScores } from '@/features/diagnostic/schema/types';
 import { MaturityRadarChart } from './components/MaturityRadarChart';
 import { PriorityGapsChart } from './components/PriorityGapsChart';
 import { ChannelsPaymentChart } from './components/ChannelsPaymentChart';
@@ -19,22 +17,7 @@ import { NationalBenchmarkCard } from './components/NationalBenchmarkCard';
 import { useDraftResponse } from '@/features/diagnostic/hooks/useDraftResponse';
 
 export const StatsPage: React.FC = () => {
-  const [stats, setStats] = useState<DiagnosticScores | null>(null);
-  const { draft, loadSampleData } = useDraftResponse();
-
-  const loadData = () => {
-    const currentStats = LocalStatsProvider.getBusinessStats();
-    setStats(currentStats);
-  };
-
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  const handleLoadDemo = () => {
-    loadSampleData();
-    loadData();
-  };
+  const { draft, scores: stats, loadSampleData } = useDraftResponse();
 
   const getMaturityLevel = (score: number) => {
     if (score < 25) return { label: 'Inicial / Analógico', color: 'text-amber-700 bg-amber-50' };
@@ -74,7 +57,7 @@ export const StatsPage: React.FC = () => {
             {!stats && (
               <button
                 type="button"
-                onClick={handleLoadDemo}
+                onClick={loadSampleData}
                 className="px-3.5 py-2 rounded-xl bg-[#E8F5EE] hover:bg-[#D0E6DC] text-[#163A2B] text-xs font-bold transition-all border border-[#86CEAB]/60 cursor-pointer flex items-center gap-2"
               >
                 <Sparkles className="w-3.5 h-3.5" />
@@ -105,7 +88,7 @@ export const StatsPage: React.FC = () => {
               </Link>
               <button
                 type="button"
-                onClick={handleLoadDemo}
+                onClick={loadSampleData}
                 className="px-5 py-2.5 rounded-xl bg-[#E8F5EE] text-[#163A2B] text-xs font-bold border border-[#86CEAB] cursor-pointer hover:bg-[#D0E6DC]"
               >
                 Cargar negocio de ejemplo (Sabana Centro)
@@ -232,7 +215,7 @@ export const StatsPage: React.FC = () => {
               </div>
               <button
                 type="button"
-                onClick={handleLoadDemo}
+                onClick={loadSampleData}
                 className="shrink-0 text-xs text-[#163A2B] font-bold underline bg-transparent border-none cursor-pointer"
               >
                 Recargar demo

@@ -6,23 +6,19 @@ import {
   ClipboardCheck,
   Lightbulb,
   X,
-  Layers,
   HelpCircle,
   AlertCircle,
 } from "lucide-react";
 import { AREAS_DATA } from "./data/areas";
 import { Area, TicTool } from "./types";
+import { getPricingBadge } from "./ui";
 import { AreaCard } from "./components/AreaCard";
 import { AreaDetailModal } from "./components/AreaDetailModal";
 import { ToolImplementationModal } from "./components/ToolImplementationModal";
 import { useDraftResponse } from "../diagnostic/hooks/useDraftResponse";
-import questionnaireSchema from "../diagnostic/schema/questionnaire.v1.json";
-import { computeScores } from "../stats/lib/computeScores";
-import { QuestionnaireSchema } from "../diagnostic/schema/types";
 
 export const MapPage: React.FC = () => {
-  const schema = questionnaireSchema as unknown as QuestionnaireSchema;
-  const { draft } = useDraftResponse();
+  const { scores } = useDraftResponse();
 
   const [selectedArea, setSelectedArea] = useState<Area | null>(null);
   const [selectedTool, setSelectedTool] = useState<{
@@ -34,50 +30,28 @@ export const MapPage: React.FC = () => {
   const [activeFilter, setActiveFilter] = useState<string>("all");
   const [showOnlyPriority, setShowOnlyPriority] = useState(false);
 
-  // Lista de las 7 áreas
   const areasList = useMemo(() => Object.values(AREAS_DATA), []);
 
-  // Diagnóstico del usuario y cálculo de áreas prioritarias
   const diagnosticAnalysis = useMemo(() => {
-    const answeredCount = Object.keys(draft.answers).filter(
-      (k) => draft.answers[k] !== undefined && draft.answers[k] !== null && draft.answers[k] !== "",
-    ).length;
-
-    if (answeredCount <= 1) {
-      return { hasDiagnostic: false, priorityAreas: new Map<string, string>() };
+    if (!scores) {
+      return { hasDiagnostic: false, priorityAreas: new Set<string>(), totalGaps: 0 };
     }
 
-    try {
-      const scores = computeScores(draft.answers, schema);
-      const priorityMap = new Map<string, string>();
+    const prioritySet = new Set<string>(scores.priorityGaps.map((g) => g.areaId));
 
-      // Buscar brechas prioritarias
-      for (const gap of scores.priorityGaps) {
-        if (!priorityMap.has(gap.areaId)) {
-          priorityMap.set(gap.areaId, gap.activityName);
-        }
+    // Si no hay brechas explícitas pero madurez baja (< 50) e importancia alta (>= 4)
+    for (const [aId, aScore] of Object.entries(scores.areas)) {
+      if (aScore.importance >= 4 && aScore.maturityScore < 50) {
+        prioritySet.add(aId);
       }
-
-      // Si no hay brechas explícitas pero madurez baja (< 50) e importancia alta (>= 4)
-      for (const [aId, aScore] of Object.entries(scores.areas)) {
-        if (!priorityMap.has(aId) && aScore.importance >= 4 && aScore.maturityScore < 50) {
-          priorityMap.set(
-            aId,
-            `Baja madurez digital (${aScore.maturityScore}%) en área de alta relevancia`,
-          );
-        }
-      }
-
-      return {
-        hasDiagnostic: true,
-        priorityAreas: priorityMap,
-        totalGaps: scores.priorityGaps.length,
-      };
-    } catch (e) {
-      console.warn("Error calculating diagnostic scores in MapPage", e);
-      return { hasDiagnostic: false, priorityAreas: new Map<string, string>() };
     }
-  }, [draft.answers, schema]);
+
+    return {
+      hasDiagnostic: true,
+      priorityAreas: prioritySet,
+      totalGaps: scores.priorityGaps.length,
+    };
+  }, [scores]);
 
   // Colección de todas las herramientas TIC para búsqueda transversal
   const allToolsWithArea = useMemo(() => {
@@ -127,21 +101,6 @@ export const MapPage: React.FC = () => {
   }, [areasList, showOnlyPriority, diagnosticAnalysis]);
 
   const isSearchOrFilterActive = searchQuery.trim().length > 0 || activeFilter !== "all";
-
-  const getPricingBadge = (pricingType: string) => {
-    switch (pricingType) {
-      case "open_source":
-        return "bg-purple-100 text-purple-900 border-purple-200";
-      case "free":
-        return "bg-emerald-100 text-emerald-900 border-emerald-200";
-      case "freemium":
-        return "bg-blue-100 text-blue-900 border-blue-200";
-      case "paid_low_cost":
-        return "bg-amber-100 text-amber-900 border-amber-200";
-      default:
-        return "bg-gray-100 text-gray-800 border-gray-200";
-    }
-  };
 
   return (
     <main className="max-w-[1240px] w-full mx-auto px-4 sm:px-6 py-8 flex-1">
@@ -452,20 +411,14 @@ export const MapPage: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {visibleAreas.map((area) => {
-            const isPriority = diagnosticAnalysis.priorityAreas.has(area.id);
-            const priorityReason = diagnosticAnalysis.priorityAreas.get(area.id);
-
-            return (
-              <AreaCard
-                key={area.id}
-                area={area}
-                isPriority={isPriority}
-                priorityReason={priorityReason}
-                onSelect={(selected) => setSelectedArea(selected)}
-              />
-            );
-          })}
+          {visibleAreas.map((area) => (
+            <AreaCard
+              key={area.id}
+              area={area}
+              isPriority={diagnosticAnalysis.priorityAreas.has(area.id)}
+              onSelect={(selected) => setSelectedArea(selected)}
+            />
+          ))}
         </div>
       </div>
 

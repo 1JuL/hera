@@ -29,15 +29,8 @@ export interface TicTool {
   implementationSteps: ToolImplementationStep[];
 }
 
-export type MapAreaId = AreaId;
-
-export interface Solution {
-  name: string;
-  desc: string;
-}
-
 export interface Area {
-  id: MapAreaId;
+  id: AreaId;
   code: string;
   title: string;
   subtitle: string;
@@ -48,9 +41,6 @@ export interface Area {
   badgeBg: string;
   badgeColor: string;
   desc: string;
-  itemBg: string;
-  diagnosticRelation: string;
   commonProblems: string[];
   tools: TicTool[];
-  solutions: Solution[];
 }

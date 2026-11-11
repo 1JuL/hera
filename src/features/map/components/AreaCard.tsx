@@ -1,46 +1,20 @@
 import React from 'react';
-import {
-  CircleDollarSign,
-  Megaphone,
-  Receipt,
-  Users,
-  Boxes,
-  MessageSquare,
-  Shield,
-  Truck,
-  Cpu,
-  Zap,
-  ArrowRight,
-  AlertCircle,
-} from 'lucide-react';
+import { ArrowRight, AlertCircle } from 'lucide-react';
 import { Area } from '../types';
+import { getAreaIcon } from '../ui';
 
 interface AreaCardProps {
   area: Area;
   isPriority?: boolean;
-  priorityReason?: string;
   onSelect: (area: Area) => void;
 }
-
-const ICON_MAP: Record<string, React.FC<{ className?: string }>> = {
-  CircleDollarSign,
-  Megaphone,
-  Receipt,
-  Users,
-  Boxes,
-  MessageSquare,
-  Shield,
-  Truck,
-  Cpu,
-  Zap,
-};
 
 export const AreaCard: React.FC<AreaCardProps> = ({
   area,
   isPriority,
   onSelect,
 }) => {
-  const IconComponent = ICON_MAP[area.iconName] || CircleDollarSign;
+  const IconComponent = getAreaIcon(area.iconName);
 
   return (
     <div

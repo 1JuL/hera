@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import {
   ClipboardCheck,
@@ -13,13 +13,7 @@ import {
 import { useDraftResponse } from "../diagnostic/hooks/useDraftResponse";
 
 export const HomePage: React.FC = () => {
-  const { draft } = useDraftResponse();
-
-  const answeredCount = useMemo(() => {
-    return Object.keys(draft.answers).filter(
-      (k) => draft.answers[k] !== undefined && draft.answers[k] !== null && draft.answers[k] !== "",
-    ).length;
-  }, [draft.answers]);
+  const { answeredCount } = useDraftResponse();
 
   const hasDraft = answeredCount > 1;
 

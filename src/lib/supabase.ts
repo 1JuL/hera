@@ -1,18 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 
-// Lectura de variables desde import.meta.env o fallback a process.env
-const rawUrl =
-  (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SUPABASE_URL) ||
-  (typeof process !== 'undefined' && process.env?.VITE_SUPABASE_URL) ||
-  '';
-
-const rawKey =
-  (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SUPABASE_ANON_KEY) ||
-  (typeof process !== 'undefined' && process.env?.VITE_SUPABASE_ANON_KEY) ||
-  '';
-
-export const supabaseUrl = rawUrl.trim();
-export const supabaseAnonKey = rawKey.trim();
+const supabaseUrl = (import.meta.env.VITE_SUPABASE_URL ?? '').trim();
+const supabaseAnonKey = (import.meta.env.VITE_SUPABASE_ANON_KEY ?? '').trim();
 
 // Verifica si las variables son válidas y no son los valores por defecto
 export const isSupabaseConfigured = Boolean(
@@ -25,7 +14,7 @@ export const isSupabaseConfigured = Boolean(
 );
 
 // Diagnóstico en consola de desarrollo para facilitar depuración
-if (import.meta.env?.DEV) {
+if (import.meta.env.DEV) {
   if (isSupabaseConfigured) {
     console.info('[Supabase] Variables de entorno detectadas correctamente.');
     console.info(`[Supabase] Conectando a URL: ${supabaseUrl}`);

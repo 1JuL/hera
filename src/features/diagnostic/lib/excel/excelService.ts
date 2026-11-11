@@ -19,6 +19,15 @@ export interface ImportValidationReport {
   parsedAnswers: Answers;
 }
 
+function triggerDownload(blob: Blob, fileName: string) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = fileName;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
 /**
  * Genera y descarga un archivo JSON con las respuestas para auditoría
  */
@@ -28,15 +37,10 @@ export function downloadJsonAudit(answers: Answers, schema: QuestionnaireSchema)
     exported_at: new Date().toISOString(),
     answers,
   };
-  const blob = new Blob([JSON.stringify(auditData, null, 2)], {
-    type: 'application/json',
-  });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `cuestionario-senzaccento-respuestas-${schema.version}.json`;
-  a.click();
-  URL.revokeObjectURL(url);
+  triggerDownload(
+    new Blob([JSON.stringify(auditData, null, 2)], { type: 'application/json' }),
+    `cuestionario-senzaccento-respuestas-${schema.version}.json`
+  );
 }
 
 /**
@@ -87,13 +91,7 @@ export async function downloadExcelTemplateOrAnswers(
   rows.push(['_meta', 'version', schema.version, 'exported_at', new Date().toISOString()]);
 
   const csvContent = '\uFEFF' + rows.map((r) => r.join(';')).join('\r\n');
-  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = fileName;
-  a.click();
-  URL.revokeObjectURL(url);
+  triggerDownload(new Blob([csvContent], { type: 'text/csv;charset=utf-8;' }), fileName);
 }
 
 /**

@@ -24,7 +24,7 @@ import {
 
 export const DataUploadPage: React.FC = () => {
   const schema = questionnaireSchema as unknown as QuestionnaireSchema;
-  const { draft, setAnswers, loadSampleData, resetDiagnostic } = useDraftResponse();
+  const { draft, answeredCount, setAnswers, loadSampleData, resetDiagnostic } = useDraftResponse();
 
   const [wizardOpen, setWizardOpen] = useState(false);
   const [importDialogOpen, setImportDialogOpen] = useState(false);
@@ -34,11 +34,6 @@ export const DataUploadPage: React.FC = () => {
     setNotification(msg);
     setTimeout(() => setNotification(null), 4000);
   };
-
-  // Cálculo de preguntas respondidas
-  const answeredCount = Object.keys(draft.answers).filter(
-    (k) => draft.answers[k] !== undefined && draft.answers[k] !== null && draft.answers[k] !== ''
-  ).length;
 
   const hasDraft = answeredCount > 1;
 

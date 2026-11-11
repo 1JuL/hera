@@ -3,10 +3,8 @@ import React, { useEffect, useRef } from 'react';
 interface VoiceOrbProps {
   isListening: boolean;
   isSpeaking: boolean;
-  isThinking: boolean;
   isMuted: boolean;
   speechPulse: number;
-  audioLevel?: number;
   disabled?: boolean;
   onClick?: () => void;
 }
@@ -14,10 +12,8 @@ interface VoiceOrbProps {
 export const VoiceOrb: React.FC<VoiceOrbProps> = ({
   isListening,
   isSpeaking,
-  isThinking,
   isMuted,
   speechPulse,
-  audioLevel = 0,
   disabled = false,
   onClick,
 }) => {
@@ -25,17 +21,15 @@ export const VoiceOrb: React.FC<VoiceOrbProps> = ({
   const stateRef = useRef({
     isListening,
     isSpeaking,
-    isThinking,
     isMuted,
-    audioLevel,
   });
   const energyRef = useRef(0.15);
   const targetEnergyRef = useRef(0.15);
   const pulseImpulseRef = useRef(0);
 
   useEffect(() => {
-    stateRef.current = { isListening, isSpeaking, isThinking, isMuted, audioLevel };
-  }, [isListening, isSpeaking, isThinking, isMuted, audioLevel]);
+    stateRef.current = { isListening, isSpeaking, isMuted };
+  }, [isListening, isSpeaking, isMuted]);
 
   useEffect(() => {
     if (speechPulse > 0) {
@@ -62,28 +56,22 @@ export const VoiceOrb: React.FC<VoiceOrbProps> = ({
       const {
         isListening: listening,
         isSpeaking: speaking,
-        isThinking: thinking,
         isMuted: muted,
-        audioLevel: level,
       } = stateRef.current;
 
       // Decaimiento suave del impulso por palabra/sílaba
       pulseImpulseRef.current *= 0.88;
 
       if (speaking) {
-        const liveAudioBoost = level > 0.02 ? level * 0.95 : 0;
-        const syntheticCadence =
-          level > 0.02
-            ? 0.35 + liveAudioBoost
-            : 0.55 +
-              0.25 * Math.sin(time * 5.8) +
-              0.18 * Math.cos(time * 9.4) +
-              pulseImpulseRef.current * 0.45;
-        targetEnergyRef.current = Math.min(1.3, syntheticCadence);
+        targetEnergyRef.current = Math.min(
+          1.3,
+          0.55 +
+            0.25 * Math.sin(time * 5.8) +
+            0.18 * Math.cos(time * 9.4) +
+            pulseImpulseRef.current * 0.45
+        );
       } else if (listening) {
         targetEnergyRef.current = 0.58 + 0.14 * Math.sin(time * 3.6);
-      } else if (thinking) {
-        targetEnergyRef.current = 0.48 + 0.12 * Math.sin(time * 6.0);
       } else {
         targetEnergyRef.current = 0.16 + 0.04 * Math.sin(time * 1.4);
       }
@@ -126,9 +114,6 @@ export const VoiceOrb: React.FC<VoiceOrbProps> = ({
         auraGrad.addColorStop(0, 'rgba(134, 206, 171, 0.40)');
         auraGrad.addColorStop(0.6, 'rgba(52, 211, 153, 0.16)');
         auraGrad.addColorStop(1, 'rgba(52, 211, 153, 0)');
-      } else if (thinking) {
-        auraGrad.addColorStop(0, 'rgba(167, 243, 208, 0.28)');
-        auraGrad.addColorStop(1, 'rgba(167, 243, 208, 0)');
       } else {
         auraGrad.addColorStop(0, muted ? 'rgba(248, 113, 113, 0.15)' : 'rgba(134, 206, 171, 0.18)');
         auraGrad.addColorStop(1, 'rgba(134, 206, 171, 0)');
@@ -142,8 +127,8 @@ export const VoiceOrb: React.FC<VoiceOrbProps> = ({
       const segments = 72;
       const buildSpherePath = (radiusScale = 1, phaseOffset = 0) => {
         ctx.beginPath();
-        const wobbleAmp = speaking ? 4.8 * energy : listening ? 2.6 : thinking ? 2.0 : 0.8;
-        const speed = speaking ? 4.2 : thinking ? 3.5 : 1.7;
+        const wobbleAmp = speaking ? 4.8 * energy : listening ? 2.6 : 0.8;
+        const speed = speaking ? 4.2 : 1.7;
 
         for (let i = 0; i <= segments; i++) {
           const theta = (i / segments) * Math.PI * 2;
@@ -180,11 +165,6 @@ export const VoiceOrb: React.FC<VoiceOrbProps> = ({
         bodyGrad.addColorStop(0.32, '#86CEAB');
         bodyGrad.addColorStop(0.72, '#0f5132');
         bodyGrad.addColorStop(1, '#072216');
-      } else if (thinking) {
-        bodyGrad.addColorStop(0, '#e0f2fe');
-        bodyGrad.addColorStop(0.35, '#5eead4');
-        bodyGrad.addColorStop(0.75, '#115e59');
-        bodyGrad.addColorStop(1, '#082418');
       } else {
         bodyGrad.addColorStop(0, '#a7f3d0');
         bodyGrad.addColorStop(0.35, '#3b7a5e');

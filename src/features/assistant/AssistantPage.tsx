@@ -11,13 +11,9 @@ import {
   Sparkles,
   Bot,
   AlertTriangle,
-  Loader2,
   ExternalLink,
 } from 'lucide-react';
 import { useDraftResponse } from '@/features/diagnostic/hooks/useDraftResponse';
-import questionnaireSchema from '@/features/diagnostic/schema/questionnaire.v1.json';
-import { DiagnosticScores, QuestionnaireSchema } from '@/features/diagnostic/schema/types';
-import { computeScores } from '@/features/stats/lib/computeScores';
 import { ToolImplementationModal } from '@/features/map/components/ToolImplementationModal';
 import { TicTool } from '@/features/map/types';
 import { ChatMessage, RecommendedToolRef } from './types';
@@ -137,20 +133,7 @@ function renderFormattedText(text: string) {
 
 export const AssistantPage: React.FC = () => {
   const location = useLocation();
-  const schema = questionnaireSchema as unknown as QuestionnaireSchema;
-  const { draft } = useDraftResponse();
-
-  const diagnosticScores = useMemo<DiagnosticScores | null>(() => {
-    const answeredCount = Object.keys(draft.answers).filter(
-      (k) => draft.answers[k] !== undefined && draft.answers[k] !== null && draft.answers[k] !== ''
-    ).length;
-    if (answeredCount <= 1) return null;
-    try {
-      return computeScores(draft.answers, schema);
-    } catch {
-      return null;
-    }
-  }, [draft.answers, schema]);
+  const { scores: diagnosticScores } = useDraftResponse();
 
   const initialGreeting = useMemo<ChatMessage>(() => {
     const text = diagnosticScores
@@ -167,7 +150,6 @@ export const AssistantPage: React.FC = () => {
 
   const [messages, setMessages] = useState<ChatMessage[]>([initialGreeting]);
   const [inputText, setInputText] = useState('');
-  const [isThinking, setIsThinking] = useState(false);
   const [selectedToolModal, setSelectedToolModal] = useState<{
     tool: TicTool;
     areaTitle: string;
@@ -183,9 +165,9 @@ export const AssistantPage: React.FC = () => {
   }, [messages]);
 
   const submitQuery = useCallback(
-    async (rawQuery: string, speakFn: (text: string) => void) => {
+    (rawQuery: string, speakFn: (text: string) => void) => {
       const trimmed = rawQuery.trim();
-      if (!trimmed || isThinking) return;
+      if (!trimmed) return;
 
       const userMsg: ChatMessage = {
         id: `u-${Date.now()}`,
@@ -197,26 +179,21 @@ export const AssistantPage: React.FC = () => {
       const updatedHistory = [...messagesRef.current, userMsg];
       setMessages(updatedHistory);
       setInputText('');
-      setIsThinking(true);
 
-      try {
-        const result = await askAssistant(trimmed, updatedHistory, diagnosticScores);
-        const assistantMsg: ChatMessage = {
-          id: `a-${Date.now()}`,
-          sender: 'assistant',
-          text: result.text,
-          speechText: result.speechText,
-          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          recommendedTools: result.recommendedTools,
-        };
+      const result = askAssistant(trimmed, updatedHistory, diagnosticScores);
+      const assistantMsg: ChatMessage = {
+        id: `a-${Date.now()}`,
+        sender: 'assistant',
+        text: result.text,
+        speechText: result.speechText,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        recommendedTools: result.recommendedTools,
+      };
 
-        setMessages((prev) => [...prev, assistantMsg]);
-        speakFn(result.speechText || result.text);
-      } finally {
-        setIsThinking(false);
-      }
+      setMessages((prev) => [...prev, assistantMsg]);
+      speakFn(result.speechText || result.text);
     },
-    [diagnosticScores, isThinking]
+    [diagnosticScores]
   );
 
   const speakRef = useRef<(text: string, force?: boolean) => void>(() => {});
@@ -228,7 +205,6 @@ export const AssistantPage: React.FC = () => {
     isSpeaking,
     isMuted,
     speechPulse,
-    audioLevel,
     interimTranscript,
     sttError,
     toggleListening,
@@ -421,15 +397,6 @@ export const AssistantPage: React.FC = () => {
               </div>
             ))}
 
-            {isThinking && (
-              <div className="flex items-start">
-                <div className="bg-[#F4F7F5] border border-[#E0E7E3] rounded-2xl rounded-bl-xs px-4 py-3 text-xs text-[#163A2B] flex items-center gap-2">
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  <span>Buscando opciones en el catálogo Hera...</span>
-                </div>
-              </div>
-            )}
-
             <div ref={chatEndRef} />
           </div>
 
@@ -441,7 +408,6 @@ export const AssistantPage: React.FC = () => {
                 <button
                   key={i}
                   type="button"
-                  disabled={isThinking}
                   onClick={() => submitQuery(qp, (txt) => speak(txt))}
                   className="text-[11px] font-medium bg-[#F4F6F4] hover:bg-[#E8F5EE] text-[#163A2B] border border-gray-200 hover:border-[#86CEAB] px-3 py-1.5 rounded-full whitespace-nowrap cursor-pointer transition-colors shrink-0"
                 >
@@ -493,13 +459,12 @@ export const AssistantPage: React.FC = () => {
                 placeholder="Escribe tu pregunta o usa el micrófono..."
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
-                disabled={isThinking}
                 className="flex-1 px-3.5 py-2.5 text-xs sm:text-sm border border-[#E0E0E0] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#86CEAB] bg-white text-[#1E1E1E]"
               />
 
               <button
                 type="submit"
-                disabled={isThinking || !inputText.trim()}
+                disabled={!inputText.trim()}
                 className="bg-[#163A2B] hover:bg-[#0e261c] disabled:opacity-50 text-white px-4 py-2.5 rounded-xl text-xs font-bold cursor-pointer transition-colors flex items-center gap-1.5 shrink-0"
               >
                 <span>Enviar</span>
@@ -539,10 +504,8 @@ export const AssistantPage: React.FC = () => {
             <VoiceOrb
               isListening={isListening}
               isSpeaking={isSpeaking}
-              isThinking={isThinking}
               isMuted={isMuted}
               speechPulse={speechPulse}
-              audioLevel={audioLevel}
               disabled={!sttSupported}
               onClick={() => sttSupported && toggleListening()}
             />
@@ -550,8 +513,6 @@ export const AssistantPage: React.FC = () => {
             <h4 className="text-base font-bold text-white mt-1 mb-1 font-brand">
               {isSpeaking
                 ? 'Hera está hablando...'
-                : isThinking
-                ? 'Analizando tu consulta...'
                 : isListening
                 ? 'Te estoy escuchando'
                 : sttSupported

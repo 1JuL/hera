@@ -13,8 +13,6 @@ export const AREAS_DATA: Record<string, Area> = {
     badgeBg: '#163A2B',
     badgeColor: '#FFFFFF',
     desc: 'Digitaliza el proceso comercial desde que un cliente pregunta por primera vez hasta que paga su compra, evitando ventas perdidas y mejorando tu flujo de caja.',
-    itemBg: '#EAF6F0',
-    diagnosticRelation: 'Conectado con preguntas E-VEN del diagnóstico (registro de ventas, cotizaciones, CRM y ventas por internet).',
     commonProblems: [
       'Ventas anotadas en papel que luego no cuadran con el efectivo al cerrar el día.',
       'Cotizaciones enviadas por WhatsApp que se olvidan y se pierden por falta de seguimiento.',
@@ -241,11 +239,6 @@ export const AREAS_DATA: Record<string, Area> = {
         ],
       },
     ],
-    solutions: [
-      { name: 'Punto de Venta Móvil (Treinta)', desc: 'Registro ágil de ventas, gastos y cobro de fiados por WhatsApp.' },
-      { name: 'CRM & Embudo Comercial (HubSpot / Odoo)', desc: 'Seguimiento visual a cotizaciones para no perder ventas listas para cerrar.' },
-      { name: 'Cobros Digitales (Bold / Wompi)', desc: 'Datáfono y links de pago para tarjetas, Nequi y PSE sin cuotas de alquiler.' },
-    ],
   },
 
   MKT: {
@@ -260,8 +253,6 @@ export const AREAS_DATA: Record<string, Area> = {
     badgeBg: '#821F5D',
     badgeColor: '#FFFFFF',
     desc: 'Atrae nuevos clientes hacia tu negocio en Sabana Centro, fortalece tu marca y crea contenido profesional sin depender de costosas agencias.',
-    itemBg: '#FDF2F8',
-    diagnosticRelation: 'Conectado con preguntas E-MKT del diagnóstico (redes sociales, pauta digital, catálogos y Google Business).',
     commonProblems: [
       'No aparecer en Google Maps cuando los vecinos de Chía, Cajicá o Zipaquirá buscan lo que vendes.',
       'Publicar imágenes borrosas o poco profesionales que transmiten desconfianza al cliente.',
@@ -489,11 +480,6 @@ export const AREAS_DATA: Record<string, Area> = {
         ],
       },
     ],
-    solutions: [
-      { name: 'Visibilidad Local en Google Maps', desc: 'Aparece de primero en Chía, Cajicá y Zipaquirá sin pagar publicidad.' },
-      { name: 'Diseño Profesional con IA (Canva)', desc: 'Crea piezas gráficas y menús atractivos en minutos sin saber diseñar.' },
-      { name: 'Automatización de Redes (Meta Suite)', desc: 'Programa contenido para toda la semana en Facebook e Instagram a la vez.' },
-    ],
   },
 
   FIN: {
@@ -508,8 +494,6 @@ export const AREAS_DATA: Record<string, Area> = {
     badgeBg: '#163A2B',
     badgeColor: '#FFFFFF',
     desc: 'Mantén el control exacto de cuánto dinero entra, cuánto sale y cuánto te queda de ganancia real, cumpliendo las normas tributarias sin enredos.',
-    itemBg: '#EAF7F0',
-    diagnosticRelation: 'Conectado con preguntas E-FIN del diagnóstico (facturación electrónica, registro de gastos, flujo de caja y rentabilidad).',
     commonProblems: [
       'Temor a sanciones de la DIAN por no emitir factura electrónica o hacerlo tarde.',
       'Mezclar el dinero personal con el dinero del negocio y no saber la ganancia real a fin de mes.',
@@ -698,11 +682,6 @@ export const AREAS_DATA: Record<string, Area> = {
         ],
       },
     ],
-    solutions: [
-      { name: 'Facturación Electrónica DIAN (Alegra / Siigo)', desc: 'Emisión legal de facturas electrónicas y conexión directa con tu contador.' },
-      { name: 'Contabilidad Libre sin Licencias (GnuCash)', desc: 'Software libre de partida doble instalado en tu PC sin mensualidades.' },
-      { name: 'Flujo de Caja Proyectado (Wave / Sheets)', desc: 'Anticipa baches de liquidez y controla la rentabilidad real de tu empresa.' },
-    ],
   },
 
   RRH: {
@@ -717,8 +696,6 @@ export const AREAS_DATA: Record<string, Area> = {
     badgeBg: '#8A4810',
     badgeColor: '#FFFFFF',
     desc: 'Organiza a tus colaboradores, asigna turnos claros, liquida nóminas sin errores y mantén al equipo motivado y alineado con los objetivos del negocio.',
-    itemBg: '#FFF8F3',
-    diagnosticRelation: 'Conectado con preguntas E-RRH del diagnóstico (turnos de trabajo, nómina legal, comunicación de tareas y capacitación).',
     commonProblems: [
       'Discusiones por horas extras o turnos cruzados por llevar el control en papeles que se extravían.',
       'Riesgos de demandas laborales o multas por errores en la liquidación de prestaciones y nómina electrónica.',
@@ -872,11 +849,6 @@ export const AREAS_DATA: Record<string, Area> = {
         ],
       },
     ],
-    solutions: [
-      { name: 'Control de Horarios y Turnos (Clockify)', desc: 'Registro transparente de entradas, salidas y horas extras desde el celular.' },
-      { name: 'Nómina Electrónica Legal (Alegra Nómina)', desc: 'Liquidación automática de prestaciones y reporte oficial a la DIAN.' },
-      { name: 'Gestión Visual de Tareas (Trello)', desc: 'Tableros de procesos diarios para coordinar al equipo sin repetir órdenes.' },
-    ],
   },
 
   OPE: {
@@ -891,8 +863,6 @@ export const AREAS_DATA: Record<string, Area> = {
     badgeBg: '#432282',
     badgeColor: '#FFFFFF',
     desc: 'Monitorea tus niveles de stock en tiempo real, evita quedarte sin producto para vender o perder dinero por mercancía vencida o dañada.',
-    itemBg: '#F5F2FC',
-    diagnosticRelation: 'Conectado con preguntas E-OPE del diagnóstico (control de existencias, compras a proveedores, trazabilidad y recetas/producción).',
     commonProblems: [
       'Enterarse de que un producto se agotó solo cuando el cliente está en el mostrador listo para pagar.',
       'Mercancía o materias primas que se vencen o dañan en bodega por falta de rotación oportuna.',
@@ -1045,11 +1015,6 @@ export const AREAS_DATA: Record<string, Area> = {
         ],
       },
     ],
-    solutions: [
-      { name: 'Inventario Móvil con Fotos y Códigos (Sortly)', desc: 'Control de existencias y escaneo de códigos de barras desde la cámara del celular.' },
-      { name: 'Alertas de Stock Mínimo (Treinta)', desc: 'Avisos preventivos antes de que se agoten tus productos de mayor venta.' },
-      { name: 'ERP de Manufactura Libre (ERPNext)', desc: 'Control de materias primas, recetas de producción y costos sin costo de licencia.' },
-    ],
   },
 
   CLI: {
@@ -1064,8 +1029,6 @@ export const AREAS_DATA: Record<string, Area> = {
     badgeBg: '#0B5E5E',
     badgeColor: '#FFFFFF',
     desc: 'Atiende a tus clientes con rapidez y calidez, resuelve sus dudas fuera de horario y convierte quejas en clientes fieles y satisfechos.',
-    itemBg: '#E6F8F8',
-    diagnosticRelation: 'Conectado con preguntas E-CLI del diagnóstico (atención en canales digitales, manejo de quejas PQRS y fidelización).',
     commonProblems: [
       'Dejar clientes esperando horas en WhatsApp hasta que se van con la competencia.',
       'Tener un solo celular para atender el negocio que se pasan los empleados sin saber quién respondió qué.',
@@ -1220,11 +1183,6 @@ export const AREAS_DATA: Record<string, Area> = {
         ],
       },
     ],
-    solutions: [
-      { name: 'WhatsApp Business Estructurado', desc: 'Respuestas rápidas con "/", catálogo digital y perfil verificado oficial.' },
-      { name: 'Bandeja Compartida Multiusuario (Chatwoot)', desc: 'Varios asesores atendiendo el mismo número sin desorden ni mensajes perdidos.' },
-      { name: 'Chatbots y Respuestas Instantáneas (ManyChat)', desc: 'Envío automático de precios y catálogos en Instagram DM las 24 horas.' },
-    ],
   },
 
   ADM: {
@@ -1239,8 +1197,6 @@ export const AREAS_DATA: Record<string, Area> = {
     badgeBg: '#17428B',
     badgeColor: '#FFFFFF',
     desc: 'Protege la información más valiosa de tu empresa, evita pérdidas por robo o virus y mantén documentos legales y contratos organizados.',
-    itemBg: '#EEF4FE',
-    diagnosticRelation: 'Conectado con preguntas E-ADM del diagnóstico (respaldos de datos, seguridad de claves y archivo digital legal).',
     commonProblems: [
       'Perder toda la contabilidad y bases de datos porque el computador de la empresa se dañó o fue robado.',
       'Usar la misma contraseña débil ("123456" o el nombre del perro) en bancos, DIAN y redes sociales sufriendo hackeos.',
@@ -1431,11 +1387,6 @@ export const AREAS_DATA: Record<string, Area> = {
         ],
       },
     ],
-    solutions: [
-      { name: 'Gestor de Contraseñas Seguro (Bitwarden)', desc: 'Protege las claves de bancos, DIAN y correo para evitar robos y hackeos.' },
-      { name: 'Respaldo Automático en Nube (Google Drive)', desc: 'Continuidad garantizada: tus documentos nunca se pierden si el PC se daña.' },
-      { name: 'Digitalización Profesional de Recibos (Adobe Scan)', desc: 'Convierte el celular en escáner OCR para entregar cuentas claras a tu contador.' },
-    ],
   },
 
   LOG: {
@@ -1450,8 +1401,6 @@ export const AREAS_DATA: Record<string, Area> = {
     badgeBg: '#0B5E5E',
     badgeColor: '#FFFFFF',
     desc: 'Coordina tus despachos locales y nacionales, optimiza rutas de entrega y mantén a tus clientes informados del estado de su pedido.',
-    itemBg: '#EAF8F8',
-    diagnosticRelation: 'Conectado con pregunta D07 del diagnóstico (Logística, entregas y despachos) y canales de venta.',
     commonProblems: [
       'Clientes preguntando insistentemente "¿Dónde viene mi pedido?" por falta de número de guía o rastreo en vivo.',
       'Gastos excesivos de combustible y tiempo por planear rutas de entrega de memoria en Sabana Centro.',
@@ -1604,11 +1553,6 @@ export const AREAS_DATA: Record<string, Area> = {
         ],
       },
     ],
-    solutions: [
-      { name: 'Mensajería Express en Vivo (Mensajeros Urbanos)', desc: 'Despachos el mismo día en Sabana Centro con seguimiento en tiempo real.' },
-      { name: 'Optimización de Rutas con IA (Circuit)', desc: 'Ahorro de hasta 25% de combustible y menor tiempo de viaje en entregas.' },
-      { name: 'Tarifas con Descuento Nacional (Envíoclick)', desc: 'Guías de transporte con recolección en tu local sin filas.' },
-    ],
   },
 
   TEC: {
@@ -1623,8 +1567,6 @@ export const AREAS_DATA: Record<string, Area> = {
     badgeBg: '#0F3B82',
     badgeColor: '#FFFFFF',
     desc: 'Garantiza que el internet, computadores, redes y equipos de tu negocio funcionen sin caídas ni riesgos informáticos que detengan tu venta.',
-    itemBg: '#EEF4FE',
-    diagnosticRelation: 'Conectado con pregunta D10 (Tecnología y sistemas) y Sección G (Infraestructura, conectividad y dispositivos).',
     commonProblems: [
       'El internet se cae en horas pico y el datáfono o sistema de facturación deja de funcionar, perdiendo ventas.',
       'Computadores lentos o con virus por falta de mantenimiento que retrasan la atención a clientes.',
@@ -1775,11 +1717,6 @@ export const AREAS_DATA: Record<string, Area> = {
           },
         ],
       },
-    ],
-    solutions: [
-      { name: 'Diagnóstico de Calidad Wi-Fi (Speedtest)', desc: 'Estabilidad de conexión para datáfonos y terminales de cobro sin caídas.' },
-      { name: 'Soporte Remoto Seguro (RustDesk)', desc: 'Asistencia técnica a distancia en tu PC sin pagar visitas presenciales.' },
-      { name: 'Red Privada Cifrada (Tailscale)', desc: 'Conexión segura a tus archivos y programas de la oficina desde casa.' },
     ],
   },
 };
