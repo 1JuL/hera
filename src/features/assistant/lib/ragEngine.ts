@@ -613,20 +613,243 @@ function generateLocalRagResponse(
   return { text, speechText: text };
 }
 
+export interface AssistantReply {
+  text: string;
+  speechText: string;
+  recommendedTools: RecommendedToolRef[];
+  source: 'n8n' | 'local';
+}
+
+const N8N_TIMEOUT_MS = 25_000;
+
+function getN8nWebhookUrl(): string | null {
+  const configured = (import.meta.env.VITE_N8N_WEBHOOK_URL ?? '').trim();
+  return configured || null;
+}
+
+interface ToolAliasEntry {
+  alias: string;
+  ref: RecommendedToolRef;
+}
+
+const TOOL_ALIAS_INDEX: ToolAliasEntry[] = (() => {
+  const entries: ToolAliasEntry[] = [];
+  for (const area of Object.values(AREAS_DATA)) {
+    for (const tool of area.tools) {
+      const ref: RecommendedToolRef = { tool, areaTitle: area.title };
+      const candidates = new Set<string>();
+      const base = normalizeText(tool.name.replace(/\([^)]*\)/g, '')).trim();
+      if (base) candidates.add(base);
+
+      for (const part of base.split('/')) {
+        const clean = part.trim();
+        if (clean.length >= 4 && !STOPWORDS.has(clean)) {
+          candidates.add(clean);
+        }
+      }
+
+      for (const alias of candidates) {
+        entries.push({ alias, ref });
+      }
+    }
+  }
+  return entries.sort((a, b) => b.alias.length - a.alias.length);
+})();
+
+function isN8nRefusal(replyText: string): boolean {
+  const norm = normalizeText(replyText);
+  return (
+    norm.includes('lo siento, solo puedo responder') ||
+    norm.includes('lo siento solo puedo responder') ||
+    norm.includes('no tengo informacion sobre eso en mi base de conocimiento')
+  );
+}
+
+function extractToolsFromReply(replyText: string): RecommendedToolRef[] {
+  if (isN8nRefusal(replyText)) return [];
+  const normReply = normalizeText(replyText);
+
+  const matchedById = new Map<string, { ref: RecommendedToolRef; firstPos: number }>();
+  let masked = normReply;
+
+  for (const { alias, ref } of TOOL_ALIAS_INDEX) {
+    const regex = new RegExp(`\\b${escapeRegExp(alias)}\\b`);
+    const match = regex.exec(masked);
+    if (!match) continue;
+
+    // Enmascarar coincidencia para que "Treinta Inventario" no dispare luego "Treinta"
+    masked =
+      masked.slice(0, match.index) +
+      ' '.repeat(alias.length) +
+      masked.slice(match.index + alias.length);
+
+    const prev = matchedById.get(ref.tool.id);
+    if (!prev || match.index < prev.firstPos) {
+      matchedById.set(ref.tool.id, { ref, firstPos: match.index });
+    }
+  }
+
+  return Array.from(matchedById.values())
+    .sort((a, b) => a.firstPos - b.firstPos)
+    .slice(0, 3)
+    .map((item) => item.ref);
+}
+
+function formatN8nSpeechText(text: string): string {
+  return text
+    .replace(/\[([^\]]+)\]\(https?:\/\/[^)\s]+\)/g, '$1')
+    .replace(/https?:\/\/\S+/g, '')
+    .replace(/\*\*(.*?)\*\*/g, '$1')
+    .replace(/\*(.*?)\*/g, '$1')
+    .replace(/`(.*?)`/g, '$1')
+    .replace(/\n+/g, ' ')
+    .replace(/\s{2,}/g, ' ')
+    .trim();
+}
+
+async function queryN8nWebhook(
+  webhookUrl: string,
+  query: string,
+  sessionId?: string,
+  externalSignal?: AbortSignal
+): Promise<string> {
+  const timeoutController = new AbortController();
+  let timedOut = false;
+  const timer = window.setTimeout(() => {
+    timedOut = true;
+    timeoutController.abort();
+  }, N8N_TIMEOUT_MS);
+
+  const onExternalAbort = () => timeoutController.abort();
+  externalSignal?.addEventListener('abort', onExternalAbort, { once: true });
+
+  try {
+    const response = await fetch(webhookUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        question: query,
+        message: query,
+        sessionId: sessionId || 'hera-web',
+      }),
+      signal: timeoutController.signal,
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+
+    const rawText = await response.text();
+    let parsedText: string | undefined;
+
+    try {
+      const json = JSON.parse(rawText) as Record<string, unknown>;
+      const candidate = json.respuesta ?? json.output ?? json.response ?? json.answer;
+      if (typeof candidate === 'string') {
+        parsedText = candidate.trim();
+      }
+    } catch {
+      parsedText = rawText.trim();
+    }
+
+    if (!parsedText) {
+      throw new Error('EMPTY_RESPONSE');
+    }
+
+    return parsedText;
+  } catch (err) {
+    if (timedOut) {
+      throw new Error('TIMEOUT');
+    }
+    throw err;
+  } finally {
+    window.clearTimeout(timer);
+    externalSignal?.removeEventListener('abort', onExternalAbort);
+  }
+}
+
 export function askAssistant(
   query: string,
   history: ChatMessage[],
   diagnosticScores: DiagnosticScores | null
-): {
-  text: string;
-  speechText: string;
-  recommendedTools: RecommendedToolRef[];
-} {
+): AssistantReply {
   const retrieval = retrieveRelevantContext(query, diagnosticScores, history);
   const local = generateLocalRagResponse(query, retrieval, diagnosticScores);
   return {
     text: local.text,
     speechText: local.speechText,
     recommendedTools: retrieval.topTools,
+    source: 'local',
   };
+}
+
+export async function askAssistantAsync(
+  query: string,
+  history: ChatMessage[],
+  diagnosticScores: DiagnosticScores | null,
+  options?: { sessionId?: string; signal?: AbortSignal }
+): Promise<AssistantReply> {
+  const retrieval = retrieveRelevantContext(query, diagnosticScores, history);
+
+  // Saludos y revisión personalizada del autodiagnóstico se resuelven al instante con los puntajes locales
+  if (
+    retrieval.intent === 'greeting' ||
+    (retrieval.intent === 'diagnostic_review' && diagnosticScores !== null)
+  ) {
+    const local = generateLocalRagResponse(query, retrieval, diagnosticScores);
+    return {
+      text: local.text,
+      speechText: local.speechText,
+      recommendedTools: retrieval.topTools,
+      source: 'local',
+    };
+  }
+
+  const webhookUrl = getN8nWebhookUrl();
+  if (!webhookUrl) {
+    console.error(
+      '[Hera Assistant] Error con el flujo de n8n: variable de entorno no configurada. Usando motor local de respaldo.'
+    );
+    const local = generateLocalRagResponse(query, retrieval, diagnosticScores);
+    return {
+      text: local.text,
+      speechText: local.speechText,
+      recommendedTools: retrieval.topTools,
+      source: 'local',
+    };
+  }
+
+  try {
+    const replyText = await queryN8nWebhook(webhookUrl, query, options?.sessionId, options?.signal);
+    const recommendedTools = extractToolsFromReply(replyText);
+
+    return {
+      text: replyText,
+      speechText: formatN8nSpeechText(replyText),
+      recommendedTools,
+      source: 'n8n',
+    };
+  } catch (err) {
+    if (options?.signal?.aborted) {
+      throw err;
+    }
+
+    const reason =
+      err instanceof Error && (err.message.startsWith('HTTP ') || err.message === 'TIMEOUT' || err.message === 'EMPTY_RESPONSE')
+        ? err.message
+        : 'error de conexión o CORS';
+    console.error(
+      `[Hera Assistant] Error con el flujo de n8n (${reason}). Usando motor local de respaldo.`
+    );
+
+    const local = generateLocalRagResponse(query, retrieval, diagnosticScores);
+    return {
+      text: local.text,
+      speechText: local.speechText,
+      recommendedTools: retrieval.topTools,
+      source: 'local',
+    };
+  }
 }
