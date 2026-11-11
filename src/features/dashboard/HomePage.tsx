@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useMemo } from "react";
+import { Link } from "react-router-dom";
 import {
   ClipboardCheck,
   Compass,
@@ -9,15 +9,15 @@ import {
   Sparkles,
   CheckCircle2,
   Building2,
-} from 'lucide-react';
-import { useDraftResponse } from '../diagnostic/hooks/useDraftResponse';
+} from "lucide-react";
+import { useDraftResponse } from "../diagnostic/hooks/useDraftResponse";
 
 export const HomePage: React.FC = () => {
   const { draft } = useDraftResponse();
 
   const answeredCount = useMemo(() => {
     return Object.keys(draft.answers).filter(
-      (k) => draft.answers[k] !== undefined && draft.answers[k] !== null && draft.answers[k] !== ''
+      (k) => draft.answers[k] !== undefined && draft.answers[k] !== null && draft.answers[k] !== "",
     ).length;
   }, [draft.answers]);
 
@@ -27,17 +27,14 @@ export const HomePage: React.FC = () => {
     <main className="max-w-[1140px] w-full mx-auto px-4 sm:px-6 py-10 md:py-14 flex-1 flex flex-col justify-center items-center">
       {/* Encabezado Principal Centrado */}
       <div className="text-center max-w-3xl mx-auto mb-10 md:mb-12">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#E8F5EE] border border-[#86CEAB]/60 text-[#163A2B] text-xs font-bold uppercase tracking-wider mb-4 shadow-2xs">
-          <span className="w-2 h-2 rounded-full bg-[#163A2B] animate-pulse"></span>
-          <span>Senzaccento · Sabana Centro</span>
-        </div>
-
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#163A2B] font-brand tracking-tight mb-3">
           Bienvenido a Hera
         </h1>
 
         <p className="text-sm sm:text-base text-gray-600 leading-relaxed max-w-2xl mx-auto">
-          Plataforma de autodiagnóstico y recomendaciones TIC diseñada para que las microempresas de <strong>Chía, Cajicá y Zipaquirá</strong> descubran qué tecnologías generan valor real en sus procesos y cómo aprovecharlas.
+          Plataforma de autodiagnóstico y recomendaciones TIC diseñada para que las microempresas de{" "}
+          <strong>Chía, Cajicá y Zipaquirá</strong> descubran qué tecnologías generan valor real en
+          sus procesos y cómo aprovecharlas.
         </p>
 
         {/* Estado amigable del diagnóstico si ya hay respuestas */}
@@ -47,10 +44,7 @@ export const HomePage: React.FC = () => {
             <span>
               Tienes un diagnóstico con <strong>{answeredCount} respuestas</strong> registradas.
             </span>
-            <Link
-              to="/mapa"
-              className="font-bold underline hover:opacity-80 ml-1 text-[#163A2B]"
-            >
+            <Link to="/mapa" className="font-bold underline hover:opacity-80 ml-1 text-[#163A2B]">
               Ver mapa personalizado →
             </Link>
           </div>
@@ -81,16 +75,17 @@ export const HomePage: React.FC = () => {
             </h2>
 
             <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
-              Evalúa la madurez digital de tu negocio, identifica procesos manuales en tus 7 áreas y genera tu perfil empresarial descargable en Excel.
+              Evalúa la madurez digital de tu negocio, identifica procesos manuales en tus 7 áreas y
+              genera tu perfil empresarial descargable en Excel.
             </p>
           </div>
 
           <div className="pt-5 mt-4 border-t border-gray-100 flex items-center justify-between">
             <span className="text-xs text-gray-500 font-medium">
-              {hasDraft ? 'Continuar diagnóstico en curso' : '~10 min · Exportable a Excel'}
+              {hasDraft ? "Continuar diagnóstico en curso" : "~10 min · Exportable a Excel"}
             </span>
             <span className="text-xs font-bold text-[#163A2B] flex items-center gap-1.5 group-hover:translate-x-1.5 transition-transform">
-              <span>{hasDraft ? 'Ver cuestionario' : 'Comenzar diagnóstico'}</span>
+              <span>{hasDraft ? "Ver cuestionario" : "Comenzar diagnóstico"}</span>
               <ArrowRight className="w-4 h-4" />
             </span>
           </div>
@@ -120,7 +115,8 @@ export const HomePage: React.FC = () => {
             </h2>
 
             <p className="text-xs sm:text-sm text-[#D0E6DC] leading-relaxed">
-              Explora soluciones TIC organizadas en 9 áreas de tu negocio: opciones de código abierto, gratuitas, freemium, bajo costo y herramientas con IA con guías de 3 pasos.
+              Explora soluciones TIC organizadas en 9 áreas de tu negocio: opciones de código
+              abierto, gratuitas, freemium, bajo costo y herramientas con IA con guías de 3 pasos.
             </p>
           </div>
 
@@ -158,14 +154,13 @@ export const HomePage: React.FC = () => {
             </h2>
 
             <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
-              Resuelve dudas sobre qué tecnología adoptar, costos y pasos de implementación con soporte en lenguaje sencillo y amigable por voz o chat.
+              Resuelve dudas sobre qué tecnología adoptar, costos y pasos de implementación con
+              soporte en lenguaje sencillo y amigable por voz o chat.
             </p>
           </div>
 
           <div className="pt-5 mt-4 border-t border-gray-100 flex items-center justify-between">
-            <span className="text-xs text-gray-500 font-medium">
-              Soporte por voz y texto
-            </span>
+            <span className="text-xs text-gray-500 font-medium">Soporte por voz y texto</span>
             <span className="text-xs font-bold text-purple-800 flex items-center gap-1.5 group-hover:translate-x-1.5 transition-transform">
               <span>Hablar con el asistente</span>
               <ArrowRight className="w-4 h-4" />
@@ -195,14 +190,13 @@ export const HomePage: React.FC = () => {
             </h2>
 
             <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
-              Consulta tu radar de madurez digital, tus brechas prioritarias y compara el estado de tu negocio con las estadísticas de micronegocios DANE EMICRON.
+              Consulta tu radar de madurez digital, tus brechas prioritarias y compara el estado de
+              tu negocio con las estadísticas de micronegocios DANE EMICRON.
             </p>
           </div>
 
           <div className="pt-5 mt-4 border-t border-gray-100 flex items-center justify-between">
-            <span className="text-xs text-gray-500 font-medium">
-              Radar, brechas y comparativas
-            </span>
+            <span className="text-xs text-gray-500 font-medium">Radar, brechas y comparativas</span>
             <span className="text-xs font-bold text-blue-800 flex items-center gap-1.5 group-hover:translate-x-1.5 transition-transform">
               <span>Ver estadísticas</span>
               <ArrowRight className="w-4 h-4" />
@@ -215,7 +209,8 @@ export const HomePage: React.FC = () => {
       <div className="mt-12 text-center max-w-xl mx-auto text-xs text-gray-500 flex items-center justify-center gap-2">
         <Building2 className="w-4 h-4 text-gray-400 shrink-0" />
         <span>
-          Iniciativa académica y abierta de la Universidad de la Sabana · Apoyando el comercio local de Sabana Centro
+          Iniciativa académica y abierta de la Universidad de la Sabana · Apoyando el comercio local
+          de Sabana Centro
         </span>
       </div>
     </main>

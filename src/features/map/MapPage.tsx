@@ -1,5 +1,5 @@
-import React, { useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useMemo } from "react";
+import { Link } from "react-router-dom";
 import {
   Search,
   Sparkles,
@@ -9,16 +9,16 @@ import {
   Layers,
   HelpCircle,
   AlertCircle,
-} from 'lucide-react';
-import { AREAS_DATA } from './data/areas';
-import { Area, TicTool } from './types';
-import { AreaCard } from './components/AreaCard';
-import { AreaDetailModal } from './components/AreaDetailModal';
-import { ToolImplementationModal } from './components/ToolImplementationModal';
-import { useDraftResponse } from '../diagnostic/hooks/useDraftResponse';
-import questionnaireSchema from '../diagnostic/schema/questionnaire.v1.json';
-import { computeScores } from '../stats/lib/computeScores';
-import { QuestionnaireSchema } from '../diagnostic/schema/types';
+} from "lucide-react";
+import { AREAS_DATA } from "./data/areas";
+import { Area, TicTool } from "./types";
+import { AreaCard } from "./components/AreaCard";
+import { AreaDetailModal } from "./components/AreaDetailModal";
+import { ToolImplementationModal } from "./components/ToolImplementationModal";
+import { useDraftResponse } from "../diagnostic/hooks/useDraftResponse";
+import questionnaireSchema from "../diagnostic/schema/questionnaire.v1.json";
+import { computeScores } from "../stats/lib/computeScores";
+import { QuestionnaireSchema } from "../diagnostic/schema/types";
 
 export const MapPage: React.FC = () => {
   const schema = questionnaireSchema as unknown as QuestionnaireSchema;
@@ -30,8 +30,8 @@ export const MapPage: React.FC = () => {
     areaTitle: string;
   } | null>(null);
 
-  const [searchQuery, setSearchQuery] = useState('');
-  const [activeFilter, setActiveFilter] = useState<string>('all');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeFilter, setActiveFilter] = useState<string>("all");
   const [showOnlyPriority, setShowOnlyPriority] = useState(false);
 
   // Lista de las 7 áreas
@@ -40,7 +40,7 @@ export const MapPage: React.FC = () => {
   // Diagnóstico del usuario y cálculo de áreas prioritarias
   const diagnosticAnalysis = useMemo(() => {
     const answeredCount = Object.keys(draft.answers).filter(
-      (k) => draft.answers[k] !== undefined && draft.answers[k] !== null && draft.answers[k] !== ''
+      (k) => draft.answers[k] !== undefined && draft.answers[k] !== null && draft.answers[k] !== "",
     ).length;
 
     if (answeredCount <= 1) {
@@ -61,7 +61,10 @@ export const MapPage: React.FC = () => {
       // Si no hay brechas explícitas pero madurez baja (< 50) e importancia alta (>= 4)
       for (const [aId, aScore] of Object.entries(scores.areas)) {
         if (!priorityMap.has(aId) && aScore.importance >= 4 && aScore.maturityScore < 50) {
-          priorityMap.set(aId, `Baja madurez digital (${aScore.maturityScore}%) en área de alta relevancia`);
+          priorityMap.set(
+            aId,
+            `Baja madurez digital (${aScore.maturityScore}%) en área de alta relevancia`,
+          );
         }
       }
 
@@ -71,7 +74,7 @@ export const MapPage: React.FC = () => {
         totalGaps: scores.priorityGaps.length,
       };
     } catch (e) {
-      console.warn('Error calculating diagnostic scores in MapPage', e);
+      console.warn("Error calculating diagnostic scores in MapPage", e);
       return { hasDiagnostic: false, priorityAreas: new Map<string, string>() };
     }
   }, [draft.answers, schema]);
@@ -90,15 +93,15 @@ export const MapPage: React.FC = () => {
   // Filtrado de herramientas por búsqueda y categoría global
   const filteredToolsGlobal = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
-    if (!query && activeFilter === 'all') return [];
+    if (!query && activeFilter === "all") return [];
 
     return allToolsWithArea.filter(({ tool, area }) => {
       // Filtro por tipo
-      if (activeFilter === 'ai' && !tool.hasAi) return false;
-      if (activeFilter === 'open_source' && tool.pricingType !== 'open_source') return false;
-      if (activeFilter === 'free' && tool.pricingType !== 'free') return false;
-      if (activeFilter === 'freemium' && tool.pricingType !== 'freemium') return false;
-      if (activeFilter === 'paid' && tool.pricingType !== 'paid_low_cost') return false;
+      if (activeFilter === "ai" && !tool.hasAi) return false;
+      if (activeFilter === "open_source" && tool.pricingType !== "open_source") return false;
+      if (activeFilter === "free" && tool.pricingType !== "free") return false;
+      if (activeFilter === "freemium" && tool.pricingType !== "freemium") return false;
+      if (activeFilter === "paid" && tool.pricingType !== "paid_low_cost") return false;
 
       // Filtro por texto
       if (!query) return true;
@@ -108,7 +111,8 @@ export const MapPage: React.FC = () => {
       const inDesc = tool.shortDesc.toLowerCase().includes(query);
       const inBenefit = tool.concreteBenefit.toLowerCase().includes(query);
       const inProblem = tool.problemSolved.toLowerCase().includes(query);
-      const inArea = area.title.toLowerCase().includes(query) || area.code.toLowerCase().includes(query);
+      const inArea =
+        area.title.toLowerCase().includes(query) || area.code.toLowerCase().includes(query);
 
       return inName || inCategory || inDesc || inBenefit || inProblem || inArea;
     });
@@ -122,20 +126,20 @@ export const MapPage: React.FC = () => {
     return areasList;
   }, [areasList, showOnlyPriority, diagnosticAnalysis]);
 
-  const isSearchOrFilterActive = searchQuery.trim().length > 0 || activeFilter !== 'all';
+  const isSearchOrFilterActive = searchQuery.trim().length > 0 || activeFilter !== "all";
 
   const getPricingBadge = (pricingType: string) => {
     switch (pricingType) {
-      case 'open_source':
-        return 'bg-purple-100 text-purple-900 border-purple-200';
-      case 'free':
-        return 'bg-emerald-100 text-emerald-900 border-emerald-200';
-      case 'freemium':
-        return 'bg-blue-100 text-blue-900 border-blue-200';
-      case 'paid_low_cost':
-        return 'bg-amber-100 text-amber-900 border-amber-200';
+      case "open_source":
+        return "bg-purple-100 text-purple-900 border-purple-200";
+      case "free":
+        return "bg-emerald-100 text-emerald-900 border-emerald-200";
+      case "freemium":
+        return "bg-blue-100 text-blue-900 border-blue-200";
+      case "paid_low_cost":
+        return "bg-amber-100 text-amber-900 border-amber-200";
       default:
-        return 'bg-gray-100 text-gray-800 border-gray-200';
+        return "bg-gray-100 text-gray-800 border-gray-200";
     }
   };
 
@@ -144,21 +148,13 @@ export const MapPage: React.FC = () => {
       {/* Encabezado Principal del Mapa */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-6">
         <div>
-          <div className="flex items-center gap-2 mb-2">
-            <span className="bg-[#163A2B] text-white text-[11px] font-bold px-3 py-1 rounded-full inline-flex items-center gap-1.5 shadow-2xs">
-              <Layers className="w-3.5 h-3.5 text-[#86CEAB]" />
-              Hera · Catálogo Neutral de Soluciones
-            </span>
-            <span className="text-xs text-gray-500 font-semibold hidden sm:inline">
-              Sabana Centro (Chía, Cajicá, Zipaquirá)
-            </span>
-          </div>
-
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#163A2B] font-brand tracking-tight">
             Mapa de Oportunidades TIC
           </h1>
           <p className="text-xs sm:text-sm text-gray-600 mt-1 max-w-2xl leading-relaxed">
-            Recomendaciones curadas de herramientas tecnológicas organizadas en <strong>9 áreas clave</strong> para tu negocio. Explora opciones de código abierto, gratuitas, freemium y con IA para digitalizar cada proceso sin sesgos comerciales.
+            Recomendaciones curadas de herramientas tecnológicas organizadas en{" "}
+            <strong>9 áreas clave</strong> para tu negocio. Explora opciones de código abierto,
+            gratuitas, freemium y con IA para digitalizar cada proceso sin sesgos comerciales.
           </p>
         </div>
 
@@ -167,7 +163,9 @@ export const MapPage: React.FC = () => {
             <span className="block text-[10px] text-gray-500 uppercase tracking-wider">
               Catálogo Abierto
             </span>
-            <span>{areasList.length} ÁREAS · {allToolsWithArea.length} SOLUCIONES TIC</span>
+            <span>
+              {areasList.length} ÁREAS · {allToolsWithArea.length} SOLUCIONES TIC
+            </span>
           </div>
         </div>
       </div>
@@ -184,8 +182,9 @@ export const MapPage: React.FC = () => {
                 Recomendaciones personalizadas según tu diagnóstico
               </h3>
               <p className="text-xs text-[#0e261c] opacity-90 mt-0.5">
-                Detectamos oportunidades prioritarias en{' '}
-                <strong>{diagnosticAnalysis.priorityAreas.size} áreas</strong> de tu empresa. Las áreas con procesos manuales tienen un marco verde destacado.
+                Detectamos oportunidades prioritarias en{" "}
+                <strong>{diagnosticAnalysis.priorityAreas.size} áreas</strong> de tu empresa. Las
+                áreas con procesos manuales tienen un marco verde destacado.
               </p>
             </div>
           </div>
@@ -196,11 +195,11 @@ export const MapPage: React.FC = () => {
               onClick={() => setShowOnlyPriority(!showOnlyPriority)}
               className={`text-xs font-bold px-3.5 py-2 rounded-xl cursor-pointer transition-colors border ${
                 showOnlyPriority
-                  ? 'bg-[#163A2B] text-white border-[#163A2B]'
-                  : 'bg-white text-[#163A2B] hover:bg-white/80 border-[#86CEAB]'
+                  ? "bg-[#163A2B] text-white border-[#163A2B]"
+                  : "bg-white text-[#163A2B] hover:bg-white/80 border-[#86CEAB]"
               }`}
             >
-              {showOnlyPriority ? 'Ver todas las 7 áreas' : 'Filtrar mis áreas prioritarias'}
+              {showOnlyPriority ? "Ver todas las 7 áreas" : "Filtrar mis áreas prioritarias"}
             </button>
             <Link
               to="/estadisticas"
@@ -218,7 +217,9 @@ export const MapPage: React.FC = () => {
             </div>
             <div>
               <p className="text-xs text-gray-800">
-                <strong>¿Quieres ver qué herramientas resolverán tus procesos manuales?</strong> Realiza el autodiagnóstico guiado para que el mapa resalte automáticamente las áreas prioritarias de tu empresa.
+                <strong>¿Quieres ver qué herramientas resolverán tus procesos manuales?</strong>{" "}
+                Realiza el autodiagnóstico guiado para que el mapa resalte automáticamente las áreas
+                prioritarias de tu empresa.
               </p>
             </div>
           </div>
@@ -248,7 +249,7 @@ export const MapPage: React.FC = () => {
             {searchQuery && (
               <button
                 type="button"
-                onClick={() => setSearchQuery('')}
+                onClick={() => setSearchQuery("")}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-1 border-none bg-transparent cursor-pointer"
                 title="Limpiar búsqueda"
               >
@@ -261,22 +262,22 @@ export const MapPage: React.FC = () => {
           <div className="flex flex-wrap items-center gap-1.5 w-full md:w-auto">
             <button
               type="button"
-              onClick={() => setActiveFilter('all')}
+              onClick={() => setActiveFilter("all")}
               className={`text-xs font-semibold px-3 py-2 rounded-xl transition-colors cursor-pointer border ${
-                activeFilter === 'all'
-                  ? 'bg-[#163A2B] text-white border-[#163A2B]'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border-transparent'
+                activeFilter === "all"
+                  ? "bg-[#163A2B] text-white border-[#163A2B]"
+                  : "bg-gray-100 text-gray-700 hover:bg-gray-200 border-transparent"
               }`}
             >
               Todas
             </button>
             <button
               type="button"
-              onClick={() => setActiveFilter('ai')}
+              onClick={() => setActiveFilter("ai")}
               className={`text-xs font-semibold px-3 py-2 rounded-xl transition-colors cursor-pointer border flex items-center gap-1 ${
-                activeFilter === 'ai'
-                  ? 'bg-amber-600 text-white border-amber-600'
-                  : 'bg-amber-50 text-amber-900 hover:bg-amber-100 border-amber-200'
+                activeFilter === "ai"
+                  ? "bg-amber-600 text-white border-amber-600"
+                  : "bg-amber-50 text-amber-900 hover:bg-amber-100 border-amber-200"
               }`}
             >
               <Sparkles className="w-3 h-3 text-amber-500" />
@@ -284,44 +285,44 @@ export const MapPage: React.FC = () => {
             </button>
             <button
               type="button"
-              onClick={() => setActiveFilter('open_source')}
+              onClick={() => setActiveFilter("open_source")}
               className={`text-xs font-semibold px-3 py-2 rounded-xl transition-colors cursor-pointer border ${
-                activeFilter === 'open_source'
-                  ? 'bg-purple-700 text-white border-purple-700'
-                  : 'bg-purple-50 text-purple-900 hover:bg-purple-100 border-purple-200'
+                activeFilter === "open_source"
+                  ? "bg-purple-700 text-white border-purple-700"
+                  : "bg-purple-50 text-purple-900 hover:bg-purple-100 border-purple-200"
               }`}
             >
               Open Source
             </button>
             <button
               type="button"
-              onClick={() => setActiveFilter('free')}
+              onClick={() => setActiveFilter("free")}
               className={`text-xs font-semibold px-3 py-2 rounded-xl transition-colors cursor-pointer border ${
-                activeFilter === 'free'
-                  ? 'bg-emerald-700 text-white border-emerald-700'
-                  : 'bg-emerald-50 text-emerald-900 hover:bg-emerald-100 border-emerald-200'
+                activeFilter === "free"
+                  ? "bg-emerald-700 text-white border-emerald-700"
+                  : "bg-emerald-50 text-emerald-900 hover:bg-emerald-100 border-emerald-200"
               }`}
             >
               100% Gratis
             </button>
             <button
               type="button"
-              onClick={() => setActiveFilter('freemium')}
+              onClick={() => setActiveFilter("freemium")}
               className={`text-xs font-semibold px-3 py-2 rounded-xl transition-colors cursor-pointer border ${
-                activeFilter === 'freemium'
-                  ? 'bg-blue-700 text-white border-blue-700'
-                  : 'bg-blue-50 text-blue-900 hover:bg-blue-100 border-blue-200'
+                activeFilter === "freemium"
+                  ? "bg-blue-700 text-white border-blue-700"
+                  : "bg-blue-50 text-blue-900 hover:bg-blue-100 border-blue-200"
               }`}
             >
               Freemium
             </button>
             <button
               type="button"
-              onClick={() => setActiveFilter('paid')}
+              onClick={() => setActiveFilter("paid")}
               className={`text-xs font-semibold px-3 py-2 rounded-xl transition-colors cursor-pointer border ${
-                activeFilter === 'paid'
-                  ? 'bg-amber-700 text-white border-amber-700'
-                  : 'bg-amber-50 text-amber-900 hover:bg-amber-100 border-amber-200'
+                activeFilter === "paid"
+                  ? "bg-amber-700 text-white border-amber-700"
+                  : "bg-amber-50 text-amber-900 hover:bg-amber-100 border-amber-200"
               }`}
             >
               Bajo Costo
@@ -338,8 +339,8 @@ export const MapPage: React.FC = () => {
             <button
               type="button"
               onClick={() => {
-                setSearchQuery('');
-                setActiveFilter('all');
+                setSearchQuery("");
+                setActiveFilter("all");
               }}
               className="text-xs text-[#163A2B] font-bold hover:underline bg-transparent border-none cursor-pointer"
             >
@@ -365,13 +366,14 @@ export const MapPage: React.FC = () => {
                 No encontramos herramientas con ese criterio
               </h3>
               <p className="text-xs text-gray-500 mt-1 max-w-md mx-auto">
-                Prueba buscando términos generales como "whatsapp", "ventas", "factura", "nube", "ia", o explora las 7 áreas directamente.
+                Prueba buscando términos generales como "whatsapp", "ventas", "factura", "nube",
+                "ia", o explora las 7 áreas directamente.
               </p>
               <button
                 type="button"
                 onClick={() => {
-                  setSearchQuery('');
-                  setActiveFilter('all');
+                  setSearchQuery("");
+                  setActiveFilter("all");
                 }}
                 className="mt-4 text-xs font-bold text-white bg-[#163A2B] px-4 py-2 rounded-xl hover:bg-[#0e261c] cursor-pointer"
               >
@@ -392,23 +394,17 @@ export const MapPage: React.FC = () => {
                       </span>
                       <span
                         className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${getPricingBadge(
-                          tool.pricingType
+                          tool.pricingType,
                         )}`}
                       >
                         {tool.pricingLabel}
                       </span>
                     </div>
 
-                    <h3 className="text-base font-bold text-gray-900 mb-1">
-                      {tool.name}
-                    </h3>
-                    <p className="text-xs text-gray-500 mb-2.5">
-                      {tool.category}
-                    </p>
+                    <h3 className="text-base font-bold text-gray-900 mb-1">{tool.name}</h3>
+                    <p className="text-xs text-gray-500 mb-2.5">{tool.category}</p>
 
-                    <p className="text-xs text-gray-600 leading-relaxed mb-3">
-                      {tool.shortDesc}
-                    </p>
+                    <p className="text-xs text-gray-600 leading-relaxed mb-3">{tool.shortDesc}</p>
 
                     <div className="bg-[#E8F5EE] p-2.5 rounded-lg border border-[#86CEAB]/40 text-xs text-[#0e261c] mb-3">
                       <span className="font-bold block text-[11px] text-[#163A2B] mb-0.5">
@@ -419,9 +415,7 @@ export const MapPage: React.FC = () => {
                   </div>
 
                   <div className="pt-3 border-t border-gray-100 flex items-center justify-between gap-2">
-                    <span className="text-[11px] font-bold text-gray-500">
-                      {tool.difficulty}
-                    </span>
+                    <span className="text-[11px] font-bold text-gray-500">{tool.difficulty}</span>
 
                     <button
                       type="button"
@@ -450,7 +444,7 @@ export const MapPage: React.FC = () => {
           <h2 className="text-xl font-bold text-gray-900 font-brand">
             {showOnlyPriority
               ? `Mis Áreas Prioritarias (${visibleAreas.length})`
-              : 'Las 9 Áreas Empresariales de Sabana Centro'}
+              : "Las 9 Áreas Empresariales de Sabana Centro"}
           </h2>
           <span className="text-xs text-gray-500 font-medium">
             Haz clic en un área para desplegar todas sus herramientas y guías
@@ -499,7 +493,10 @@ export const MapPage: React.FC = () => {
           Compromiso de Neutralidad Tecnológica
         </h3>
         <p className="text-xs text-gray-600 leading-relaxed max-w-2xl mx-auto">
-          Hera es un proyecto de investigación y diseño de la Universidad de la Sabana (grupo Senzaccento). No vendemos software, no recibimos comisiones ni promovemos marcas exclusivas. Nuestro único objetivo es dar opciones transparentes para que las MiPymes de Chía, Cajicá y Zipaquirá aprovechen las TIC y mejoren su productividad.
+          Hera es un proyecto de investigación y diseño de la Universidad de la Sabana (grupo
+          Senzaccento). No vendemos software, no recibimos comisiones ni promovemos marcas
+          exclusivas. Nuestro único objetivo es dar opciones transparentes para que las MiPymes de
+          Chía, Cajicá y Zipaquirá aprovechen las TIC y mejoren su productividad.
         </p>
       </div>
     </main>

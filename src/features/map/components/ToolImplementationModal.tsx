@@ -16,12 +16,14 @@ interface ToolImplementationModalProps {
   tool: TicTool | null;
   areaTitle?: string;
   onClose: () => void;
+  onAskAssistant?: (prompt: string) => void;
 }
 
 export const ToolImplementationModal: React.FC<ToolImplementationModalProps> = ({
   tool,
   areaTitle,
   onClose,
+  onAskAssistant,
 }) => {
   const navigate = useNavigate();
 
@@ -42,10 +44,15 @@ export const ToolImplementationModal: React.FC<ToolImplementationModalProps> = (
   if (!tool) return null;
 
   const handleConsultAssistant = () => {
+    const prompt = `Hola Hera, me interesa implementar la herramienta "${tool.name}" en mi negocio (Área: ${areaTitle || 'General'}). ¿Qué recomendaciones prácticas me das para empezar y cómo puedo aprovechar su beneficio de "${tool.impactMetric}" sin complicarme?`;
     onClose();
+    if (onAskAssistant) {
+      onAskAssistant(prompt);
+      return;
+    }
     navigate('/asistente', {
       state: {
-        initialPrompt: `Hola Hera, me interesa implementar la herramienta "${tool.name}" en mi negocio (Área: ${areaTitle || 'General'}). ¿Qué recomendaciones prácticas me das para empezar y cómo puedo aprovechar su beneficio de "${tool.impactMetric}" sin complicarme?`,
+        initialPrompt: prompt,
       },
     });
   };
