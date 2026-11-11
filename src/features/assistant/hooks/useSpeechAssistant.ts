@@ -40,6 +40,7 @@ function getSpeechRecognitionConstructor(): (new () => ISpeechRecognition) | nul
 
 function cleanTextForSpeech(text: string): string {
   return text
+    .replace(/\[([^\]]+)\]\(https?:\/\/[^)\s]+\)/g, '$1')
     .replace(/\*\*(.*?)\*\*/g, '$1')
     .replace(/\*(.*?)\*/g, '$1')
     .replace(/`(.*?)`/g, '$1')

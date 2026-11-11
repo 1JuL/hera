@@ -12,4 +12,5 @@ export interface ChatMessage {
   speechText?: string;
   timestamp: string;
   recommendedTools?: RecommendedToolRef[];
+  source?: 'n8n' | 'local';
 }

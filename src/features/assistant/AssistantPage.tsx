@@ -12,14 +12,22 @@ import {
   Bot,
   AlertTriangle,
   ExternalLink,
+  Loader2,
 } from 'lucide-react';
 import { useDraftResponse } from '@/features/diagnostic/hooks/useDraftResponse';
 import { ToolImplementationModal } from '@/features/map/components/ToolImplementationModal';
 import { TicTool } from '@/features/map/types';
 import { ChatMessage, RecommendedToolRef } from './types';
 import { useSpeechAssistant } from './hooks/useSpeechAssistant';
-import { askAssistant } from './lib/ragEngine';
+import { askAssistantAsync } from './lib/ragEngine';
 import { VoiceOrb } from './components/VoiceOrb';
+
+function createSessionId(): string {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID();
+  }
+  return `hera-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+}
 
 function renderInlineMarkdown(text: string): React.ReactNode[] {
   const tokens = text.split(
@@ -150,6 +158,7 @@ export const AssistantPage: React.FC = () => {
 
   const [messages, setMessages] = useState<ChatMessage[]>([initialGreeting]);
   const [inputText, setInputText] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedToolModal, setSelectedToolModal] = useState<{
     tool: TicTool;
     areaTitle: string;
@@ -158,16 +167,25 @@ export const AssistantPage: React.FC = () => {
   const chatEndRef = useRef<HTMLDivElement | null>(null);
   const messagesRef = useRef<ChatMessage[]>(messages);
   const initialPromptHandledRef = useRef(false);
+  const sessionIdRef = useRef<string>(createSessionId());
+  const abortControllerRef = useRef<AbortController | null>(null);
+  const isLoadingRef = useRef(false);
 
   useEffect(() => {
     messagesRef.current = messages;
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+  }, [messages, isLoading]);
+
+  useEffect(() => {
+    return () => {
+      abortControllerRef.current?.abort();
+    };
+  }, []);
 
   const submitQuery = useCallback(
-    (rawQuery: string, speakFn: (text: string) => void) => {
+    async (rawQuery: string, speakFn: (text: string) => void) => {
       const trimmed = rawQuery.trim();
-      if (!trimmed) return;
+      if (!trimmed || isLoadingRef.current) return;
 
       const userMsg: ChatMessage = {
         id: `u-${Date.now()}`,
@@ -180,18 +198,43 @@ export const AssistantPage: React.FC = () => {
       setMessages(updatedHistory);
       setInputText('');
 
-      const result = askAssistant(trimmed, updatedHistory, diagnosticScores);
-      const assistantMsg: ChatMessage = {
-        id: `a-${Date.now()}`,
-        sender: 'assistant',
-        text: result.text,
-        speechText: result.speechText,
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        recommendedTools: result.recommendedTools,
-      };
+      abortControllerRef.current?.abort();
+      const controller = new AbortController();
+      abortControllerRef.current = controller;
+      isLoadingRef.current = true;
+      setIsLoading(true);
 
-      setMessages((prev) => [...prev, assistantMsg]);
-      speakFn(result.speechText || result.text);
+      try {
+        const result = await askAssistantAsync(trimmed, updatedHistory, diagnosticScores, {
+          sessionId: sessionIdRef.current,
+          signal: controller.signal,
+        });
+
+        if (controller.signal.aborted) return;
+
+        const assistantMsg: ChatMessage = {
+          id: `a-${Date.now()}`,
+          sender: 'assistant',
+          text: result.text,
+          speechText: result.speechText,
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          recommendedTools: result.recommendedTools,
+          source: result.source,
+        };
+
+        setMessages((prev) => [...prev, assistantMsg]);
+        speakFn(result.speechText || result.text);
+      } catch (err) {
+        if (err instanceof DOMException && err.name === 'AbortError') {
+          return;
+        }
+      } finally {
+        if (abortControllerRef.current === controller) {
+          isLoadingRef.current = false;
+          setIsLoading(false);
+          abortControllerRef.current = null;
+        }
+      }
     },
     [diagnosticScores]
   );
@@ -237,6 +280,11 @@ export const AssistantPage: React.FC = () => {
   };
 
   const handleResetChat = () => {
+    abortControllerRef.current?.abort();
+    abortControllerRef.current = null;
+    isLoadingRef.current = false;
+    setIsLoading(false);
+    sessionIdRef.current = createSessionId();
     stopSpeaking();
     setMessages([initialGreeting]);
   };
@@ -331,13 +379,20 @@ export const AssistantPage: React.FC = () => {
                   }`}
                 >
                   <div className="flex items-center justify-between gap-3 mb-1">
-                    <span
-                      className={`text-[10px] font-bold uppercase tracking-wider ${
-                        m.sender === 'user' ? 'text-[#86CEAB]' : 'text-[#163A2B]'
-                      }`}
-                    >
-                      {m.sender === 'user' ? 'Tú' : 'Hera'} · {m.timestamp}
-                    </span>
+                    <div className="flex items-center gap-1.5">
+                      <span
+                        className={`text-[10px] font-bold uppercase tracking-wider ${
+                          m.sender === 'user' ? 'text-[#86CEAB]' : 'text-[#163A2B]'
+                        }`}
+                      >
+                        {m.sender === 'user' ? 'Tú' : 'Hera'} · {m.timestamp}
+                      </span>
+                      {m.sender === 'assistant' && m.source === 'n8n' && (
+                        <span className="text-[9px] font-semibold px-1.5 py-0.5 rounded bg-[#E8F5EE] text-[#163A2B]">
+                          IA · RAG
+                        </span>
+                      )}
+                    </div>
 
                     {m.sender === 'assistant' && ttsSupported && (
                       <button
@@ -397,6 +452,15 @@ export const AssistantPage: React.FC = () => {
               </div>
             ))}
 
+            {isLoading && (
+              <div className="flex flex-col items-start">
+                <div className="rounded-2xl rounded-bl-xs px-4 py-3 text-xs sm:text-[13px] bg-[#F4F7F5] text-[#163A2B] border border-[#E0E7E3] flex items-center gap-2 shadow-2xs">
+                  <Loader2 className="w-3.5 h-3.5 animate-spin shrink-0" />
+                  <span>Hera está consultando el catálogo...</span>
+                </div>
+              </div>
+            )}
+
             <div ref={chatEndRef} />
           </div>
 
@@ -408,8 +472,9 @@ export const AssistantPage: React.FC = () => {
                 <button
                   key={i}
                   type="button"
+                  disabled={isLoading}
                   onClick={() => submitQuery(qp, (txt) => speak(txt))}
-                  className="text-[11px] font-medium bg-[#F4F6F4] hover:bg-[#E8F5EE] text-[#163A2B] border border-gray-200 hover:border-[#86CEAB] px-3 py-1.5 rounded-full whitespace-nowrap cursor-pointer transition-colors shrink-0"
+                  className="text-[11px] font-medium bg-[#F4F6F4] hover:bg-[#E8F5EE] disabled:opacity-50 text-[#163A2B] border border-gray-200 hover:border-[#86CEAB] px-3 py-1.5 rounded-full whitespace-nowrap cursor-pointer transition-colors shrink-0"
                 >
                   {qp}
                 </button>
@@ -464,11 +529,20 @@ export const AssistantPage: React.FC = () => {
 
               <button
                 type="submit"
-                disabled={!inputText.trim()}
+                disabled={!inputText.trim() || isLoading}
                 className="bg-[#163A2B] hover:bg-[#0e261c] disabled:opacity-50 text-white px-4 py-2.5 rounded-xl text-xs font-bold cursor-pointer transition-colors flex items-center gap-1.5 shrink-0"
               >
-                <span>Enviar</span>
-                <Send className="w-3.5 h-3.5" />
+                {isLoading ? (
+                  <>
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    <span>Pensando</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Enviar</span>
+                    <Send className="w-3.5 h-3.5" />
+                  </>
+                )}
               </button>
             </form>
           </div>
