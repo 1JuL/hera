@@ -1,0 +1,32 @@
+{
+  "name": "HERA - Diagnóstico y Gestión Tecnológica",
+  "short_name": "HERA",
+  "description": "Plataforma de autodiagnóstico digital y recomendaciones TIC para microempresas.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#163A2B",
+  "theme_color": "#163A2B",
+  "lang": "es",
+  "icons": [
+    {
+      "src": "/pwa-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/pwa-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/hera-favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

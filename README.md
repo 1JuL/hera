@@ -1,53 +1,91 @@
-# Hera - Plataforma de Diagnóstico y Gestión Tecnológica Empresarial
-**Desarrollado por:** Grupo Senzaccento
+# HERA - Plataforma de Diagnóstico y Gestión Tecnológica Empresarial
+
+**Desarrollado por:** Grupo Senzaccento · Universidad de La Sabana
 
 ---
 
-## 1. Resumen de Funcionamiento del MVP
-Hera es una plataforma web orientada a la evaluación, estructuración y analítica tecnológica para empresas. El MVP permite llevar a cabo un flujo completo desde el diagnóstico hasta el monitoreo estadístico.
+## 1. Resumen de Funcionamiento
 
-### Módulos y Flujo de Pantallas:
-1. **Inicio de Sesión (`index.html`):** Portal de acceso institucional con credenciales o autenticación mediante Google y Facebook.
-2. **Panel Principal (`inicio.html`):** Hub de navegación del MVP Hera para acceder a los cuatro módulos interactivos.
-3. **Carga de Datos (`carga-datos.html`):** Interfaz para la importación de archivos contables/financieros o la resolución de un cuestionario guiado de diagnóstico.
-4. **Mapa de Oportunidades (`mapa.html`):** Catálogo interactivo de soluciones tecnológicas categorizadas en 6 áreas de la empresa (Financiera, RRHH, Marketing, Producción, Administración y Logística).
-5. **Asistente (`asistente.html`):** Interfaz conversacional híbrida que combina un panel de chat paso a paso con una interfaz activa de reconocimiento por voz.
-6. **Estadísticas (`estadisticas.html`):** Dashboard financiero y operativo que incluye:
-   - **Menú Lateral Izquierdo:** Menú del espacio de trabajo con accesos a Menú, Finanzas, Tecnología, Inventario, Equipo, Configuración y Centro de Ayuda.
-   - **Métricas KPi Top:** Ganancia neta, Ganancia por tecnología, Ingresos totales y Margen operativo.
-   - **Gráficos Analíticos:** Comparativa mensual de ganancias (Barras) e Impacto del ROI tecnológico (Gráfico de Dona/Anillo).
+**HERA** es una aplicación web progresiva (PWA) orientada al autodiagnóstico digital, identificación de brechas tecnológicas y recomendación neutral de herramientas TIC para microempresas (MiPymes) de Sabana Centro (Chía, Cajicá y Zipaquirá).
+
+### Stack Tecnológico
+
+- **Frontend:** React 19 + TypeScript + Vite 6 + Tailwind CSS v4
+- **Enrutamiento:** React Router v7 (con rutas protegidas)
+- **Visualización de Datos:** Recharts (Radar, Barras, Canales)
+- **Backend / Autenticación:** Supabase con modo desarrollo local si no se configuran credenciales
+- **Asistente IA:** Webhook n8n RAG con motor RAG local de respaldo + Web Speech API (voz y texto)
 
 ---
 
-## 2. Sistema de Diseño (Design System)
+## 2. Módulos y Flujo de Pantallas
 
-### Paleta de Colores
-- **Verde Principal (Primary Dark):** `#163A2B`
-- **Verde Oscuro Sidebar (Workspace Dark):** `#0E261C`
-- **Verde Menta (Accent/Highlights):** `#86CEAB` / `#E8F5EE`
-- **Fondo de Interfaz (Background):** `#F4F6F4`
-- **Superficies / Tarjetas:** `#FFFFFF`
-- **Texto Principal:** `#1E1E1E`
-- **Texto Secundario:** `#666666`
-
-### Áreas Temáticas (Mapa de Soluciones)
-- **Financiera:** `#E5F6F0`
-- **Recursos Humanos:** `#FDF2E9`
-- **Marketing:** `#FCEBF5`
-- **Producción:** `#F0EBF9`
-- **Administración:** `#EBF3FB`
-- **Logística:** `#E0F7FA`
-
-### Tipografía y Escala
-- **Familia Primaria:** `Segoe UI`, `Inter`, `system-ui`, sans-serif.
-- **Títulos de Pantalla (H1):** `28px` | Bold (`700`)
-- **Títulos de Sección (H2/H3):** `18px` - `22px` | SemiBold (`600`)
-- **Texto Base (Body):** `14px` | Regular (`400`)
-- **Labels / Captions:** `11px` - `12px` | Medium (`500`)
+1. **Inicio de Sesión (`/`, `/login`):**
+   - Acceso mediante correo/contraseña o Google OAuth con Supabase.
+   - Si no hay variables de entorno configuradas, habilita un modo de prueba local para explorar la plataforma.
+2. **Panel Principal (`/inicio`):**
+   - Hub de navegación responsivo (1 columna en móvil, 2×2 en tableta, 4 columnas en escritorio) hacia los cuatro módulos principales y resumen del estado del diagnóstico en curso.
+3. **Carga de Datos y Diagnóstico (`/carga-datos`):**
+   - **Cuestionario en Línea:** Asistente paso a paso (`QuestionnaireWizard`) con guardado automático de borrador, modalidad rápida o extendida, y consentimiento informado (Ley 1581 de 2012).
+   - **Importación / Exportación Excel y JSON:** Descarga de plantilla oficial o respuestas actuales y carga masiva con reporte de validación (`ImportDialog`, `ImportReport`).
+4. **Mapa de Oportunidades TIC (`/mapa`):**
+   - Catálogo curado de soluciones tecnológicas organizadas en **9 áreas empresariales**.
+   - Resaltado automático de áreas prioritarias basado en los resultados del diagnóstico.
+   - Buscador transversal y filtros rápidos (_Con IA_, _Open Source_, _100% Gratis_, _Freemium_, _Bajo Costo_).
+   - Modales de detalle por área (`AreaDetailModal`) y guías prácticas de implementación en 3 pasos (`ToolImplementationModal`) con enlace directo al asistente.
+5. **Asistente Conversacional (`/asistente`):**
+   - Interfaz híbrida de chat por texto y voz (dictado por micrófono y lectura en voz alta).
+   - Motor RAG conectado a n8n con respaldo local (`ragEngine.ts`) que responde saludos, cortesías, consultas sobre el diagnóstico y recomendaciones contextualizadas con tarjetas interactivas.
+6. **Panel de Estadísticas (`/estadisticas`):**
+   - Dashboard analítico de ancho completo con métricas KPI clave (Índice Global de Madurez, Brechas Prioritarias, Pagos Digitales y Disciplina Financiera).
+   - Gráficos interactivos: Radar de Madurez Digital por Área con tarjetas individuales detalladas, Brechas Prioritarias, Canales de Venta y Medios de Pago, Disciplina Financiera y Comparativa Nacional (DANE EMICRON).
 
 ---
 
-## 3. Instalación y Ejecución
-1. Descarga e instala los archivos manteniendo exactamente la estructura de carpetas `css/`, `js/` y `.html`.
-2. Para que las gráficas del módulo de **Estadísticas** se rendericen correctamente, se requiere conexión a internet para cargar la biblioteca **Chart.js** por CDN.
-3. Abre `index.html` en el navegador para iniciar el prototipo.
+## 3. Accesibilidad, Responsividad y PWA
+
+- **Ajustes de Lectura (Barra Superior):** Botón con ícono de ojo que abre un modal compacto para ajustar en tiempo real el tamaño de **Subtítulos y secciones** y **Textos descriptivos y guías**, pensado especialmente para mejorar la visibilidad.
+- **Modo Claro y Modo Oscuro:** Interruptor en la barra superior con persistencia y alto contraste en todas las pantallas y gráficos.
+
+---
+
+## 4. Sistema de Diseño (Design System)
+
+### Identidad y Paleta de Colores
+
+- **Verde Principal (Primary):** `#163A2B`
+- **Verde Oscuro (Dark Surface):** `#0E261C`
+- **Verde Menta (Accent):** `#86CEAB` / `#E8F5EE`
+- **Fondo Claro (Light Background):** `#F4F6F4`
+- **Superficies / Tarjetas:** `#FFFFFF` (Modo Claro) / `#12281E` (Modo Oscuro)
+- **Texto Principal:** `#1E1E1E` (Modo Claro) / `#F0F5F2` (Modo Oscuro)
+- **Texto Secundario:** `#666666` (Modo Claro) / `#B4CFC2` (Modo Oscuro)
+
+### Activos Gráficos (`public/`)
+
+- `hera-logo-dark.svg`, `hera-logo-light.svg`, `hera-logo.svg`: Wordmark tipográfico oficial de HERA.
+- `hera-favicon.svg`, `pwa-192x192.png`, `pwa-512x512.png`: Iconografía de la aplicación y PWA.
+
+---
+
+## 5. Instalación y Ejecución
+
+1. **Instalar dependencias:**
+   ```bash
+   npm install
+   ```
+2. **Configurar variables de entorno (opcional para modo local):**
+   Copia `.env.example` a `.env` y completa las credenciales si usarás Supabase o el webhook de n8n:
+   ```env
+   VITE_SUPABASE_URL=
+   VITE_SUPABASE_ANON_KEY=
+   VITE_N8N_WEBHOOK_URL=
+   ```
+3. **Iniciar servidor de desarrollo:**
+   ```bash
+   npm run dev
+   ```
+4. **Generar compilación de producción:**
+   ```bash
+   npm run build
+   ```
