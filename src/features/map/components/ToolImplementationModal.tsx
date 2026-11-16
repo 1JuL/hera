@@ -8,7 +8,6 @@ import {
   Sparkles,
   ShieldCheck,
   Tag,
-  ArrowRight,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { TicTool } from '../types';
