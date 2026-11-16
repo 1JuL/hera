@@ -1,18 +1,20 @@
 # HERA - Plataforma de Diagnóstico y Gestión Tecnológica Empresarial
+
 **Desarrollado por:** Grupo Senzaccento · Universidad de La Sabana
 
 ---
 
 ## 1. Resumen de Funcionamiento
+
 **HERA** es una aplicación web progresiva (PWA) orientada al autodiagnóstico digital, identificación de brechas tecnológicas y recomendación neutral de herramientas TIC para microempresas (MiPymes) de Sabana Centro (Chía, Cajicá y Zipaquirá).
 
 ### Stack Tecnológico
+
 - **Frontend:** React 19 + TypeScript + Vite 6 + Tailwind CSS v4
-- **Enrutamiento:** React Router v7 (`BrowserRouter` con rutas protegidas)
+- **Enrutamiento:** React Router v7 (con rutas protegidas)
 - **Visualización de Datos:** Recharts (Radar, Barras, Canales)
-- **Backend / Autenticación:** Supabase (`@supabase/supabase-js`) con modo desarrollo local si no se configuran credenciales
-- **Asistente IA:** Webhook n8n RAG (`VITE_N8N_WEBHOOK_URL`) con motor RAG local de respaldo + Web Speech API (voz y texto)
-- **PWA:** `manifest.webmanifest`, Service Worker (`sw.js`) y sugerencia de instalación por sesión
+- **Backend / Autenticación:** Supabase con modo desarrollo local si no se configuran credenciales
+- **Asistente IA:** Webhook n8n RAG con motor RAG local de respaldo + Web Speech API (voz y texto)
 
 ---
 
@@ -29,7 +31,7 @@
 4. **Mapa de Oportunidades TIC (`/mapa`):**
    - Catálogo curado de soluciones tecnológicas organizadas en **9 áreas empresariales**.
    - Resaltado automático de áreas prioritarias basado en los resultados del diagnóstico.
-   - Buscador transversal y filtros rápidos (*Con IA*, *Open Source*, *100% Gratis*, *Freemium*, *Bajo Costo*).
+   - Buscador transversal y filtros rápidos (_Con IA_, _Open Source_, _100% Gratis_, _Freemium_, _Bajo Costo_).
    - Modales de detalle por área (`AreaDetailModal`) y guías prácticas de implementación en 3 pasos (`ToolImplementationModal`) con enlace directo al asistente.
 5. **Asistente Conversacional (`/asistente`):**
    - Interfaz híbrida de chat por texto y voz (dictado por micrófono y lectura en voz alta).
@@ -42,16 +44,15 @@
 
 ## 3. Accesibilidad, Responsividad y PWA
 
-- **Ajustes de Lectura (Barra Superior):** Botón con ícono de ojo (`Eye`) que abre un modal compacto para ajustar en tiempo real el tamaño de **Subtítulos y secciones** y **Textos descriptivos y guías** (*Normal*, *Grande*, *Muy Grande*), pensado especialmente para mejorar la visibilidad en adultos mayores.
-- **Modo Claro y Modo Oscuro:** Interruptor (`Sun`/`Moon`) en la barra superior con persistencia en `localStorage` y alto contraste en todas las pantallas y gráficos.
-- **Navegación Móvil Fija:** Barra superior fija (`fixed`) con menú hamburguesa superpuesto sobre el contenido para cambiar de sección desde cualquier punto del scroll.
-- **Instalación como App (PWA):** Incluye manifiesto, iconos (`192×192`, `512×512` y SVG), Service Worker y un aviso compacto de instalación que reaparece al iniciar una nueva sesión si fue cerrado.
+- **Ajustes de Lectura (Barra Superior):** Botón con ícono de ojo que abre un modal compacto para ajustar en tiempo real el tamaño de **Subtítulos y secciones** y **Textos descriptivos y guías**, pensado especialmente para mejorar la visibilidad.
+- **Modo Claro y Modo Oscuro:** Interruptor en la barra superior con persistencia y alto contraste en todas las pantallas y gráficos.
 
 ---
 
 ## 4. Sistema de Diseño (Design System)
 
 ### Identidad y Paleta de Colores
+
 - **Verde Principal (Primary):** `#163A2B`
 - **Verde Oscuro (Dark Surface):** `#0E261C`
 - **Verde Menta (Accent):** `#86CEAB` / `#E8F5EE`
@@ -61,6 +62,7 @@
 - **Texto Secundario:** `#666666` (Modo Claro) / `#B4CFC2` (Modo Oscuro)
 
 ### Activos Gráficos (`public/`)
+
 - `hera-logo-dark.svg`, `hera-logo-light.svg`, `hera-logo.svg`: Wordmark tipográfico oficial de HERA.
 - `hera-favicon.svg`, `pwa-192x192.png`, `pwa-512x512.png`: Iconografía de la aplicación y PWA.
 
