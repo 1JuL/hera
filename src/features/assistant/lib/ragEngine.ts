@@ -185,6 +185,7 @@ interface RetrievalResult {
   topAreas: Area[];
   intent:
     | 'greeting'
+    | 'courtesy'
     | 'diagnostic_review'
     | 'implementation_guide'
     | 'support_channel'
@@ -202,11 +203,16 @@ const EXPLICIT_BUSINESS_CONTEXT_PATTERN =
   /\b(negocio|empresa|emprendimiento|pyme|mipyme|comercio|tienda|local|fabrica|taller|herramienta|herramientas|software|app|aplicacion|programa|plataforma|sistema|digital|digitalizar|tic|crm|pos|erp|inventario|inventarios|ventas|vender|finanzas|contabilidad|facturacion|marketing|clientes|nomina|logistica|envios|domicilios|diagnostico)\b/i;
 
 const GREETING_PATTERNS = [
-  /^(hola|buenos dias|buenas tardes|buenas noches|hey|saludos|que tal|como estas)[!.,\s]*$/i,
+  /^(hola(\s+hola|\s+hera|\s+buenas|\s+buenos\s+dias)?|buenas(\s+tardes|\s+noches|\s+dias)?|buen\s+dia|buenos\s+dias|hey|saludos|que\s+tal|como\s+estas|como\s+te\s+va|quien\s+eres|que\s+eres|que\s+puedes\s+hacer|en\s+que\s+me\s+ayudas|como\s+me\s+ayudas|ayuda|empezar)[!?.,\s]*$/i,
+  /^(hola[\s,!.]*)+$/i,
 ];
 
-/** Resultado sin herramientas ni áreas (saludo o consulta fuera de alcance). */
-function emptyResult(intent: 'greeting' | 'out_of_scope'): RetrievalResult {
+const COURTESY_PATTERNS = [
+  /^(gracias|muchas\s+gracias|mil\s+gracias|ok\s+gracias|vale\s+gracias|perfecto|excelente|genial|listo|entendido|super|chevere|ok|vale|adios|chao|hasta\s+luego|nos\s+vemos)[!?.,\s]*$/i,
+];
+
+/** Resultado sin herramientas ni áreas (saludo, cortesía o consulta fuera de alcance). */
+function emptyResult(intent: 'greeting' | 'courtesy' | 'out_of_scope'): RetrievalResult {
   return { topTools: [], topAreas: [], intent };
 }
 
@@ -220,6 +226,10 @@ function retrieveRelevantContext(
 
   if (GREETING_PATTERNS.some((p) => p.test(normQuery))) {
     return emptyResult('greeting');
+  }
+
+  if (COURTESY_PATTERNS.some((p) => p.test(normQuery))) {
+    return emptyResult('courtesy');
   }
 
   const tokens = tokenize(query);
@@ -514,6 +524,12 @@ function generateLocalRagResponse(
     return { text, speechText: text };
   }
 
+  if (intent === 'courtesy') {
+    const text =
+      '¡Con mucho gusto! Estoy aquí para apoyarte cuando lo necesites. Si quieres explorar otra herramienta o tienes alguna duda sobre tu negocio, solo escríbeme o usa el micrófono.';
+    return { text, speechText: text };
+  }
+
   if (intent === 'out_of_scope') {
     const text =
       'Solo puedo ayudarte con herramientas TIC y transformación digital para tu negocio (por ejemplo: ventas, finanzas, inventarios, marketing, personal, logística o atención al cliente). ¿Sobre qué área o proceso de tu empresa te gustaría recibir recomendaciones?';
@@ -793,9 +809,10 @@ export async function askAssistantAsync(
 ): Promise<AssistantReply> {
   const retrieval = retrieveRelevantContext(query, diagnosticScores, history);
 
-  // Saludos y revisión personalizada del autodiagnóstico se resuelven al instante con los puntajes locales
+  // Saludos, cortesía y revisión personalizada del autodiagnóstico se resuelven al instante con los puntajes locales
   if (
     retrieval.intent === 'greeting' ||
+    retrieval.intent === 'courtesy' ||
     (retrieval.intent === 'diagnostic_review' && diagnosticScores !== null)
   ) {
     const local = generateLocalRagResponse(query, retrieval, diagnosticScores);

@@ -18,14 +18,14 @@ export const HomePage: React.FC = () => {
   const hasDraft = answeredCount > 1;
 
   return (
-    <main className="max-w-[1140px] w-full mx-auto px-4 sm:px-6 py-10 md:py-14 flex-1 flex flex-col justify-center items-center">
+    <main className="w-full max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-12 py-10 md:py-12 flex-1 flex flex-col justify-center items-center">
       {/* Encabezado Principal Centrado */}
-      <div className="text-center max-w-3xl mx-auto mb-10 md:mb-12">
+      <div className="text-center max-w-4xl mx-auto mb-10 md:mb-12">
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#163A2B] font-brand tracking-tight mb-3">
           Bienvenido a Hera
         </h1>
 
-        <p className="text-sm sm:text-base text-gray-600 leading-relaxed max-w-2xl mx-auto">
+        <p className="text-sm sm:text-base text-gray-600 leading-relaxed max-w-3xl mx-auto">
           Plataforma de autodiagnóstico y recomendaciones TIC diseñada para que las microempresas de{" "}
           <strong>Chía, Cajicá y Zipaquirá</strong> descubran qué tecnologías generan valor real en
           sus procesos y cómo aprovecharlas.
@@ -33,7 +33,7 @@ export const HomePage: React.FC = () => {
 
         {/* Estado amigable del diagnóstico si ya hay respuestas */}
         {hasDraft && (
-          <div className="mt-5 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-[#86CEAB] shadow-2xs text-xs text-[#163A2B]">
+          <div className="mt-5 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-[#86CEAB] shadow-2xs text-xs sm:text-sm text-[#163A2B]">
             <CheckCircle2 className="w-4 h-4 text-[#86CEAB]" />
             <span>
               Tienes un diagnóstico con <strong>{answeredCount} respuestas</strong> registradas.
@@ -45,8 +45,8 @@ export const HomePage: React.FC = () => {
         )}
       </div>
 
-      {/* Grid Central de Botones Grandes y Centrados (2x2) */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 w-full max-w-[980px] mx-auto">
+      {/* Grid Principal de Módulos (1 col móvil, 2x2 tablet, 4 cols escritorio ancho) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 w-full">
         {/* Módulo 1: Carga de Datos y Diagnóstico */}
         <Link
           to="/carga-datos"
@@ -68,17 +68,17 @@ export const HomePage: React.FC = () => {
               Cargar Datos & Diagnóstico
             </h2>
 
-            <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
+            <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
               Evalúa la madurez digital de tu negocio, identifica procesos manuales en tus 7 áreas y
               genera tu perfil empresarial descargable en Excel.
             </p>
           </div>
 
           <div className="pt-5 mt-4 border-t border-gray-100 flex items-center justify-between">
-            <span className="text-xs text-gray-500 font-medium">
+            <span className="text-xs sm:text-sm text-gray-500 font-medium">
               {hasDraft ? "Continuar diagnóstico en curso" : "~10 min · Exportable a Excel"}
             </span>
-            <span className="text-xs font-bold text-[#163A2B] flex items-center gap-1.5 group-hover:translate-x-1.5 transition-transform">
+            <span className="text-sm font-bold text-[#163A2B] flex items-center gap-1.5 group-hover:translate-x-1.5 transition-transform">
               <span>{hasDraft ? "Ver cuestionario" : "Comenzar diagnóstico"}</span>
               <ArrowRight className="w-4 h-4" />
             </span>
@@ -98,8 +98,8 @@ export const HomePage: React.FC = () => {
               <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white/15 text-[#86CEAB] flex items-center justify-center shadow-2xs group-hover:scale-110 group-hover:bg-[#86CEAB] group-hover:text-[#163A2B] transition-all duration-300">
                 <Compass className="w-7 h-7 sm:w-8 sm:h-8" />
               </div>
-              <span className="bg-[#86CEAB] text-[#163A2B] text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider flex items-center gap-1 shadow-2xs">
-                <Sparkles className="w-3 h-3" />
+              <span className="bg-[#86CEAB] text-[#163A2B] text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider flex items-center gap-1 shadow-2xs">
+                <Sparkles className="w-3.5 h-3.5" />
                 Módulo Principal
               </span>
             </div>
@@ -108,18 +108,18 @@ export const HomePage: React.FC = () => {
               Mapa de Oportunidades
             </h2>
 
-            <p className="text-xs sm:text-sm text-[#D0E6DC] leading-relaxed">
+            <p className="text-sm sm:text-base text-[#D0E6DC] leading-relaxed">
               Explora soluciones TIC organizadas en 9 áreas de tu negocio: opciones de código
               abierto, gratuitas, freemium, bajo costo y herramientas con IA con guías de 3 pasos.
             </p>
           </div>
 
           <div className="pt-5 mt-4 border-t border-white/10 flex items-center justify-between">
-            <span className="text-xs text-[#86CEAB] font-semibold flex items-center gap-1.5">
+            <span className="text-xs sm:text-sm text-[#86CEAB] font-semibold flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-[#86CEAB] inline-block animate-pulse"></span>
               9 Áreas · +40 Soluciones
             </span>
-            <span className="text-xs font-bold text-white flex items-center gap-1.5 group-hover:translate-x-1.5 transition-transform">
+            <span className="text-sm font-bold text-white flex items-center gap-1.5 group-hover:translate-x-1.5 transition-transform">
               <span>Explorar soluciones TIC</span>
               <ArrowRight className="w-4 h-4 text-[#86CEAB]" />
             </span>
@@ -138,7 +138,7 @@ export const HomePage: React.FC = () => {
               <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-purple-50 text-purple-700 flex items-center justify-center shadow-2xs group-hover:scale-110 group-hover:bg-purple-700 group-hover:text-white transition-all duration-300">
                 <Bot className="w-7 h-7 sm:w-8 sm:h-8" />
               </div>
-              <span className="text-[11px] font-bold text-purple-800 bg-purple-100 px-3 py-1 rounded-full uppercase tracking-wider">
+              <span className="text-xs font-bold text-purple-800 bg-purple-100 px-3 py-1 rounded-full uppercase tracking-wider">
                 Paso 3 · Asesoría
               </span>
             </div>
@@ -147,15 +147,15 @@ export const HomePage: React.FC = () => {
               Asistente Conversacional
             </h2>
 
-            <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
+            <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
               Resuelve dudas sobre qué tecnología adoptar, costos y pasos de implementación con
               soporte en lenguaje sencillo y amigable por voz o chat.
             </p>
           </div>
 
           <div className="pt-5 mt-4 border-t border-gray-100 flex items-center justify-between">
-            <span className="text-xs text-gray-500 font-medium">Soporte por voz y texto</span>
-            <span className="text-xs font-bold text-purple-800 flex items-center gap-1.5 group-hover:translate-x-1.5 transition-transform">
+            <span className="text-xs sm:text-sm text-gray-500 font-medium">Soporte por voz y texto</span>
+            <span className="text-sm font-bold text-purple-800 flex items-center gap-1.5 group-hover:translate-x-1.5 transition-transform">
               <span>Hablar con el asistente</span>
               <ArrowRight className="w-4 h-4" />
             </span>
@@ -174,7 +174,7 @@ export const HomePage: React.FC = () => {
               <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-blue-50 text-blue-700 flex items-center justify-center shadow-2xs group-hover:scale-110 group-hover:bg-blue-700 group-hover:text-white transition-all duration-300">
                 <BarChart3 className="w-7 h-7 sm:w-8 sm:h-8" />
               </div>
-              <span className="text-[11px] font-bold text-blue-800 bg-blue-100 px-3 py-1 rounded-full uppercase tracking-wider">
+              <span className="text-xs font-bold text-blue-800 bg-blue-100 px-3 py-1 rounded-full uppercase tracking-wider">
                 Panel Analítico
               </span>
             </div>
@@ -183,15 +183,15 @@ export const HomePage: React.FC = () => {
               Estadísticas & Reportes
             </h2>
 
-            <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
+            <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
               Consulta tu radar de madurez digital, tus brechas prioritarias y compara el estado de
               tu negocio con las estadísticas de micronegocios DANE EMICRON.
             </p>
           </div>
 
           <div className="pt-5 mt-4 border-t border-gray-100 flex items-center justify-between">
-            <span className="text-xs text-gray-500 font-medium">Radar, brechas y comparativas</span>
-            <span className="text-xs font-bold text-blue-800 flex items-center gap-1.5 group-hover:translate-x-1.5 transition-transform">
+            <span className="text-xs sm:text-sm text-gray-500 font-medium">Radar, brechas y comparativas</span>
+            <span className="text-sm font-bold text-blue-800 flex items-center gap-1.5 group-hover:translate-x-1.5 transition-transform">
               <span>Ver estadísticas</span>
               <ArrowRight className="w-4 h-4" />
             </span>
@@ -200,7 +200,7 @@ export const HomePage: React.FC = () => {
       </div>
 
       {/* Pie informativo de apoyo local y neutralidad */}
-      <div className="mt-12 text-center max-w-xl mx-auto text-xs text-gray-500 flex items-center justify-center gap-2">
+      <div className="mt-12 text-center max-w-xl mx-auto text-sm text-gray-600 flex items-center justify-center gap-2">
         <Building2 className="w-4 h-4 text-gray-400 shrink-0" />
         <span>
           Iniciativa académica y abierta de la Universidad de la Sabana · Apoyando el comercio local

@@ -77,7 +77,7 @@ export const DataUploadPage: React.FC = () => {
               <h1 className="text-2xl sm:text-3xl font-bold text-[#1E1E1E] mb-2 font-brand">
                 Carga de Datos y Diagnóstico Tecnológico
               </h1>
-              <p className="text-xs sm:text-sm text-[#666666] leading-relaxed">
+              <p className="text-sm sm:text-base text-[#666666] leading-relaxed">
                 El diagnóstico TIC de Senzaccento es la base para identificar brechas y generar su mapa de oportunidades. Puede completarlo directamente en el formulario web o importar la plantilla diligenciada en Excel.
               </p>
             </div>
@@ -94,7 +94,7 @@ export const DataUploadPage: React.FC = () => {
                       : 'bg-gray-400'
                   }`}
                 />
-                <span className="text-xs font-semibold text-[#1E1E1E] flex items-center gap-1.5">
+                <span className="text-sm font-semibold text-[#1E1E1E] flex items-center gap-1.5">
                   <span>Estado:</span>
                   {draft.status === 'completed' ? (
                     <span className="text-emerald-700 flex items-center gap-1">
@@ -147,10 +147,10 @@ export const DataUploadPage: React.FC = () => {
                 <div className="w-12 h-12 rounded-xl bg-[#163A2B] text-white flex items-center justify-center mb-4 shadow-2xs">
                   <FileEdit className="w-6 h-6 text-white" />
                 </div>
-                <h3 className="text-lg font-bold text-[#1E1E1E] mb-2 font-brand">
+                <h3 className="text-xl font-bold text-[#1E1E1E] mb-2 font-brand">
                   Cuestionario de Diagnóstico en Línea
                 </h3>
-                <p className="text-xs text-[#666666] leading-relaxed mb-6">
+                <p className="text-sm sm:text-[15px] text-[#666666] leading-relaxed mb-6">
                   Responda de forma guiada en su celular o computador. Cuenta con modo rápido (~10 minutos) o modo completo. Guarda automáticamente su progreso.
                 </p>
               </div>
@@ -159,10 +159,10 @@ export const DataUploadPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setWizardOpen(true)}
-                  className="w-full bg-[#163A2B] hover:bg-[#112D21] text-white py-3 px-4 rounded-xl text-xs font-bold transition-all cursor-pointer shadow-xs flex items-center justify-center gap-2"
+                  className="w-full bg-[#163A2B] hover:bg-[#112D21] text-white py-3.5 px-4 rounded-xl text-sm font-bold transition-all cursor-pointer shadow-xs flex items-center justify-center gap-2"
                 >
                   <span>{hasDraft ? 'Continuar Cuestionario' : 'Iniciar Cuestionario en Línea'}</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
+                  <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
             </div>
@@ -173,10 +173,10 @@ export const DataUploadPage: React.FC = () => {
                 <div className="w-12 h-12 rounded-xl bg-[#86CEAB] text-[#163A2B] flex items-center justify-center mb-4 shadow-2xs">
                   <FileSpreadsheet className="w-6 h-6 text-[#163A2B]" />
                 </div>
-                <h3 className="text-lg font-bold text-[#1E1E1E] mb-2 font-brand">
+                <h3 className="text-xl font-bold text-[#1E1E1E] mb-2 font-brand">
                   Importar Cuestionario en Excel (.xlsx)
                 </h3>
-                <p className="text-xs text-[#666666] leading-relaxed mb-6">
+                <p className="text-sm sm:text-[15px] text-[#666666] leading-relaxed mb-6">
                   Descargue la plantilla oficial, complétela fuera de línea con su equipo o contador, y súbala. El sistema valida las respuestas y las integra con el diagnóstico.
                 </p>
               </div>

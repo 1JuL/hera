@@ -104,13 +104,15 @@ export const LoginPage: React.FC = () => {
       {/* Columna Izquierda: Formulario de Autenticación */}
       <div className="w-full md:w-1/2 flex flex-col justify-center items-center p-6 sm:p-10 md:p-14">
         <div className="w-full max-w-[360px]">
-          {/* Logo y título de marca */}
-          <div className="text-center mb-6">
-            <span className="font-brand text-2xl sm:text-3xl font-bold text-[#163A2B] tracking-wide select-none block">
-              Senzaccento
-            </span>
-            <span className="text-[11px] font-semibold text-[#86CEAB] bg-[#163A2B] px-2.5 py-0.5 rounded-full inline-block mt-1">
-              Plataforma Hera
+          {/* Logo tipográfico HERA */}
+          <div className="text-center mb-6 flex flex-col items-center">
+            <img
+              src="/hera-logo-light.svg"
+              alt="HERA - Plataforma de Diagnóstico y Gestión Tecnológica"
+              className="h-10 sm:h-12 w-auto mb-2 select-none"
+            />
+            <span className="text-[11px] font-medium text-[#666666] tracking-wide">
+              Plataforma de Diagnóstico Tecnológico · <span className="font-brand italic text-[#163A2B]">por Senzaccento</span>
             </span>
           </div>
 
@@ -289,6 +291,11 @@ export const LoginPage: React.FC = () => {
         }}
       >
         <div className="max-w-md">
+          <img
+            src="/hera-logo-dark.svg"
+            alt="HERA"
+            className="h-8 w-auto mb-6 select-none opacity-95"
+          />
           <span className="text-[11px] font-bold uppercase tracking-wider text-[#86CEAB] bg-white/10 px-3 py-1 rounded-full border border-white/15 inline-block mb-4">
             Autodiagnóstico TIC y Oportunidades
           </span>

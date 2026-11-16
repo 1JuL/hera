@@ -3,6 +3,8 @@
 @source "../index.html";
 @source "../src";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-primary: #163a2b;
   --color-primary-dark: #0e261c;
@@ -24,6 +26,20 @@
   --text-dark: #1e1e1e;
   --text-gray: #666666;
   --border-color: #e0e0e0;
+
+  /* Variables dinámicas de accesibilidad */
+  --scale-title: 1;
+  --scale-subtitle: 1;
+  --scale-aux: 1.18;
+}
+
+html.dark {
+  --bg-light: #0a1912;
+  --white: #12281e;
+  --text-dark: #f0f5f2;
+  --text-gray: #b4cfc2;
+  --border-color: #204433;
+  color-scheme: dark;
 }
 
 @layer base {
@@ -34,10 +50,146 @@
     display: flex;
     flex-direction: column;
     font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    transition: background-color 0.25s ease, color 0.25s ease;
   }
 }
 
 /* Clases utilitarias de marca Senzaccento */
 .font-brand {
   font-family: Georgia, Cambria, 'Times New Roman', Times, serif;
+}
+
+/* =========================================================
+   ESCALADO DINÁMICO DE ACCESIBILIDAD (Títulos, Subtítulos, Auxiliares)
+   ========================================================= */
+h1,
+.text-3xl,
+.text-4xl,
+.text-5xl {
+  font-size: calc(1.75rem * var(--scale-title));
+}
+.text-2xl {
+  font-size: calc(1.5rem * var(--scale-title));
+}
+
+h2,
+h3,
+.text-xl {
+  font-size: calc(1.25rem * var(--scale-subtitle));
+}
+.text-lg {
+  font-size: calc(1.125rem * var(--scale-subtitle));
+}
+
+/* Textos auxiliares, descripciones y etiquetas */
+.text-sm {
+  font-size: calc(0.875rem * var(--scale-aux));
+  line-height: 1.6;
+}
+.text-xs {
+  font-size: calc(0.8125rem * var(--scale-aux));
+  line-height: 1.55;
+}
+.text-\[11px\],
+.text-\[10px\] {
+  font-size: calc(0.75rem * var(--scale-aux));
+  line-height: 1.45;
+}
+
+/* =========================================================
+   MODO OSCURO GLOBAL DE ALTO CONTRASTE (html.dark)
+   ========================================================= */
+html.dark body,
+html.dark .bg-\[\#F4F6F4\] {
+  background-color: #0a1912 !important;
+  color: #f0f5f2 !important;
+}
+
+html.dark .bg-white,
+html.dark .bg-\[\#FFFFFF\] {
+  background-color: #12281e !important;
+  color: #f0f5f2;
+}
+
+html.dark .bg-gray-50,
+html.dark .bg-gray-50\/90,
+html.dark .bg-gray-50\/80,
+html.dark .bg-\[\#F8FAF9\],
+html.dark .bg-\[\#F9FAF9\] {
+  background-color: #173427 !important;
+}
+
+html.dark .bg-gray-100 {
+  background-color: #1c3d2e !important;
+}
+
+html.dark .bg-\[\#E8F5EE\],
+html.dark .bg-\[\#E8F5EE\]\/80 {
+  background-color: #173d2c !important;
+}
+
+html.dark .bg-\[\#FFFDF7\] {
+  background-color: #292212 !important;
+  border-color: #5c491d !important;
+  color: #fde68a !important;
+}
+
+/* Colores de texto en modo oscuro */
+html.dark .text-gray-900,
+html.dark .text-gray-800,
+html.dark .text-\[\#1E1E1E\] {
+  color: #f2f7f4 !important;
+}
+
+html.dark .text-gray-700,
+html.dark .text-\[\#0e261c\] {
+  color: #d6e8de !important;
+}
+
+html.dark .text-gray-600,
+html.dark .text-gray-500,
+html.dark .text-\[\#666666\] {
+  color: #a8c7b8 !important;
+}
+
+/* Acentos #163A2B sobre superficies oscuras (excluir botones con fondo oscuro o menta) */
+html.dark .text-\[\#163A2B\]:not(.bg-\[\#86CEAB\]):not(.bg-\[\#163A2B\]) {
+  color: #86ceab !important;
+}
+
+/* Bordes en modo oscuro */
+html.dark .border-gray-200,
+html.dark .border-gray-200\/80,
+html.dark .border-gray-100,
+html.dark .border-\[\#E0E0E0\],
+html.dark .border-\[\#E0E0E0\]\/80,
+html.dark .border-black\/5 {
+  border-color: #224736 !important;
+}
+
+/* Inputs, selects y textareas en modo oscuro */
+html.dark input,
+html.dark select,
+html.dark textarea {
+  background-color: #0e2118 !important;
+  color: #f0f5f2 !important;
+  border-color: #295742 !important;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #7ea391 !important;
+}
+
+/* Tarjetas de áreas del Mapa en modo oscuro (respetar contraste de texto sobre fondos pastel en claro, pero en oscuro adaptar tarjetas) */
+html.dark [data-area-card="true"] {
+  background-color: #142d22 !important;
+  border-color: #26523e !important;
+}
+
+/* Recharts en modo oscuro */
+html.dark .recharts-text,
+html.dark .recharts-cartesian-axis-tick-value,
+html.dark .recharts-polar-angle-axis-tick-value {
+  fill: #c6dfd3 !important;
 }

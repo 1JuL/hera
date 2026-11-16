@@ -307,7 +307,7 @@ export const AssistantPage: React.FC = () => {
     <main className="max-w-[1240px] w-full mx-auto px-4 sm:px-6 py-6 sm:py-8 flex-1">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
         {/* Panel Izquierdo: Conversación y Recomendaciones RAG */}
-        <div className="lg:col-span-2 bg-white rounded-2xl p-5 sm:p-6 flex flex-col justify-between shadow-sm border border-[#E0E0E0] min-h-[580px] max-h-[calc(100vh-120px)]">
+        <div className="lg:col-span-2 min-w-0 w-full overflow-hidden bg-white rounded-2xl p-4 sm:p-6 flex flex-col justify-between shadow-sm border border-[#E0E0E0] min-h-[580px] max-h-[calc(100vh-120px)]">
           {/* Header del Chat */}
           <div className="border-b border-gray-100 pb-3.5 mb-3 flex flex-wrap items-center justify-between gap-2">
             <div className="flex items-center gap-3">
@@ -372,10 +372,10 @@ export const AssistantPage: React.FC = () => {
                 }`}
               >
                 <div
-                  className={`max-w-[90%] sm:max-w-[82%] rounded-2xl px-4 py-3 text-xs sm:text-[13px] leading-relaxed shadow-2xs ${
+                  className={`max-w-[90%] sm:max-w-[82%] rounded-2xl px-4 py-3.5 text-sm sm:text-[15px] leading-relaxed shadow-2xs ${
                     m.sender === 'user'
                       ? 'bg-[#163A2B] text-white rounded-br-xs'
-                      : 'bg-[#F4F7F5] text-[#1E1E1E] border border-[#E0E7E3] rounded-bl-xs'
+                      : 'bg-[#F4F7F5] dark:bg-[#173427] text-[#1E1E1E] dark:text-[#f0f5f2] border border-[#E0E7E3] dark:border-[#224736] rounded-bl-xs'
                   }`}
                 >
                   <div className="flex items-center justify-between gap-3 mb-1">
@@ -433,15 +433,15 @@ export const AssistantPage: React.FC = () => {
                                 <Sparkles className="w-3 h-3 text-amber-500 shrink-0" />
                               )}
                             </div>
-                            <h4 className="text-xs font-bold text-gray-900 group-hover:text-[#163A2B]">
+                            <h4 className="text-sm font-bold text-gray-900 group-hover:text-[#163A2B]">
                               {tool.name}
                             </h4>
-                            <p className="text-[11px] text-gray-500 line-clamp-2 mt-0.5">
+                            <p className="text-xs text-gray-600 line-clamp-2 mt-1">
                               {tool.pricingLabel} · {tool.impactMetric}
                             </p>
                           </div>
 
-                          <span className="mt-2 text-[11px] font-bold text-[#163A2B] flex items-center gap-1">
+                          <span className="mt-2.5 text-xs font-bold text-[#163A2B] flex items-center gap-1">
                             <Lightbulb className="w-3 h-3 text-amber-500" />
                             Ver guía (3 pasos) →
                           </span>
@@ -503,7 +503,7 @@ export const AssistantPage: React.FC = () => {
               </div>
             )}
 
-            <form onSubmit={handleFormSubmit} className="flex gap-2 items-center">
+            <form onSubmit={handleFormSubmit} className="flex gap-1.5 sm:gap-2 items-center w-full">
               {sttSupported && (
                 <button
                   type="button"
@@ -521,26 +521,26 @@ export const AssistantPage: React.FC = () => {
 
               <input
                 type="text"
-                placeholder="Escribe tu pregunta o usa el micrófono..."
+                placeholder="Escribe tu pregunta..."
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
-                className="flex-1 px-3.5 py-2.5 text-xs sm:text-sm border border-[#E0E0E0] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#86CEAB] bg-white text-[#1E1E1E]"
+                className="flex-1 min-w-0 w-full px-3 sm:px-3.5 py-2.5 text-sm border border-[#E0E0E0] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#86CEAB] bg-white text-[#1E1E1E]"
               />
 
               <button
                 type="submit"
                 disabled={!inputText.trim() || isLoading}
-                className="bg-[#163A2B] hover:bg-[#0e261c] disabled:opacity-50 text-white px-4 py-2.5 rounded-xl text-xs font-bold cursor-pointer transition-colors flex items-center gap-1.5 shrink-0"
+                className="bg-[#163A2B] hover:bg-[#0e261c] disabled:opacity-50 text-white px-3 sm:px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold cursor-pointer transition-colors flex items-center gap-1.5 shrink-0"
               >
                 {isLoading ? (
                   <>
-                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                    <span>Pensando</span>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <span className="hidden min-[400px]:inline">Pensando</span>
                   </>
                 ) : (
                   <>
-                    <span>Enviar</span>
-                    <Send className="w-3.5 h-3.5" />
+                    <span className="hidden min-[380px]:inline">Enviar</span>
+                    <Send className="w-4 h-4" />
                   </>
                 )}
               </button>

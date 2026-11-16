@@ -47,11 +47,11 @@ export const QuestionField: React.FC<QuestionFieldProps> = ({
             <span className="text-[11px] text-red-600 font-bold">*</span>
           )}
         </div>
-        <label className="text-sm md:text-base font-semibold text-[#1E1E1E] block leading-snug">
+        <label className="text-base md:text-lg font-semibold text-[#1E1E1E] block leading-snug">
           {question.label}
         </label>
         {question.help && (
-          <p className="text-xs text-[#666666] mt-1 leading-relaxed">
+          <p className="text-sm text-[#555555] mt-1.5 leading-relaxed">
             {question.help}
           </p>
         )}
